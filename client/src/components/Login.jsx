@@ -6,9 +6,10 @@ import "aos/dist/aos.css";
 import "../CSS/form.css";
 
 const Login = () => {
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("⏳ Loading models...");
   const [transcript, setTranscript] = useState(""); // live speech
   const [started, setStarted] = useState(false); // overlay
+  const [modelsLoaded, setModelsLoaded] = useState(false);
   const webcamRef = useRef(null);
   const processedRef = useRef(false);
   const navigate = useNavigate();
@@ -16,14 +17,20 @@ const Login = () => {
   // Load face-api models
   useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = process.env.PUBLIC_URL + "/models";
-
-      await Promise.all([
-        faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
-        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-      ]);
-      console.log("✅ Models loaded");
+      try {
+        const MODEL_URL = process.env.PUBLIC_URL + "/models"; // works in static deployment
+        await Promise.all([
+          faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
+          faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+          faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+        ]);
+        console.log("✅ Models loaded");
+        setStatus("✅ Models loaded. Tap to start.");
+        setModelsLoaded(true);
+      } catch (err) {
+        console.error("❌ Error loading models:", err);
+        setStatus("❌ Failed to load models");
+      }
     };
     loadModels();
   }, []);
@@ -35,6 +42,11 @@ const Login = () => {
 
   // Start camera + speech recognition
   const initPermissions = () => {
+    if (!modelsLoaded) {
+      alert("⚠️ Models are still loading. Please wait...");
+      return;
+    }
+
     // Camera
     navigator.mediaDevices.getUserMedia({ video: true })
       .then((stream) => {
@@ -168,6 +180,7 @@ const Login = () => {
         <div
           className="start-overlay"
           onClick={() => {
+            if (!modelsLoaded) return;
             setStarted(true);
             initPermissions();
           }}
