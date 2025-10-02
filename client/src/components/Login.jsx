@@ -16,7 +16,8 @@ const Login = () => {
   // Load face-api models
   useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = "/models";
+      const MODEL_URL = process.env.PUBLIC_URL + "/models";
+
       await Promise.all([
         faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
