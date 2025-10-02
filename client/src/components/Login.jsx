@@ -13,12 +13,18 @@ const Login = () => {
   const webcamRef = useRef(null);
   const processedRef = useRef(false);
   const navigate = useNavigate();
+  useEffect(() => {
+    speechSynthesis.onvoiceschanged = () => {
+      console.log("Available voices:", speechSynthesis.getVoices());
+    };
+  }, []);
+
 
   // Load face-api models
   useEffect(() => {
     const loadModels = async () => {
       try {
-        const MODEL_URL = "/models"; // Instead of `${process.env.PUBLIC_URL}/models`
+        const MODEL_URL = "/models";
         await Promise.all([
           faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
           faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
@@ -39,6 +45,24 @@ const Login = () => {
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
   }, []);
+
+  const speakWelcome = () => {
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(
+      "Hi, welcome to PlaceSmart. If you are a new user, please say 'new user'. Otherwise, speak your login ID."
+    );
+
+    // choose Indian accent voice
+    const voices = synth.getVoices();
+    const indianVoice = voices.find(
+      (voice) => voice.lang === "hi-IN"
+    );
+    if (indianVoice) utterance.voice = indianVoice;
+
+    utterance.rate = 1; // normal speed
+    utterance.pitch = 1; // normal pitch
+    synth.speak(utterance);
+  };
 
   // Start camera + speech recognition
   const initPermissions = () => {
@@ -182,6 +206,7 @@ const Login = () => {
           onClick={() => {
             if (!modelsLoaded) return;
             setStarted(true);
+            speakWelcome(); // Speak when user taps overlay
             initPermissions();
           }}
           data-aos="fade-in"
