@@ -1,0 +1,101 @@
+/* ===== Golden Black Theme ===== */
+body {
+  font-family: "Poppins", sans-serif;
+  background: #000;
+  color: #ffd700;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Fullscreen Overlay */
+.start-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  z-index: 9999;
+  cursor: pointer;
+  text-align: center;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.start-overlay:hover {
+  color: #fff8dc;
+  letter-spacing: 1px;
+}
+
+/* Main Container */
+.login-container {
+  max-width: 450px;
+  margin: 60px auto;
+  padding: 25px;
+  background: #111;
+  border: 1px solid #ffd700;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  text-align: center;
+}
+
+/* Heading */
+.login-container h2 {
+  color: #ffd700;
+  font-size: 28px;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+  animation: glow 2s infinite alternate;
+}
+
+/* Glow Effect */
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #ffd700, 0 0 20px #ffcc00, 0 0 30px #ff9900;
+  }
+  to {
+    text-shadow: 0 0 20px #ffea00, 0 0 30px #ffaa00, 0 0 40px #ff8800;
+  }
+}
+
+/* Status + Transcript */
+.status-text,
+.transcript-text {
+  font-size: 16px;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.status-text {
+  color: #ffcc00;
+}
+
+.transcript-text {
+  color: #ffd700;
+  font-style: italic;
+}
+
+/* Webcam Video */
+.webcam-video {
+  border: 2px solid #ffd700;
+  border-radius: 12px;
+  margin-top: 15px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.webcam-video:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+}

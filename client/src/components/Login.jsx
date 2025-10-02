@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import * as faceapi from "face-api.js";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import "../CSS/form.css";
 
 const Login = () => {
   const [status, setStatus] = useState("");
-  const [transcript, setTranscript] = useState(""); // show live speech
-  const [started, setStarted] = useState(false); // overlay control
+  const [transcript, setTranscript] = useState(""); // live speech
+  const [started, setStarted] = useState(false); // overlay
   const webcamRef = useRef(null);
   const processedRef = useRef(false);
   const navigate = useNavigate();
@@ -24,9 +27,14 @@ const Login = () => {
     loadModels();
   }, []);
 
-  // Initialize recognition + camera after first tap
+  // Init AOS animations
+  useEffect(() => {
+    AOS.init({ duration: 1000, once: true });
+  }, []);
+
+  // Start camera + speech recognition
   const initPermissions = () => {
-    // ==== CAMERA START ====
+    // Camera
     navigator.mediaDevices.getUserMedia({ video: true })
       .then((stream) => {
         webcamRef.current.srcObject = stream;
@@ -36,14 +44,13 @@ const Login = () => {
         setStatus("❌ Camera not allowed");
       });
 
-    // ==== SPEECH START ====
+    // Speech
     if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
       alert("Speech Recognition not supported in this browser.");
       return;
     }
 
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.lang = "en-US";
     recognition.interimResults = true;
@@ -57,7 +64,7 @@ const Login = () => {
       for (let i = 0; i < event.results.length; i++) {
         liveTranscript += event.results[i][0].transcript + " ";
       }
-      setTranscript(liveTranscript); // show live speech
+      setTranscript(liveTranscript);
 
       if (processedRef.current) return;
 
@@ -69,8 +76,6 @@ const Login = () => {
       }
       finalTranscript = finalTranscript.toLowerCase().trim();
       if (!finalTranscript) return;
-
-      console.log("Voice command:", finalTranscript);
 
       if (finalTranscript.includes("new user")) {
         processedRef.current = true;
@@ -85,7 +90,6 @@ const Login = () => {
         processedRef.current = true;
         await handleFaceLogin(spokenId);
         recognition.stop();
-        console.log("UserID detected:", spokenId);
       }
     };
 
@@ -102,7 +106,7 @@ const Login = () => {
     recognition.start();
   };
 
-  // Handle face login
+  // Face login
   const handleFaceLogin = async (userId) => {
     setStatus("🔍 Fetching user image...");
     try {
@@ -135,15 +139,13 @@ const Login = () => {
       if (!detectionsCloud || !detectionsWebcam) {
         setStatus("❌ Face not detected, please try again.");
         processedRef.current = false;
-        return await handleFaceLogin(userId); // restart scanning
+        return await handleFaceLogin(userId);
       }
 
-      console.time("Face comparison");
       const distance = faceapi.euclideanDistance(
         detectionsCloud.descriptor,
         detectionsWebcam.descriptor
       );
-      console.timeEnd("Face comparison");
 
       const threshold = 0.6;
       if (distance < threshold) {
@@ -159,45 +161,34 @@ const Login = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      {/* Fullscreen overlay (tap once) */}
+    <div>
+      {/* Fullscreen tap overlay */}
       {!started && (
         <div
+          className="start-overlay"
           onClick={() => {
             setStarted(true);
             initPermissions();
           }}
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: "rgba(0,0,0,0.85)",
-            color: "white",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "22px",
-            zIndex: 9999,
-            cursor: "pointer",
-          }}
+          data-aos="fade-in"
         >
           👆 Tap to Start
         </div>
       )}
 
-      <h2>🔐 Login with UserID</h2>
-      <p>{status}</p>
-      <p><b>🗣 You said:</b> {transcript}</p>
-      <video
-        ref={webcamRef}
-        autoPlay
-        muted
-        width={320}
-        height={240}
-        style={{ border: "1px solid black", borderRadius: "8px" }}
-      />
+      <div className="login-container" data-aos="zoom-in">
+        <h2>🔐 Login with UserID</h2>
+        <p className="status-text">{status}</p>
+        <p className="transcript-text"><b>🗣 You said:</b> {transcript}</p>
+        <video
+          ref={webcamRef}
+          autoPlay
+          muted
+          width={320}
+          height={240}
+          className="webcam-video"
+        />
+      </div>
     </div>
   );
 };
