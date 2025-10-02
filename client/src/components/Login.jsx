@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import * as faceapi from "face-api.js";
 
 const Login = () => {
-  const [status, setStatus] = useState("⏳ Initializing...");
+  const [status, setStatus] = useState("");
+  const [transcript, setTranscript] = useState(""); // show live speech
+  const [started, setStarted] = useState(false); // overlay control
   const webcamRef = useRef(null);
   const processedRef = useRef(false);
   const navigate = useNavigate();
@@ -18,31 +20,23 @@ const Login = () => {
         faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
       ]);
       console.log("✅ Models loaded");
-      setStatus("✅ Models ready. Waiting for voice...");
     };
     loadModels();
   }, []);
 
-  // Ask for camera + mic permission as soon as page loads
-  useEffect(() => {
-    const initPermissions = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        if (webcamRef.current) {
-          webcamRef.current.srcObject = stream;
-        }
-        startSpeechRecognition();
-      } catch (err) {
-        console.error("Permission error:", err);
-        setStatus("❌ Camera/Mic permission denied.");
-      }
-    };
+  // Initialize recognition + camera after first tap
+  const initPermissions = () => {
+    // ==== CAMERA START ====
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then((stream) => {
+        webcamRef.current.srcObject = stream;
+      })
+      .catch((err) => {
+        console.error("Camera error:", err);
+        setStatus("❌ Camera not allowed");
+      });
 
-    initPermissions();
-  }, []);
-
-  // Initialize speech recognition
-  const startSpeechRecognition = () => {
+    // ==== SPEECH START ====
     if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
       alert("Speech Recognition not supported in this browser.");
       return;
@@ -59,32 +53,38 @@ const Login = () => {
     recognition.onstart = () => setStatus("🎤 Listening...");
 
     recognition.onresult = async (event) => {
+      let liveTranscript = "";
+      for (let i = 0; i < event.results.length; i++) {
+        liveTranscript += event.results[i][0].transcript + " ";
+      }
+      setTranscript(liveTranscript); // show live speech
+
       if (processedRef.current) return;
 
-      let fullTranscript = "";
+      let finalTranscript = "";
       for (let i = 0; i < event.results.length; i++) {
         if (event.results[i].isFinal) {
-          fullTranscript += event.results[i][0].transcript + " ";
+          finalTranscript += event.results[i][0].transcript + " ";
         }
       }
-      fullTranscript = fullTranscript.toLowerCase().trim();
-      console.log("Voice command:", fullTranscript);
+      finalTranscript = finalTranscript.toLowerCase().trim();
+      if (!finalTranscript) return;
 
-      // Navigate to register
-      if (fullTranscript.includes("new user")) {
+      console.log("Voice command:", finalTranscript);
+
+      if (finalTranscript.includes("new user")) {
         processedRef.current = true;
         recognition.stop();
         navigate("/register");
         return;
       }
 
-      // Detect numbers as userId
-      const numberOnly = fullTranscript.replace(/\D/g, "");
+      const numberOnly = finalTranscript.replace(/\D/g, "");
       const spokenId = Number(numberOnly);
       if (!isNaN(spokenId) && spokenId !== 0) {
         processedRef.current = true;
-        recognition.stop();
         await handleFaceLogin(spokenId);
+        recognition.stop();
         console.log("UserID detected:", spokenId);
       }
     };
@@ -92,11 +92,11 @@ const Login = () => {
     recognition.onerror = (event) => {
       if (event.error !== "aborted")
         console.error("Speech recognition error:", event.error);
-      setStatus("❌ Error: " + event.error);
+      setStatus("❌ Error occurred");
     };
 
     recognition.onend = () => {
-      if (!processedRef.current) recognition.start(); // restart loop
+      if (!processedRef.current) recognition.start();
     };
 
     recognition.start();
@@ -133,12 +133,14 @@ const Login = () => {
         .withFaceDescriptor();
 
       if (!detectionsCloud || !detectionsWebcam)
-        return setStatus("❌ Face not detected");
+        return setStatus("❌ Face not detected in one of the images");
 
+      console.time("Face comparison");
       const distance = faceapi.euclideanDistance(
         detectionsCloud.descriptor,
         detectionsWebcam.descriptor
       );
+      console.timeEnd("Face comparison");
 
       const threshold = 0.6;
       if (distance < threshold) {
@@ -146,9 +148,7 @@ const Login = () => {
         localStorage.setItem("userId", userId);
         setStatus("✅ Login successful!");
         navigate("/home");
-      } else {
-        setStatus("❌ Faces do not match");
-      }
+      } else setStatus("❌ Faces do not match");
     } catch (err) {
       console.error(err);
       setStatus("⚠️ Error verifying face");
@@ -157,13 +157,40 @@ const Login = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>🔐 Login with Voice + Face</h2>
+      {/* Fullscreen overlay (tap once) */}
+      {!started && (
+        <div
+          onClick={() => {
+            setStarted(true);
+            initPermissions();
+          }}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0,0,0,0.85)",
+            color: "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "22px",
+            zIndex: 9999,
+            cursor: "pointer",
+          }}
+        >
+          👆 Tap to Start
+        </div>
+      )}
+
+      <h2>🔐 Login with UserID</h2>
       <p>{status}</p>
+      <p><b>🗣 You said:</b> {transcript}</p>
       <video
         ref={webcamRef}
         autoPlay
         muted
-        playsInline
         width={320}
         height={240}
         style={{ border: "1px solid black", borderRadius: "8px" }}
