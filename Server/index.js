@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: "10mb" })); // to parse base64 images
 console.log(process.env.MONGODB_URI);
-// MongoDB connection
+  // MongoDB connection
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
