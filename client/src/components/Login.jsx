@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as faceapi from "face-api.js";
 
 const Login = () => {
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("⏳ Initializing...");
   const webcamRef = useRef(null);
   const processedRef = useRef(false);
   const navigate = useNavigate();
@@ -18,12 +18,31 @@ const Login = () => {
         faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
       ]);
       console.log("✅ Models loaded");
+      setStatus("✅ Models ready. Waiting for voice...");
     };
     loadModels();
   }, []);
 
-  // Initialize speech recognition
+  // Ask for camera + mic permission as soon as page loads
   useEffect(() => {
+    const initPermissions = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        if (webcamRef.current) {
+          webcamRef.current.srcObject = stream;
+        }
+        startSpeechRecognition();
+      } catch (err) {
+        console.error("Permission error:", err);
+        setStatus("❌ Camera/Mic permission denied.");
+      }
+    };
+
+    initPermissions();
+  }, []);
+
+  // Initialize speech recognition
+  const startSpeechRecognition = () => {
     if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
       alert("Speech Recognition not supported in this browser.");
       return;
@@ -51,6 +70,7 @@ const Login = () => {
       fullTranscript = fullTranscript.toLowerCase().trim();
       console.log("Voice command:", fullTranscript);
 
+      // Navigate to register
       if (fullTranscript.includes("new user")) {
         processedRef.current = true;
         recognition.stop();
@@ -58,12 +78,13 @@ const Login = () => {
         return;
       }
 
+      // Detect numbers as userId
       const numberOnly = fullTranscript.replace(/\D/g, "");
       const spokenId = Number(numberOnly);
       if (!isNaN(spokenId) && spokenId !== 0) {
         processedRef.current = true;
-        await handleFaceLogin(spokenId);
         recognition.stop();
+        await handleFaceLogin(spokenId);
         console.log("UserID detected:", spokenId);
       }
     };
@@ -71,19 +92,15 @@ const Login = () => {
     recognition.onerror = (event) => {
       if (event.error !== "aborted")
         console.error("Speech recognition error:", event.error);
-      setStatus("❌ Error occurred");
+      setStatus("❌ Error: " + event.error);
     };
 
     recognition.onend = () => {
-      if (!processedRef.current) recognition.start();
+      if (!processedRef.current) recognition.start(); // restart loop
     };
 
     recognition.start();
-
-    return () => {
-      recognition.stop();
-    };
-  }, [navigate]);
+  };
 
   // Handle face login
   const handleFaceLogin = async (userId) => {
@@ -97,22 +114,14 @@ const Login = () => {
       const data = await res.json();
       if (!data.success) return setStatus(data.error);
 
-      // Cloud image
       const cloudImg = await faceapi.fetchImage(data.imageurl);
-
-      // Start webcam only once
-      if (!webcamRef.current.srcObject) {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        webcamRef.current.srcObject = stream;
-      }
-
       const video = webcamRef.current;
+
       await new Promise((resolve) => {
         if (video.readyState >= 2) resolve();
         else video.onloadeddata = resolve;
       });
 
-      // Capture frame directly
       const detectionsCloud = await faceapi
         .detectSingleFace(cloudImg)
         .withFaceLandmarks()
@@ -123,27 +132,23 @@ const Login = () => {
         .withFaceLandmarks()
         .withFaceDescriptor();
 
-      if (!detectionsCloud || !detectionsWebcam) {
-        setStatus("❌ Face not detected in one of the images");
-        setTimeout(() => window.location.reload(), 2000);
-        return;
-      }
+      if (!detectionsCloud || !detectionsWebcam)
+        return setStatus("❌ Face not detected");
 
-      console.time("Face comparison");
       const distance = faceapi.euclideanDistance(
         detectionsCloud.descriptor,
         detectionsWebcam.descriptor
       );
-      console.timeEnd("Face comparison");
 
       const threshold = 0.6;
       if (distance < threshold) {
         alert("Login successful!");
         localStorage.setItem("userId", userId);
         setStatus("✅ Login successful!");
-        navigate('/home');
+        navigate("/home");
+      } else {
+        setStatus("❌ Faces do not match");
       }
-      else setStatus("❌ Faces do not match");
     } catch (err) {
       console.error(err);
       setStatus("⚠️ Error verifying face");
@@ -152,13 +157,13 @@ const Login = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>🔐 Login with UserID</h2>
-      <p style={{ fontWeight: "bold", color: "#007bff" }}>Please Speak your UserId</p>
+      <h2>🔐 Login with Voice + Face</h2>
       <p>{status}</p>
       <video
         ref={webcamRef}
         autoPlay
         muted
+        playsInline
         width={320}
         height={240}
         style={{ border: "1px solid black", borderRadius: "8px" }}
