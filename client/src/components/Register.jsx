@@ -24,7 +24,7 @@ const Register = () => {
 
   const uploadImage = async (base64Image) => {
     try {
-      const response = await fetch("http://localhost:8000/user/userdata", {
+      const response = await fetch("https://placesmart.onrender.com/user/userdata", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: base64Image }),

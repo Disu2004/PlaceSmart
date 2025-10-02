@@ -89,7 +89,7 @@ const Login = () => {
   const handleFaceLogin = async (userId) => {
     setStatus("🔍 Fetching user image...");
     try {
-      const res = await fetch("http://localhost:8000/user/login", {
+      const res = await fetch("https://placesmart.onrender.com/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
