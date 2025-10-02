@@ -123,8 +123,11 @@ const Login = () => {
         .withFaceLandmarks()
         .withFaceDescriptor();
 
-      if (!detectionsCloud || !detectionsWebcam)
-        return setStatus("❌ Face not detected in one of the images");
+      if (!detectionsCloud || !detectionsWebcam) {
+        setStatus("❌ Face not detected in one of the images");
+        setTimeout(() => window.location.reload(), 2000);
+        return;
+      }
 
       console.time("Face comparison");
       const distance = faceapi.euclideanDistance(
@@ -150,6 +153,7 @@ const Login = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>🔐 Login with UserID</h2>
+      <p style={{ fontWeight: "bold", color: "#007bff" }}>Please Speak your UserId</p>
       <p>{status}</p>
       <video
         ref={webcamRef}

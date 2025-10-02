@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState  } from "react";
+import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 
 const Register = () => {
@@ -6,7 +7,7 @@ const Register = () => {
   const [preview, setPreview] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [userId, setUserId] = useState(null);
-
+  const navigate = useNavigate();
   // Auto capture after 2s
   useEffect(() => {
     localStorage.removeItem("userId"); // Clear any existing userId
@@ -37,9 +38,13 @@ const Register = () => {
       }
       const data = await response.json();
       console.log("Upload success:", data);
-
+      
       setImageUrl(data.url);
       setUserId(data.userId); // ✅ Save userId from backend response
+      alert("Registration successfull.....");
+      alert("Please note down your UserId for login: " + data.user.id);
+      
+      navigate("/");
     } catch (err) {
       console.error("Upload error:", err);
     }

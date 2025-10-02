@@ -8,6 +8,7 @@ import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Register from "./components/Register";
 function App() {
+  localStorage.clear();
   const navigate = useNavigate();
 
   useEffect(() => {
