@@ -13,7 +13,7 @@ const Register = () => {
     localStorage.removeItem("userId"); // Clear any existing userId
     const timer = setTimeout(() => {
       capture();
-    }, 2000);
+    }, 4000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -38,7 +38,7 @@ const Register = () => {
       }
       const data = await response.json();
       console.log("Upload success:", data);
-      
+      console.log("New user added success")
       setImageUrl(data.url);
       setUserId(data.userId); // ✅ Save userId from backend response
       alert("Registration successfull.....");

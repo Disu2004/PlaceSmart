@@ -132,8 +132,11 @@ const Login = () => {
         .withFaceLandmarks()
         .withFaceDescriptor();
 
-      if (!detectionsCloud || !detectionsWebcam)
-        return setStatus("❌ Face not detected in one of the images");
+      if (!detectionsCloud || !detectionsWebcam) {
+        setStatus("❌ Face not detected, please try again.");
+        processedRef.current = false;
+        return await handleFaceLogin(userId); // restart scanning
+      }
 
       console.time("Face comparison");
       const distance = faceapi.euclideanDistance(
