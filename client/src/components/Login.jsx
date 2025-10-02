@@ -13,12 +13,13 @@ const Login = () => {
   const webcamRef = useRef(null);
   const processedRef = useRef(false);
   const navigate = useNavigate();
+
+  // Show voices in console
   useEffect(() => {
     speechSynthesis.onvoiceschanged = () => {
       console.log("Available voices:", speechSynthesis.getVoices());
     };
   }, []);
-
 
   // Load face-api models
   useEffect(() => {
@@ -51,27 +52,20 @@ const Login = () => {
     const utterance = new SpeechSynthesisUtterance(
       "Hi, welcome to PlaceSmart. If you are a new user, please say 'new user'. Otherwise, speak your login ID."
     );
-
-    // choose Indian accent voice
     const voices = synth.getVoices();
-    const indianVoice = voices.find(
-      (voice) => voice.lang === "hi-IN"
-    );
+    const indianVoice = voices.find((voice) => voice.lang === "hi-IN");
     if (indianVoice) utterance.voice = indianVoice;
-
-    utterance.rate = 1; // normal speed
-    utterance.pitch = 1; // normal pitch
+    utterance.rate = 1;
+    utterance.pitch = 1;
     synth.speak(utterance);
   };
 
-  // Start camera + speech recognition
   const initPermissions = () => {
     if (!modelsLoaded) {
       alert("⚠️ Models are still loading. Please wait...");
       return;
     }
 
-    // Camera
     navigator.mediaDevices.getUserMedia({ video: true })
       .then((stream) => {
         webcamRef.current.srcObject = stream;
@@ -81,7 +75,6 @@ const Login = () => {
         setStatus("❌ Camera not allowed");
       });
 
-    // Speech
     if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
       alert("Speech Recognition not supported in this browser.");
       return;
@@ -107,9 +100,7 @@ const Login = () => {
 
       let finalTranscript = "";
       for (let i = 0; i < event.results.length; i++) {
-        if (event.results[i].isFinal) {
-          finalTranscript += event.results[i][0].transcript + " ";
-        }
+        if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript + " ";
       }
       finalTranscript = finalTranscript.toLowerCase().trim();
       if (!finalTranscript) return;
@@ -131,8 +122,7 @@ const Login = () => {
     };
 
     recognition.onerror = (event) => {
-      if (event.error !== "aborted")
-        console.error("Speech recognition error:", event.error);
+      if (event.error !== "aborted") console.error("Speech recognition error:", event.error);
       setStatus("❌ Error occurred");
     };
 
@@ -143,7 +133,6 @@ const Login = () => {
     recognition.start();
   };
 
-  // Face login
   const handleFaceLogin = async (userId) => {
     setStatus("🔍 Fetching user image...");
     try {
@@ -199,14 +188,25 @@ const Login = () => {
 
   return (
     <div>
-      {/* Fullscreen tap overlay */}
-      {!started && (
+      {!modelsLoaded && (
+        <div className="loader-wrapper">
+          <span className="loader-letter">L</span>
+          <span className="loader-letter">O</span>
+          <span className="loader-letter">A</span>
+          <span className="loader-letter">D</span>
+          <span className="loader-letter">I</span>
+          <span className="loader-letter">N</span>
+          <span className="loader-letter">G</span>
+          <div className="loader"></div>
+        </div>
+      )}
+
+      {modelsLoaded && !started && (
         <div
           className="start-overlay"
           onClick={() => {
-            if (!modelsLoaded) return;
             setStarted(true);
-            speakWelcome(); // Speak when user taps overlay
+            speakWelcome();
             initPermissions();
           }}
           data-aos="fade-in"
@@ -215,19 +215,21 @@ const Login = () => {
         </div>
       )}
 
-      <div className="login-container" data-aos="zoom-in">
-        <h2>🔐 Login with UserID</h2>
-        <p className="status-text">{status}</p>
-        <p className="transcript-text"><b>🗣 You said:</b> {transcript}</p>
-        <video
-          ref={webcamRef}
-          autoPlay
-          muted
-          width={320}
-          height={240}
-          className="webcam-video"
-        />
-      </div>
+      {modelsLoaded && (
+        <div className="login-container" data-aos="zoom-in">
+          <h2>🔐 Login with UserID</h2>
+          <p className="status-text">{status}</p>
+          <p className="transcript-text"><b>🗣 You said:</b> {transcript}</p>
+          <video
+            ref={webcamRef}
+            autoPlay
+            muted
+            width={320}
+            height={240}
+            className="webcam-video"
+          />
+        </div>
+      )}
     </div>
   );
 };
