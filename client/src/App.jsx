@@ -32,7 +32,12 @@ function App() {
       else if (command.includes("about")) navigate("/about");
       else if (command.includes("services")) navigate("/services");
       else if (command.includes("contact")) navigate("/contact");
-      else if (command.includes("home")) navigate("/");
+      else if (command.includes("home")) navigate("/home");
+      else if (command.includes("logout")){
+        localStorage.removeItem();
+        alert("Logged out successfully");
+        navigate("/");
+      }
     };
 
     recognition.start();
