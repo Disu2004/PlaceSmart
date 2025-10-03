@@ -34,7 +34,7 @@ function App() {
       else if (command.includes("contact")) navigate("/contact");
       else if (command.includes("home")) navigate("/home");
       else if (command.includes("logout")){
-        localStorage.removeItem();
+        localStorage.removeItem("userId");
         alert("Logged out successfully");
         navigate("/");
       }
