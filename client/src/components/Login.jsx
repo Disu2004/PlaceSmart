@@ -204,16 +204,33 @@ const Login = () => {
       {modelsLoaded && !started && (
         <div
           className="start-overlay"
-          onClick={() => {
-            setStarted(true);
-            speakWelcome();
-            initPermissions();
-          }}
           data-aos="fade-in"
         >
-          👆 Tap to Start
+          <div className="instruction-box">
+            <h2>👋 Welcome to PlaceSmart</h2>
+            <p>
+              Please follow the steps below to log in:
+            </p>
+            <ol>
+              <li>Allow camera & microphone permissions.</li>
+              <li>If you are a new user, say <b>"new user"</b>.</li>
+              <li>If you already have an account, speak your login ID.</li>
+              <li>Face verification will start automatically.</li>
+            </ol>
+            <button
+              className="close-btn"
+              onClick={() => {
+                setStarted(true);
+                speakWelcome();
+                initPermissions();
+              }}
+            >
+              Got it
+            </button>
+          </div>
         </div>
       )}
+
 
       {modelsLoaded && (
         <div className="login-container" data-aos="zoom-in">

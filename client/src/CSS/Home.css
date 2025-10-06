@@ -270,7 +270,7 @@ body.dark-mode .card h3 {
 /* Steps / How It Works Section */
 .steps-section {
     padding: 80px 10%;
-    background: #111;
+    background: transparent;
     /* dark background */
     text-align: center;
 }

@@ -7,10 +7,24 @@ import Services from "./components/Services";
 import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Study_Material from "./components/Study_Material";
+import MyStudyMaterial from "./components/MyStudyMaterial";
 function App() {
-  
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    const excludedPaths = ["/", "/register"];
+    if (localStorage.getItem("userId") === null) {
+      if (!excludedPaths.includes(window.location.pathname)) {
+        navigate("/");
+      }
+    } else {
+      // If logged in and on excluded paths, redirect to home
+      if (excludedPaths.includes(window.location.pathname)) {
+        navigate("/home");
+      }
+    }
+  }, [navigate]);
   useEffect(() => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -28,12 +42,15 @@ function App() {
       const command = event.results[last][0].transcript.toLowerCase();
       console.log("Voice command:", command);
 
-      if (command.includes("resume builder")) navigate("/resume-builder");
+      if (command.includes("resume builder") || command.includes("resume") || command.includes("builder")) navigate("/resume-builder");
       else if (command.includes("about")) navigate("/about");
       else if (command.includes("services")) navigate("/services");
       else if (command.includes("contact")) navigate("/contact");
       else if (command.includes("home")) navigate("/home");
-      else if (command.includes("logout")){
+      else if (command.includes("my study material")) navigate("/my-study-material");
+      else if (command.includes("study material")) navigate("/study-material");
+      else if (command.includes("go back")) navigate(-1);
+      else if (command.includes("logout")) {
         localStorage.removeItem("userId");
         alert("Logged out successfully");
         navigate("/");
@@ -47,15 +64,17 @@ function App() {
 
   return (
 
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/resume-builder" element={<ResumeBuilder />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/register" element={<Register/>}/>
-      </Routes>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/resume-builder" element={<ResumeBuilder />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/services" element={<Services />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/study-material" element={<Study_Material />} />
+      <Route path="/my-study-material" element={<MyStudyMaterial />} />
+    </Routes>
 
   );
 }

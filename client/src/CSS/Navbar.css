@@ -5,7 +5,6 @@
     box-shadow: 0 2px 12px rgba(212, 175, 55, 0.15);
 }
 
-/* Hamburger button */
 .hamburger {
     background: none;
     border: none;
@@ -16,11 +15,7 @@
     gap: 5px;
     transition: transform 0.2s;
 }
-
-.hamburger:hover {
-    transform: scale(1.1) rotate(-5deg);
-}
-
+.hamburger:hover { transform: scale(1.1) rotate(-5deg); }
 .hamburger div {
     width: 32px;
     height: 4px;
@@ -30,13 +25,10 @@
     transition: all 0.3s;
 }
 
-/* Sidebar menu */
 .sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 270px;
+    top: 0; left: 0;
+    height: 100vh; width: 270px;
     background: linear-gradient(135deg, #222 80%, #d4af37 100%);
     box-shadow: 4px 0 16px rgba(212, 175, 55, 0.25);
     z-index: 1000;
@@ -47,8 +39,10 @@
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
     border-left: 4px solid #d4af37;
+    overflow-y: auto;
 }
-
+.sidebar::-webkit-scrollbar { width: 4px; background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.12); border-radius: 8px; }
 .sidebar::before {
     content: '';
     position: absolute;
@@ -60,7 +54,6 @@
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
 }
-
 .sidebar a {
     margin: 16px 0;
     text-decoration: none;
@@ -73,14 +66,12 @@
     transition: background 0.2s, color 0.2s, transform 0.2s;
     position: relative;
 }
-
 .sidebar a:hover {
-    background: rgba(212, 175, 55, 0.15);
+    background: rgba(212,175,55,0.15);
     color: #fff;
     transform: translateX(8px) scale(1.05);
     box-shadow: 0 2px 8px #d4af3744;
 }
-
 .sidebar a::after {
     content: '';
     display: block;
@@ -90,12 +81,10 @@
     transition: width 0.3s;
     margin-top: 4px;
 }
+.sidebar a:hover::after { width: 60%; }
 
-.sidebar a:hover::after {
-    width: 60%;
-}
-
-.close-btn {
+.close-btn1 {
+    position: fixed;
     align-self: flex-end;
     background: none;
     border: none;
@@ -105,11 +94,7 @@
     color: #d4af37;
     transition: color 0.2s, transform 0.2s;
 }
-
-.close-btn:hover {
-    color: #fff;
-    transform: rotate(90deg) scale(1.2);
-}
+.close-btn1:hover { color: #fff; transform: rotate(90deg) scale(1.2); }
 
 .mode-btn {
     margin-top: 30px;
@@ -124,14 +109,12 @@
     box-shadow: 0 2px 8px #d4af3744;
     transition: background 0.2s, color 0.2s, transform 0.2s;
 }
-
 .mode-btn:hover {
     background: linear-gradient(90deg, #222 60%, #d4af37 100%);
     color: #d4af37;
     transform: scale(1.05);
 }
 
-/* Decorative golden border */
 .sidebar::after {
     content: '';
     position: absolute;
@@ -144,25 +127,14 @@
     pointer-events: none;
 }
 
-/* Dark mode styles */
-.dark .sidebar {
-    background: linear-gradient(135deg, #111 80%, #d4af37 100%);
-}
-
-.dark .sidebar a {
-    color: #fff;
-}
-
-.dark .sidebar a:hover {
-    color: #d4af37;
-    background: rgba(255, 255, 255, 0.08);
-}
-
+/* Dark mode */
+.dark .sidebar { background: linear-gradient(135deg, #111 80%, #d4af37 100%); }
+.dark .sidebar a { color: #fff; }
+.dark .sidebar a:hover { color: #d4af37; background: rgba(255,255,255,0.08); }
 .dark .mode-btn {
     background: linear-gradient(90deg, #222 60%, #d4af37 100%);
     color: #d4af37;
 }
-
 .dark .mode-btn:hover {
     background: linear-gradient(90deg, #d4af37 70%, #222 100%);
     color: #222;
@@ -170,72 +142,41 @@
 
 /* Animation */
 @keyframes slideIn {
-    from {
-        transform: translateX(-300px) scale(0.95);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0) scale(1);
-        opacity: 1;
-    }
+    from { transform: translateX(-300px) scale(0.95); opacity: 0; }
+    to { transform: translateX(0) scale(1); opacity: 1; }
 }
 
-/* Light mode styles */
+/* Light mode */
 .light .sidebar {
     background: linear-gradient(135deg, #fff 80%, #d4af37 100%);
     border-left: 4px solid #d4af37;
 }
-
-.light .sidebar a {
-    color: #222;
-}
-
-.light .sidebar a:hover {
-    color: #fff;
-    background: rgba(212, 175, 55, 0.25);
-}
-
+.light .sidebar a { color: #222; }
+.light .sidebar a:hover { color: #fff; background: rgba(212,175,55,0.25); }
 .light .mode-btn {
     background: linear-gradient(90deg, #d4af37 70%, #fff 100%);
     color: #222;
 }
-
 .light .mode-btn:hover {
     background: linear-gradient(90deg, #fff 70%, #d4af37 100%);
     color: #d4af37;
 }
+.light .sidebar::after { opacity: 0.8; }
+.light .sidebar::before { opacity: 0.05; }
 
-.light .sidebar::after {
-    background: linear-gradient(180deg, #d4af37 0%, #fff 100%);
-    opacity: 0.8;
-}
-
-.light .sidebar::before {
-    opacity: 0.05;
-}
-
-/* Global body styles for theme switching */
+/* Body theme */
 body {
     margin: 0;
     font-family: 'Montserrat', Arial, sans-serif;
     transition: background 0.3s, color 0.3s;
 }
-
 body.dark-mode {
     background: linear-gradient(180deg, #111 0%, #222 100%);
     color: #f1e0a0;
 }
-
 body.light-mode {
     background: linear-gradient(180deg, #fff 0%, #f9f5e7 100%);
     color: #222;
 }
-
-body.dark-mode a {
-    color: #d4af37;
-}
-
-body.light-mode a {
-    color: #b8892b;
-}
-
+body.dark-mode a { color: #d4af37; }
+body.light-mode a { color: black; }

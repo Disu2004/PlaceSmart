@@ -1,0 +1,242 @@
+/* ===== Study Material Page (Dark Gold Theme) ===== */
+.study-container {
+  min-height: 100vh;
+  background-color: #0b0b0b;
+  background-image: linear-gradient(145deg, #0b0b0b 60%, #111111);
+  color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+.study-card {
+  width: 100%;
+  max-width: 900px;
+  background-color: #1a1a1a;
+  border: 1px solid #d4af37;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+  padding: 30px;
+}
+
+.study-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #d4af37;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+}
+
+/* ---------- Upload Form ---------- */
+.study-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.study-form input[type="text"],
+.study-form input[type="file"] {
+  background: #121212;
+  border: 1px solid #333;
+  color: #f5f5f5;
+  border-radius: 10px;
+  padding: 10px 14px;
+  width: 100%;
+  max-width: 260px;
+  transition: all 0.3s ease;
+}
+
+.study-form input[type="text"]:focus,
+.study-form input[type="file"]:focus {
+  border-color: #d4af37;
+  outline: none;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.study-form button {
+  background: #d4af37;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.study-form button:hover {
+  background: #ffcc33;
+  transform: translateY(-2px);
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 25px 0;
+}
+
+/* ---------- Materials Section ---------- */
+.materials-heading {
+  color: #d4af37;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.no-materials {
+  text-align: center;
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.materials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.material-card {
+  background: #121212;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 16px;
+  transition: 0.3s ease;
+}
+
+.material-card:hover {
+  border-color: #d4af37;
+  transform: translateY(-4px);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+}
+
+.material-card h3 {
+  color: #ffda6a;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+
+.material-card p {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.material-card .date {
+  color: #999;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.download-btn {
+  display: inline-block;
+  background: #d4af37;
+  color: #000;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 10px;
+  transition: 0.3s ease;
+}
+
+.download-btn:hover {
+  background: #ffcc33;
+  transform: translateY(-2px);
+}
+.pdf-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.pdf-modal-content {
+  width: 80%;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* From Uiverse.io by vinodjangid07 */ 
+.button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgb(20, 20, 20);
+  border: none;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+  gap: 1px;
+}
+
+.svgIcon {
+  width: 12px;
+  transition-duration: 0.3s;
+}
+
+.svgIcon path {
+  fill: white;
+}
+
+.button:hover {
+  width: 140px;
+  border-radius: 50px;
+  transition-duration: 0.3s;
+  background-color: rgb(255, 69, 69);
+  align-items: center;
+  gap: 0;
+}
+
+.button:hover .bin-bottom {
+  width: 50px;
+  transition-duration: 0.3s;
+  transform: translateY(60%);
+}
+.bin-top {
+  transform-origin: bottom right;
+}
+.button:hover .bin-top {
+  width: 50px;
+  transition-duration: 0.3s;
+  transform: translateY(60%) rotate(160deg);
+}
+.button::before {
+  position: absolute;
+  top: -20px;
+  content: "Delete";
+  color: white;
+  transition-duration: 0.3s;
+  font-size: 2px;
+}
+
+.button:hover::before {
+  font-size: 13px;
+  opacity: 1;
+  transform: translateY(35px);
+  transition-duration: 0.3s;
+}

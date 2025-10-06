@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import uploadRoute from "./routes/uploadRoute.js";
-
+import studyMaterialRoute from "./routes/studyMaterialRoutes.js"
 dotenv.config();
 
 const app = express();
@@ -23,7 +23,7 @@ mongoose
 
 // Routes
 app.use("/user", uploadRoute);
-
+app.use("/api/study-materials", studyMaterialRoute);
 // Start server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

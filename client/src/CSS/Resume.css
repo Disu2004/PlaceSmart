@@ -1,0 +1,184 @@
+/* src/CSS/Resume.css */
+
+body {
+  background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+  color: #d4af37;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 800px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+h1 {
+  text-align: center;
+  color: #f1c40f;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: bounceIn 1.5s ease;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+div > div {
+  animation: slideIn 1s ease-out;
+}
+
+label {
+  display: block;
+  color: #f1c40f;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-transform: capitalize;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #d4af37;
+  border-radius: 5px;
+  background: #333333;
+  color: #d4af37;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus {
+  border-color: #f1c40f;
+  background: #2a2a2a;
+  outline: none;
+  box-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button {
+  padding: 12px 25px;
+  background: linear-gradient(45deg, #d4af37 0%, #f1c40f 100%);
+  border: none;
+  border-radius: 5px;
+  color: #1a1a1a;
+  font-weight: bold;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(241, 196, 15, 0.7);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* PDF Styling (applied via mammoth-converted HTML) */
+.resume-content {
+  width: 210mm;
+  height: 297mm;
+  padding: 10mm;
+  font-family: 'Arial', sans-serif;
+  background: #ffffff;
+  color: #000000;
+  box-sizing: border-box;
+}
+
+.resume-content h1, .resume-content h2 {
+  margin: 0;
+  color: #000;
+  text-align: left;
+}
+
+.resume-content h1 {
+  font-size: 20pt;
+}
+
+.resume-content h2 {
+  font-size: 14pt;
+}
+
+.resume-content hr {
+  border: 0.5px solid #000;
+  margin: 5mm 0;
+}
+
+.resume-content .left-column, .resume-content .right-column {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.resume-content .left-column {
+  width: 30%;
+  padding-right: 10mm;
+}
+
+.resume-content .right-column {
+  width: 65%;
+}
+
+.resume-content h3 {
+  background-color: #a6d1f5;
+  padding: 2mm;
+  border-radius: 3px;
+  font-size: 12pt;
+  margin-top: 10mm;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.resume-content p {
+  font-size: 10pt;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.resume-content .contact p {
+  margin: 0;
+}
+
+.resume-content .header {
+  background-color: #e6f2ff;
+  padding: 10mm;
+  text-align: left;
+  border-radius: 5px;
+  margin-bottom: 5mm;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  50% { transform: scale(1.05); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

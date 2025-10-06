@@ -42,18 +42,27 @@ const Navbar = () => {
       {open && (
         <div className="sidebar">
           <button
-            className="close-btn"
+            className="close-btn1"
             onClick={toggleMenu}
             aria-label="Close"
           >
             &times;
           </button>
-          <a href="#">Home</a>
-          <a href="#">Interview Coach</a>
-          <a href="#">Resume Builder</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
-          <a href="#">Study Material</a>
+          <a href="/home">Home</a>
+          <a href="/interview-coach">Interview Coach</a>
+          <a href="/resume-builder">Resume Builder</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+          <a href="/study-material">Study Material</a>
+          <a href="/my-study-material">My Study Material</a>
+          <a
+            href="/"
+            onClick={() => {
+              localStorage.clear();
+            }}
+          >
+            Logout
+          </a>
           <button className="mode-btn" onClick={toggleMode}>
             {darkMode ? "Light Mode" : "Dark Mode"}
           </button>
