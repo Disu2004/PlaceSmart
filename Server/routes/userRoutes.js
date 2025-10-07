@@ -1,6 +1,6 @@
 // routes/uploadRouter.js
 import express from "express";
-import { saveUserImage, loginUser } from "../controllers/uploadController.js";
+import { saveUserImage, loginUser } from "../controllers/userController.js";
 
 const router = express.Router();
 

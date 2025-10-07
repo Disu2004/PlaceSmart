@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import uploadRoute from "./routes/uploadRoute.js";
+import userRouter from "./routes/userRoutes.js";
 import studyMaterialRoute from "./routes/studyMaterialRoutes.js"
 dotenv.config();
 
@@ -22,7 +22,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
-app.use("/user", uploadRoute);
+app.use("/user", userRouter);
 app.use("/api/study-materials", studyMaterialRoute);
 // Start server
 const PORT = process.env.PORT || 8000;

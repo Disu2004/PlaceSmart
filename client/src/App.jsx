@@ -50,7 +50,7 @@ function App() {
       else if (command.includes("my study material")) navigate("/my-study-material");
       else if (command.includes("study material")) navigate("/study-material");
       else if (command.includes("go back")) navigate(-1);
-      else if (command.includes("logout")) {
+      else if (command.includes("logout") || command.includes("log out")) {
         localStorage.removeItem("userId");
         alert("Logged out successfully");
         navigate("/");

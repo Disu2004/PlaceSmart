@@ -1,6 +1,7 @@
 .home-container {
     font-family: 'Montserrat', Arial, sans-serif;
     overflow-x: hidden;
+    overflow-y: hidden;
     transition: background 0.3s, color 0.3s;
 }
 
