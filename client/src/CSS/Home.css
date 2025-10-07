@@ -17,6 +17,7 @@
 
 .hero-content,
 .hero-image {
+    height: 300px;
     flex: 1;
     min-width: 300px;
     padding: 20px;
