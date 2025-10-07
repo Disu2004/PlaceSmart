@@ -3,46 +3,43 @@ import "../CSS/Navbar.css";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(true); // default black-gold
+  const [darkMode, setDarkMode] = useState(true);
   const [lightMode, setLightMode] = useState(false);
 
   const toggleMenu = () => setOpen(!open);
-
   const toggleMode = () => {
-    if (darkMode) {
-      setDarkMode(false);
-      setLightMode(true);
-    } else {
-      setDarkMode(true);
-      setLightMode(false);
-    }
+    setDarkMode(!darkMode);
+    setLightMode(darkMode);
   };
 
-  // Apply theme to body
   useEffect(() => {
     if (darkMode) {
       document.body.classList.remove("light-mode");
       document.body.classList.add("dark-mode");
-    } else if (lightMode) {
+    } else {
       document.body.classList.remove("dark-mode");
       document.body.classList.add("light-mode");
     }
   }, [darkMode, lightMode]);
 
-  const themeClass = darkMode ? "dark" : lightMode ? "light" : "";
+  const themeClass = darkMode ? "dark" : "light";
 
   return (
-    <div className={`navbar-container ${themeClass}`}>
-      <button className="hamburger" onClick={toggleMenu} aria-label="Menu">
+    <div className={`navbar-container navbar-${themeClass}`}>
+      <button
+        className="navbar-hamburger"
+        onClick={toggleMenu}
+        aria-label="Menu"
+      >
         <div />
         <div />
         <div />
       </button>
 
       {open && (
-        <div className="sidebar">
+        <div className="navbar-sidebar">
           <button
-            className="close-btn1"
+            className="navbar-close-btn"
             onClick={toggleMenu}
             aria-label="Close"
           >
@@ -63,7 +60,7 @@ const Navbar = () => {
           >
             Logout
           </a>
-          <button className="mode-btn" onClick={toggleMode}>
+          <button className="navbar-mode-btn" onClick={toggleMode}>
             {darkMode ? "Light Mode" : "Dark Mode"}
           </button>
         </div>

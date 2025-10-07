@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../CSS/StudyMaterial.css";
+import Navbar from "./Navbar";
 
 const MyStudyMaterial = () => {
     const userId = localStorage.getItem("userId");
@@ -46,48 +47,51 @@ const MyStudyMaterial = () => {
             }
         } catch (error) {
             console.error("Delete failed:", error);
-            
+
         }
     };
 
     if (loading) return <p>Loading your study materials...</p>;
 
     return (
-        <div className="my-materials-container">
-            <h1>My Study Materials</h1>
-            {materials.length === 0 ? (
-                <p>No materials uploaded yet.</p>
-            ) : (
-                <div className="materials-grid">
-                    {materials.map((mat) => (
-                        <div key={mat._id} className="material-card">
-                            <h3>{mat.subject}</h3>
-                            <p>Title: {mat.name}</p>
+        <>
+            <Navbar />
+            <div className="my-materials-container">
+                <h1>My Study Materials</h1>
+                {materials.length === 0 ? (
+                    <p>No materials uploaded yet.</p>
+                ) : (
+                    <div className="materials-grid">
+                        {materials.map((mat) => (
+                            <div key={mat._id} className="material-card">
+                                <h3>{mat.subject}</h3>
+                                <p>Title: {mat.name}</p>
 
-                            {/* Download PDF */}
-                            <a
-                                href={mat.fileUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                download={`${mat.name}.pdf`}
-                                className="download-btn"
-                            >
-                                Download PDF
-                            </a>
+                                {/* Download PDF */}
+                                <a
+                                    href={mat.fileUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    download={`${mat.name}.pdf`}
+                                    className="download-btn"
+                                >
+                                    Download PDF
+                                </a>
 
-                            {/* Delete button */}
-                            <button
-                                onClick={() => handleDelete(mat._id)}
-                                className="download-btn"
-                                style={{ marginLeft: "10px" }}
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
+                                {/* Delete button */}
+                                <button
+                                    onClick={() => handleDelete(mat._id)}
+                                    className="download-btn"
+                                    style={{ marginLeft: "10px" }}
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+            </>
     );
 };
 

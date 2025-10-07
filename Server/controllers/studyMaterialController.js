@@ -3,6 +3,19 @@ import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import StudyMaterial from "../Schemas/studyMaterialModel.js";
 import fetch from "node-fetch";
+import * as pdfParseLib from "pdf-parse"; // ESM import
+let pdfText = null;
+try {
+    // Fetch PDF from Cloudinary
+    const response = await fetch(materialUrl);
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    // Parse PDF text correctly
+    const parsed = await pdfParseLib.default(buffer); // ✅ call .default
+    pdfText = parsed.text;
+} catch (err) {
+    console.warn("PDF parsing failed, will fallback to URL:", err.message);
+}
 const gemini_api_key = process.env.GEMINI_API_KEY;
 
 // 🔧 Cloudinary Config
@@ -138,50 +151,66 @@ export const detailedSuggestion = async (req, res) => {
         if (!prompt || !materialUrl) {
             return res.status(400).json({ error: "Both 'prompt' and 'materialUrl' are required" });
         }
+        let pdfText = null;
 
-        // Build the AI instruction dynamically
-        const aiInstruction = `
-User prompt: "${prompt}"
-The user uploaded a study material PDF at: ${materialUrl}
-Subject: ${name}
+        try {
+            // Dynamically import pdf-parse
+            const pdfParseModule = await import("pdf-parse");
+            const pdfParse = pdfParseModule.default || pdfParseModule; // ✅ handle both export types
 
-You are an AI study assistant. Follow these rules:
-- Understand the user's prompt and respond accordingly.
-- If the prompt is a question, answer based on the PDF content.
-- If the prompt is to summarize, summarize the PDF content concisely.
-- If the prompt is to generate MCQs, provide exactly 10 MCQs with 4 options each.
-- For other instructions, follow them literally and contextually.
-- Use a structured format only if the prompt requests it.
-- Do NOT repeat generic headings unless requested.
-- Keep the response clear, concise, and helpful.
-- If PDF content is not directly accessible, provide an accurate and relevant answer based on the subject.`;
+            // Fetch PDF from Cloudinary
+            const pdfResponse = await fetch(materialUrl);
+            const arrayBuffer = await pdfResponse.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
 
+            // Parse PDF text
+            const parsed = await pdfParse(buffer);
+            pdfText = parsed.text;
+            console.log("PDF text extracted:", pdfText);
+        } catch (err) {
+            console.warn("PDF parsing failed, will fallback to URL:", err.message);
+        }
 
-        // Send prompt + PDF URL + instruction to AI
-        const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    contents: [
-                        {
-                            parts: [{ text: aiInstruction }]
-                        }
-                    ]
-                }),
-            }
-        );
+        // // 3️⃣ Build AI instruction dynamically
+        // const aiInstruction = `
+        //                     User prompt: "${prompt}"
+        //                     ${pdfText ? `PDF Text:\n${pdfText}` : `PDF URL: ${materialUrl}`}
+        //                     Subject: ${name}
 
-        const data = await response.json();
-        console.log(data);
+        //                     You are an AI study assistant. Follow these rules:
+        //                     - Understand the user's prompt and respond accordingly.
+        //                     - If the prompt is a question, answer based on the PDF content.
+        //                     - If the prompt is to summarize, summarize the PDF content concisely.
+        //                     - If the prompt is to generate MCQs, provide exactly 10 MCQs with 4 options each.
+        //                     - For other instructions, follow them literally and contextually.
+        //                     - Use a structured format only if the prompt requests it.
+        //                     - Do NOT repeat generic headings unless requested.
+        //                     - Keep the response clear, concise, and helpful.
+        //                     - If PDF content is not available, provide an accurate and relevant answer based on the subject.`;
 
-        const result =
-            data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-            "No meaningful response generated from Gemini.";
+        // // 4️⃣ Send instruction to Gemini
+        // const aiResponse = await fetch(
+        //     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+        //     {
+        //         method: "POST",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify({
+        //             contents: [
+        //                 { parts: [{ text: aiInstruction }] }
+        //             ]
+        //         }),
+        //     }
+        // );
 
-        return res.json({ answer: result });
+        // const data = await aiResponse.json();
+        // console.log(data);
 
+        // const result =
+        //     data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+        //     "No meaningful response generated from Gemini.";
+
+        // return res.json({ answer: result });
+        return res.json({ answer: "PDF text extraction successful. Gemini integration pending." });
     } catch (error) {
         console.error("Detailed Suggestion Error:", error.message);
         return res.status(500).json({ error: "Failed to generate detailed suggestion." });
