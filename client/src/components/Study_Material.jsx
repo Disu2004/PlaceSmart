@@ -14,7 +14,7 @@ const Study_Material = () => {
     const [prompts, setPrompts] = useState({}); // store input per material
     const [aiResponses, setAiResponses] = useState({}); // store AI response per material
 
-    const API_URL = "http://localhost:8000/api/study-materials";
+    const API_URL = "https://placesmart.onrender.com/api/study-materials";
 
     const fetchMaterials = async () => {
         try {
@@ -79,7 +79,7 @@ const Study_Material = () => {
             setAiResponses((prev) => ({ ...prev, [materialId]: "" }));
 
             const response = await fetch(
-                "http://localhost:8000/api/study-materials/detailed-suggestion",
+                "https://placesmart.onrender.com/api/study-materials/detailed-suggestion",
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -158,7 +158,7 @@ const Study_Material = () => {
                                         </p>
 
                                         <a
-                                            href={`http://localhost:8000/api/study-materials/materials/${mat._id}/download`}
+                                            href={`https://placesmart.onrender.com/api/study-materials/materials/${mat._id}/download`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="download-btn"
