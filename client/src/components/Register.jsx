@@ -17,7 +17,6 @@ const Register = () => {
   const navigate = useNavigate();
 
   const SECRET_PASSWORD = "abcd";
-
   // -------------------------
   // Load Face API models
   // -------------------------
@@ -181,7 +180,8 @@ const Register = () => {
         setUserId(data.user.id);
         setStatus("✅ Registration successful!");
         alert(`Registration complete ✅\nYour User ID: ${data.user.id}`);
-        navigate("/");
+        localStorage.setItem(data.user.id)
+        navigate("/home");
       } else {
         setStatus(`❌ Upload failed: ${data.error}`);
       }
