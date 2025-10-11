@@ -180,7 +180,7 @@ const Register = () => {
         setUserId(data.user.id);
         setStatus("✅ Registration successful!");
         alert(`Registration complete ✅\nYour User ID: ${data.user.id}`);
-        localStorage.setItem(data.user.id)
+        localStorage.setItem("userId", data.user.id);
         navigate("/home");
       } else {
         setStatus(`❌ Upload failed: ${data.error}`);
