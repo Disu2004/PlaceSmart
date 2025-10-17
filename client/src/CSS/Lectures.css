@@ -300,9 +300,6 @@
     transition: transform 0.3s ease;
 }
 
-.playlist-embed:hover {
-    /* No scale transform */
-}
 
 .playlist-embed iframe {
     position: absolute;

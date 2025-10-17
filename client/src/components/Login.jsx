@@ -162,14 +162,14 @@ const Login = () => {
   const handleFaceLogin = async (userId) => {
     setStatus("🔍 Fetching user image...");
     try {
-      const res = await fetch("BACKEND_URL/user/login", {
+      const res = await fetch(`${BACKEND_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
       });
 
       let data;
-      try { data = await res.json(); } 
+      try { data = await res.json(); }
       catch { setStatus("⚠️ Backend did not return JSON"); return; }
 
       if (!res.ok || !data.success) {
@@ -210,8 +210,16 @@ const Login = () => {
       if (distance < 0.6) {
         alert("✅ Login successful!");
         localStorage.setItem("userId", userId);
+
+        // Extract numeric part and redirect
+        const numericPart = parseInt(userId.replace(/\D/g, ""), 10);
+        if (numericPart >= 2200) {
+          navigate("/teacher-home");
+        } else {
+          navigate("/home");
+        }
+
         setStatus("✅ Login successful!");
-        navigate("/home");
       } else {
         setStatus("❌ Faces do not match");
         processedRef.current = false;

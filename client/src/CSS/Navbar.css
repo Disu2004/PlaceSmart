@@ -13,20 +13,6 @@ html, body {
   width: 100%;
   font-family: 'Montserrat', Arial, sans-serif;
   background-color: #111111;
-  color: #d4af37;
-}
-
-/* =======================
-   GENERAL CONTENT STYLING
-======================= */
-div, section, article, main, header, footer, .container, .content {
-  background-color: #111111;
-  color: #d4af37;
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6, p, span, label {
-  color: #d4af37;
 }
 
 /* =======================
@@ -38,6 +24,7 @@ h1, h2, h3, h4, h5, h6, p, span, label {
   background: linear-gradient(90deg, #1a1a1a 60%, #d4af37 100%);
   box-shadow: 0 2px 12px rgba(212, 175, 55, 0.15);
   border-bottom: 2px solid #d4af37;
+  color: #d4af37;
 }
 
 /* =======================
@@ -201,7 +188,6 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 ======================= */
 main, #root, .App {
   background-color: #111111;
-  color: #d4af37;
 }
 
 /* =======================
@@ -209,5 +195,4 @@ main, #root, .App {
 ======================= */
 .inspire-growth {
   background-color: #111111;
-  color: #d4af37;
 }
