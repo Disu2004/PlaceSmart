@@ -16,16 +16,26 @@ export const saveUserImage = async (req, res) => {
         // Upload image to Cloudinary
         const result = await cloudinary.uploader.upload(image, { folder: "mern_uploads" });
 
-        // Generate new role-based ID
-        const lastUser = await UserData.findOne({ userDesignation }).sort({ _id: -1 });
-        const prefix = userDesignation === "student" ? "S" :
-            userDesignation === "teacher" ? "T" : "A";
-        const newNum = lastUser ? parseInt(lastUser.id.slice(1)) + 1 : 1102;
-        const newId = prefix + newNum;
+        // ==============================================
+        // Generate numeric-only role-based ID
+        // ==============================================
+        // Assign base numbers per role
+        let baseNum;
+        if (userDesignation === "student") baseNum = 1000;
+        else if (userDesignation === "teacher") baseNum = 2000;
+        else baseNum = 3000; // admin
+
+        // Get last user of same designation
+        const lastUser = await UserData.findOne({ userDesignation })
+            .sort({ id: -1 })
+            .lean();
+
+        // Determine next ID
+        const newNum = lastUser ? parseInt(lastUser.id) + 1 : baseNum + 1;
 
         // Save user to DB
         const newUser = new UserData({
-            id: newId,
+            id: newNum.toString(),
             userDesignation,
             imageurl: result.secure_url
         });
@@ -50,8 +60,11 @@ export const loginUser = async (req, res) => {
         if (!userId)
             return res.status(400).json({ success: false, error: "UserID required" });
 
-        // normalize: uppercase letter + trim
-        userId = userId.toString().trim().toUpperCase();
+        // Ensure numeric format only
+        userId = userId.toString().trim();
+
+        if (!/^\d+$/.test(userId))
+            return res.status(400).json({ success: false, error: "Invalid UserID format (numeric only)" });
 
         const user = await UserData.findOne({ id: userId });
         if (!user)

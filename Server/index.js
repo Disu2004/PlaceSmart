@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRouter from "./routes/userRoutes.js";
 import studyMaterialRoute from "./routes/studyMaterialRoutes.js"
+import questionRoutes from "./routes/questionRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -24,6 +25,7 @@ mongoose
 // Routes
 app.use("/user", userRouter);
 app.use("/api/study-materials", studyMaterialRoute);
+app.use("/api/questions", questionRoutes);
 // Start server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

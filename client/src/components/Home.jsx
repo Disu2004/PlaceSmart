@@ -6,9 +6,14 @@ import "aos/dist/aos.css";
 import heroImage from "../images/hero.jpeg";
 import smartWork from "../images/smartwork.webp"
 import ahead from "../images/stayahead.webp";
-import skillImage from "../images/skill.jpeg"
+import skillImage from "../images/skill.jpeg";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
+  const navigate = useNavigate();
   useEffect(() => {
+    if(localStorage.getItem("userId") >=2200){
+      navigate("/teacher-home");
+    }
     AOS.init({ duration: 1400 });
   }, []);
 

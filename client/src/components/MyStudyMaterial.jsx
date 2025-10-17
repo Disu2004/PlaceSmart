@@ -6,8 +6,8 @@ const MyStudyMaterial = () => {
     const userId = localStorage.getItem("userId");
     const [materials, setMaterials] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    const API_URL = "https://placesmart.onrender.com/api/study-materials";
+    const BACKEND_URL = process.env.BACKEND_URL;
+    const API_URL = `${BACKEND_URL}/api/study-materials`;
 
     // Fetch user's materials
     const fetchMyMaterials = async () => {

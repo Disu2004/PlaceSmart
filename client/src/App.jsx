@@ -9,6 +9,10 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Study_Material from "./components/Study_Material";
 import MyStudyMaterial from "./components/MyStudyMaterial";
+import TeacherHome from "./components/Teacher/TeacherHome";
+import UploadQuestions from "./components/Teacher/UploadQuestions";
+import ViewQuestions from "./components/Teacher/ViewQuestions";
+import Lectures from "./components/Lectures";
 function App() {
 
   const navigate = useNavigate();
@@ -67,13 +71,17 @@ function App() {
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/teacher-home" element={<TeacherHome />} />
       <Route path="/resume-builder" element={<ResumeBuilder />} />
       <Route path="/about" element={<About />} />
       <Route path="/services" element={<Services />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/video-lectures" element={<Lectures   />} />
+      <Route path="/view-questions" element={<ViewQuestions />} />
       <Route path="/study-material" element={<Study_Material />} />
       <Route path="/my-study-material" element={<MyStudyMaterial />} />
+      <Route path="/upload-questions" element={<UploadQuestions />} />
     </Routes>
 
   );

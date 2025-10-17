@@ -1,11 +1,48 @@
+/* =======================
+   RESET AND BASE STYLES
+======================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Montserrat', Arial, sans-serif;
+  background-color: #111111;
+  color: #d4af37;
+}
+
+/* =======================
+   GENERAL CONTENT STYLING
+======================= */
+div, section, article, main, header, footer, .container, .content {
+  background-color: #111111;
+  color: #d4af37;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6, p, span, label {
+  color: #d4af37;
+}
+
+/* =======================
+   NAVBAR CONTAINER
+======================= */
 .navbar-container {
   position: relative;
   font-family: 'Montserrat', Arial, sans-serif;
   background: linear-gradient(90deg, #1a1a1a 60%, #d4af37 100%);
   box-shadow: 0 2px 12px rgba(212, 175, 55, 0.15);
+  border-bottom: 2px solid #d4af37;
 }
 
-/* Hamburger */
+/* =======================
+   HAMBURGER MENU
+======================= */
 .navbar-hamburger {
   background: none;
   border: none;
@@ -16,9 +53,7 @@
   gap: 5px;
   transition: transform 0.2s;
 }
-.navbar-hamburger:hover {
-  transform: scale(1.1) rotate(-5deg);
-}
+
 .navbar-hamburger div {
   width: 32px;
   height: 4px;
@@ -28,7 +63,13 @@
   transition: all 0.3s;
 }
 
-/* Sidebar */
+.navbar-hamburger:hover {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+/* =======================
+   SIDEBAR
+======================= */
 .navbar-sidebar {
   position: fixed;
   top: 0;
@@ -53,12 +94,15 @@
   width: 4px;
   background: transparent;
 }
+
 .navbar-sidebar::-webkit-scrollbar-thumb {
   background: rgba(212,175,55,0.12);
   border-radius: 8px;
 }
 
-/* Links */
+/* =======================
+   SIDEBAR LINKS
+======================= */
 .navbar-sidebar a {
   margin: 16px 0;
   text-decoration: none;
@@ -71,12 +115,14 @@
   transition: background 0.2s, color 0.2s, transform 0.2s;
   position: relative;
 }
+
 .navbar-sidebar a:hover {
   background: rgba(212,175,55,0.15);
   color: #fff;
   transform: translateX(8px) scale(1.05);
   box-shadow: 0 2px 8px #d4af3744;
 }
+
 .navbar-sidebar a::after {
   content: '';
   display: block;
@@ -86,11 +132,14 @@
   transition: width 0.3s;
   margin-top: 4px;
 }
+
 .navbar-sidebar a:hover::after {
   width: 60%;
 }
 
-/* Close button */
+/* =======================
+   CLOSE BUTTON
+======================= */
 .navbar-close-btn {
   position: sticky;
   top: 10px;
@@ -103,12 +152,16 @@
   transition: color 0.2s, transform 0.2s;
   z-index: 2;
 }
+
 .navbar-close-btn:hover {
   color: #fff;
+  background: rgba(212, 175, 55, 0.2);
   transform: rotate(90deg) scale(1.2);
 }
 
-/* Mode button */
+/* =======================
+   MODE BUTTON (STATIC)
+======================= */
 .navbar-mode-btn {
   margin-top: 30px;
   padding: 12px 24px;
@@ -122,13 +175,16 @@
   box-shadow: 0 2px 8px #d4af3744;
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
+
 .navbar-mode-btn:hover {
   background: linear-gradient(90deg, #222 60%, #d4af37 100%);
   color: #d4af37;
   transform: scale(1.05);
 }
 
-/* Animation */
+/* =======================
+   ANIMATION
+======================= */
 @keyframes navbar-slideIn {
   from {
     transform: translateX(-300px) scale(0.95);
@@ -140,32 +196,18 @@
   }
 }
 
-/* 🌙 Dark Mode Navbar (optional, for consistency) */
-body.dark-mode .navbar {
-    background: #111;
-    color: #d4af37;
-    border-bottom: 2px solid #d4af37;
+/* =======================
+   MAIN CONTENT & APP ROOT
+======================= */
+main, #root, .App {
+  background-color: #111111;
+  color: #d4af37;
 }
 
-body.dark-mode .navbar a {
-    color: #d4af37;
-}
-body.dark-mode .navbar a:hover {
-    color: #fff;
-}
-
-/* ☀️ Light Mode Navbar */
-body.light-mode .navbar {
-    background: #fff;
-    color: #222;
-    border-bottom: 2px solid #d4af37;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-body.light-mode .navbar a {
-    color: #222;
-}
-
-body.light-mode .navbar a:hover {
-    color: #d4af37;
+/* =======================
+   ADDITIONAL CLASS
+======================= */
+.inspire-growth {
+  background-color: #111111;
+  color: #d4af37;
 }

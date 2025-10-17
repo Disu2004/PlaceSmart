@@ -3,29 +3,11 @@ import "../CSS/Navbar.css";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
-  const [lightMode, setLightMode] = useState(false);
 
   const toggleMenu = () => setOpen(!open);
-  const toggleMode = () => {
-    setDarkMode(!darkMode);
-    setLightMode(darkMode);
-  };
-
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.remove("light-mode");
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-      document.body.classList.add("light-mode");
-    }
-  }, [darkMode, lightMode]);
-
-  const themeClass = darkMode ? "dark" : "light";
 
   return (
-    <div className={`navbar-container navbar-${themeClass}`}>
+    <div >
       <button
         className="navbar-hamburger"
         onClick={toggleMenu}
@@ -60,9 +42,6 @@ const Navbar = () => {
           >
             Logout
           </a>
-          <button className="navbar-mode-btn" onClick={toggleMode}>
-            {darkMode ? "Light Mode" : "Dark Mode"}
-          </button>
         </div>
       )}
     </div>

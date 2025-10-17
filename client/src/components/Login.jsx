@@ -14,7 +14,7 @@ const Login = () => {
   const processedRef = useRef(false);
   const recognitionRef = useRef(null);
   const navigate = useNavigate();
-
+  const BACKEND_URL = process.env.BACKEND_URL;
   // -------------------------
   // Convert spoken words → alphanumeric ID
   // -------------------------
@@ -162,7 +162,7 @@ const Login = () => {
   const handleFaceLogin = async (userId) => {
     setStatus("🔍 Fetching user image...");
     try {
-      const res = await fetch("https://placesmart.onrender.com/user/login", {
+      const res = await fetch("BACKEND_URL/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),

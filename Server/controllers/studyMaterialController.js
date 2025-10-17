@@ -146,73 +146,172 @@ export const deleteMaterial = async (req, res) => {
 export const detailedSuggestion = async (req, res) => {
     try {
         const { prompt, materialUrl, name } = req.body;
-        console.log(prompt, materialUrl, name);
+        console.log("Received prompt type:", typeof prompt, "Material URL:", materialUrl, "Name:", name);
 
-        if (!prompt || !materialUrl) {
-            return res.status(400).json({ error: "Both 'prompt' and 'materialUrl' are required" });
+        // Handle both string and array prompts
+        let conversationHistory = [];
+        if (typeof prompt === 'string') {
+            // Single message case
+            conversationHistory = [{ role: 'user', content: prompt }];
+        } else if (Array.isArray(prompt) && prompt.length > 0) {
+            // Conversation history case
+            conversationHistory = prompt;
+        } else {
+            return res.status(400).json({ error: "Valid 'prompt' (string or non-empty array) and 'materialUrl' are required" });
         }
+
+        if (!materialUrl) {
+            return res.status(400).json({ error: "'materialUrl' is required" });
+        }
+
         let pdfText = null;
+        let parser = null;
 
         try {
-            // Dynamically import pdf-parse
+            // Dynamically import pdf-parse (v2 ESM compatible)
             const pdfParseModule = await import("pdf-parse");
-            const pdfParse = pdfParseModule.default || pdfParseModule; // ✅ handle both export types
+            const { PDFParse } = pdfParseModule;
+
+            if (!PDFParse || typeof PDFParse !== 'function') {
+                throw new Error("PDFParse class not found - check pdf-parse v2 installation");
+            }
 
             // Fetch PDF from Cloudinary
             const pdfResponse = await fetch(materialUrl);
+            if (!pdfResponse.ok) {
+                throw new Error(`Failed to fetch PDF: ${pdfResponse.status}`);
+            }
             const arrayBuffer = await pdfResponse.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
 
-            // Parse PDF text
-            const parsed = await pdfParse(buffer);
-            pdfText = parsed.text;
-            console.log("PDF text extracted:", pdfText);
+            // Instantiate parser (v2 API)
+            parser = new PDFParse({ data: buffer });
+            const parsed = await parser.getText(); // Returns { text, ... }
+            pdfText = parsed.text.substring(0, 8000); // Limit to first 8000 chars for context
+            console.log("PDF text extracted successfully (truncated length:", pdfText.length, ")");
         } catch (err) {
-            console.warn("PDF parsing failed, will fallback to URL:", err.message);
+            console.warn("PDF parsing failed, will fallback to URL context:", err.message);
+            console.error("Full PDF error stack:", err.stack);
+        } finally {
+            // Always destroy parser to free memory (v2 requirement)
+            if (parser) {
+                await parser.destroy();
+            }
         }
 
-        // // 3️⃣ Build AI instruction dynamically
-        // const aiInstruction = `
-        //                     User prompt: "${prompt}"
-        //                     ${pdfText ? `PDF Text:\n${pdfText}` : `PDF URL: ${materialUrl}`}
-        //                     Subject: ${name}
+        // Build system prompt with PDF context
+        // Build system prompt with detailed AI behavior and better context handling
+        const systemPrompt = `
+            You are an advanced AI study assistant specialized in the subject: **${name || 'General Studies'}**.
 
-        //                     You are an AI study assistant. Follow these rules:
-        //                     - Understand the user's prompt and respond accordingly.
-        //                     - If the prompt is a question, answer based on the PDF content.
-        //                     - If the prompt is to summarize, summarize the PDF content concisely.
-        //                     - If the prompt is to generate MCQs, provide exactly 10 MCQs with 4 options each.
-        //                     - For other instructions, follow them literally and contextually.
-        //                     - Use a structured format only if the prompt requests it.
-        //                     - Do NOT repeat generic headings unless requested.
-        //                     - Keep the response clear, concise, and helpful.
-        //                     - If PDF content is not available, provide an accurate and relevant answer based on the subject.`;
+            Your goal is to provide clear, accurate, and engaging educational help to users based on:
+            1. The extracted PDF content (if available).
+            2. The ongoing conversation context.
+            3. The user's direct question or task.
 
-        // // 4️⃣ Send instruction to Gemini
-        // const aiResponse = await fetch(
-        //     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-        //     {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({
-        //             contents: [
-        //                 { parts: [{ text: aiInstruction }] }
-        //             ]
-        //         }),
-        //     }
-        // );
+            📘 **Available Material Context:**
+            ${pdfText
+                            ? `The following text is extracted from the uploaded PDF (first 8000 characters):\n\n${pdfText}\n\n`
+                            : `The user provided a study material link for reference: ${materialUrl}`
+                        }
 
-        // const data = await aiResponse.json();
-        // console.log(data);
+            ---
 
-        // const result =
-        //     data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-        //     "No meaningful response generated from Gemini.";
+            ### 🎯 **Your Responsibilities**
+            - Analyze both the PDF content (if available) and user’s query.
+            - Give logically structured, detailed, and relevant answers.
+            - Maintain educational tone — be informative, supportive, and concise.
 
-        // return res.json({ answer: result });
-        return res.json({ answer: "PDF text extraction successful. Gemini integration pending." });
+            ---
+
+            ### 🧩 **Formatting & Style Rules**
+            1. Always use short paragraphs and bullet points for readability.
+            2. Use markdown formatting — **bold**, _italic_, and code blocks when appropriate.
+            3. For explanations, structure them as:
+            - **Concept Overview**
+            - **Example (if needed)**
+            - **Key Takeaways**
+
+            ---
+
+            ### 🧠 **When the User Asks...**
+            - **Summaries:** Write 200–300 words unless otherwise requested.
+            - **MCQs:** Generate exactly 5–10 questions, each with 4 options (A–D) and clearly mark the correct one.
+            - **Theory Questions:** Explain step-by-step, starting with a high-level overview and moving into details.
+            - **Formulas or Calculations:** Present cleanly formatted math expressions and briefly explain each term.
+            - **Comparisons or Differences:** Use a simple markdown table or bulleted list.
+            - **Topic Explanations:** Reference related parts of the PDF if available; otherwise, provide accurate external knowledge.
+
+            ---
+
+            ### 🚫 **Avoid**
+            - Repeating the question in your answer.
+            - Giving generic or overly short responses.
+            - Mentioning that you are an AI model.
+            - Writing disclaimers.
+
+            ---
+
+            ### 💬 **Maintain Context**
+            Keep a consistent tone across multiple interactions in the same conversation.
+            Each new message builds on the previous context unless the user resets or changes the topic.
+
+            ---
+
+            Now, use this information to respond accurately, based on the latest user input and available study materials.
+            `;
+
+
+        // Prepare Gemini contents array - system as first content
+        const contents = [
+            {
+                role: "user",
+                parts: [{ text: systemPrompt }]
+            }
+        ];
+
+        // Add conversation history
+        conversationHistory.forEach(msg => {
+            contents.push({
+                role: msg.role === 'user' ? "user" : "model",
+                parts: [{ text: msg.content }]
+            });
+        });
+
+        // Send to Gemini (updated to gemini-2.5-flash, which is stable and supported)
+        const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+
+        const aiResponse = await fetch(GEMINI_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: contents,
+                generationConfig: {
+                    temperature: 0.7,
+                    topK: 40,
+                    topP: 0.95,
+                    maxOutputTokens: 2048,
+                }
+            }),
+        });
+
+        if (!aiResponse.ok) {
+            const errorData = await aiResponse.json();
+            // Optional: Log suggestion for fallback models like gemini-2.5-pro or gemini-2.0-flash
+            console.warn("Try updating model to gemini-2.5-pro if issues persist.");
+            throw new Error(`Gemini API error: ${aiResponse.status} - ${errorData.error?.message || 'Unknown error'}`);
+        }
+
+        const data = await aiResponse.json();
+        const result = data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+            "No meaningful response generated from Gemini.";
+
+        console.log("Gemini response length:", result.length);
+
+        return res.json({ answer: result });
+
     } catch (error) {
         console.error("Detailed Suggestion Error:", error.message);
-        return res.status(500).json({ error: "Failed to generate detailed suggestion." });
+        return res.status(500).json({ error: "Failed to generate detailed suggestion: " + error.message });
     }
 };

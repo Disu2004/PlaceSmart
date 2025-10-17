@@ -1,0 +1,242 @@
+/* ================================
+   TEACHER HOME PAGE (Scoped)
+   Theme: Black & Yellow
+   ================================ */
+
+.teacher-home {
+  font-family: "Poppins", sans-serif;
+  color: #f5f5f5;
+  background: #000;
+  overflow-x: hidden;
+}
+
+/* ================= HERO SECTION ================= */
+.teacher-home .teacher-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 10%;
+  background: linear-gradient(135deg, #000, #222);
+  flex-wrap: wrap;
+}
+
+.teacher-home .hero-content {
+  max-width: 45%;
+}
+
+.teacher-home .hero-content h1 {
+  font-size: 3rem;
+  color: #ffcc00;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.teacher-home .hero-content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #ddd;
+  margin-bottom: 25px;
+}
+
+.teacher-home .hero-btn {
+  background: #ffcc00;
+  color: #000;
+  padding: 12px 28px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.teacher-home .hero-btn:hover {
+  background: #fff;
+  transform: scale(1.05);
+}
+
+/* Proper hero image styling */
+.teacher-home .hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 50%;
+}
+
+.teacher-home .hero-image img {
+  width: 90%;
+  height: auto;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+  transition: transform 0.5s ease;
+}
+
+.teacher-home .hero-image img:hover {
+  transform: scale(1.05);
+}
+
+/* ================= FEATURE CARDS ================= */
+.teacher-home .teacher-features {
+  text-align: center;
+  padding: 80px 10%;
+  background: #111;
+}
+
+.teacher-home .teacher-features h2 {
+  color: #ffcc00;
+  font-size: 2.2rem;
+  margin-bottom: 50px;
+}
+
+.teacher-home .feature-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.teacher-home .feature-card {
+  background: #1a1a1a;
+  padding: 30px;
+  border-radius: 20px;
+  width: 280px;
+  color: #fff;
+  text-align: center;
+  transition: all 0.4s ease;
+  border: 2px solid transparent;
+}
+
+.teacher-home .feature-card:hover {
+  border-color: #ffcc00;
+  transform: translateY(-10px);
+  box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+}
+
+/* ================= ZIGZAG SECTIONS ================= */
+.teacher-home .zigzag-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 10%;
+  background: linear-gradient(135deg, #000, #111);
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.teacher-home .zigzag-section.reverse {
+  flex-direction: row-reverse;
+}
+
+.teacher-home .zigzag-content {
+  flex: 1;
+  color: #fff;
+}
+
+.teacher-home .zigzag-content h2 {
+  color: #ffcc00;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.teacher-home .zigzag-content p {
+  color: #ccc;
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+.teacher-home .zigzag-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.teacher-home .zigzag-image img {
+  width: 85%;
+  height: auto;
+  max-height: 320px;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.25);
+  transition: transform 0.5s ease;
+}
+
+.teacher-home .zigzag-image img:hover {
+  transform: scale(1.05);
+}
+
+/* ================= CALL TO ACTION ================= */
+.teacher-home .teacher-cta {
+  text-align: center;
+  padding: 100px 10%;
+  background: linear-gradient(135deg, #111, #000);
+  color: #fff;
+}
+
+.teacher-home .teacher-cta h2 {
+  font-size: 2.3rem;
+  color: #ffcc00;
+  margin-bottom: 20px;
+}
+
+.teacher-home .teacher-cta p {
+  color: #ccc;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+}
+
+.teacher-home .cta-btn {
+  background: #ffcc00;
+  color: #000;
+  font-size: 1rem;
+  padding: 14px 32px;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.teacher-home .cta-btn:hover {
+  background: #fff;
+  transform: scale(1.08);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 992px) {
+  .teacher-home .teacher-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .teacher-home .hero-content {
+    max-width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .teacher-home .hero-image img {
+    width: 95%;
+    max-height: 280px;
+  }
+
+  .teacher-home .zigzag-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .teacher-home .zigzag-section.reverse {
+    flex-direction: column;
+  }
+
+  .teacher-home .zigzag-image img {
+    width: 90%;
+    max-height: 260px;
+  }
+
+  .teacher-home .feature-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+}

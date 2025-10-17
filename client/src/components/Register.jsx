@@ -5,18 +5,19 @@ import * as faceapi from "face-api.js";
 
 const Register = () => {
   const webcamRef = useRef(null);
-  const recognitionRef = useRef(null); // 🔹 Persistent recognition instance
+  const recognitionRef = useRef(null);
   const [preview, setPreview] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [userId, setUserId] = useState("");
-  const [status, setStatus] = useState(
-    "🎤 Please say your role (student, teacher, or admin)..."
-  );
+  const [status, setStatus] = useState("🎤 Please say your role (student, teacher, or admin)...");
   const [role, setRole] = useState("");
   const [captured, setCaptured] = useState(false);
   const navigate = useNavigate();
 
+  // ✅ Single constant for backend URL
+  const BACKEND_URL = process.env.BACKEND_URL;
   const SECRET_PASSWORD = "abcd";
+
   // -------------------------
   // Load Face API models
   // -------------------------
@@ -165,7 +166,7 @@ const Register = () => {
   // -------------------------
   const uploadImage = async (base64Image, detectedRole) => {
     try {
-      const res = await fetch("https://placesmart.onrender.com/user/userdata", {
+      const res = await fetch(`${BACKEND_URL}/user/userdata`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,5 +1,14 @@
 /* ===== Study Material Page (Dark Gold Theme) ===== */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ---------- Container ---------- */
 .study-container {
+  width: 100%;
   min-height: 100vh;
   background-color: #0b0b0b;
   background-image: linear-gradient(145deg, #0b0b0b 60%, #111111);
@@ -7,26 +16,27 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 40px 20px;
+  padding: 50px 40px;
   font-family: "Poppins", sans-serif;
 }
 
 .study-card {
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
+  /* Increased from 900px */
   background-color: #1a1a1a;
   border: 1px solid #d4af37;
   border-radius: 16px;
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
-  padding: 30px;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+  padding: 40px;
 }
 
 .study-title {
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
   color: #d4af37;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   letter-spacing: 1px;
 }
 
@@ -34,7 +44,7 @@
 .study-form {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
   justify-content: center;
 }
 
@@ -44,10 +54,12 @@
   border: 1px solid #333;
   color: #f5f5f5;
   border-radius: 10px;
-  padding: 10px 14px;
+  padding: 12px 18px;
   width: 100%;
-  max-width: 260px;
+  max-width: 380px;
+  /* Increased from 260px */
   transition: all 0.3s ease;
+  font-size: 1rem;
 }
 
 .study-form input[type="text"]:focus,
@@ -63,9 +75,10 @@
   font-weight: 600;
   border: none;
   border-radius: 10px;
-  padding: 10px 20px;
+  padding: 12px 26px;
   cursor: pointer;
   transition: 0.3s ease;
+  font-size: 1rem;
 }
 
 .study-form button:hover {
@@ -76,68 +89,69 @@
 .divider {
   border: none;
   border-top: 1px solid #333;
-  margin: 25px 0;
+  margin: 30px 0;
 }
 
 /* ---------- Materials Section ---------- */
 .materials-heading {
   color: #d4af37;
-  font-size: 1.5rem;
-  margin-bottom: 15px;
+  font-size: 1.7rem;
+  margin-bottom: 18px;
 }
 
 .no-materials {
   text-align: center;
   color: #aaa;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .materials-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  /* Increased card width */
+  gap: 20px;
 }
 
 .material-card {
   background: #121212;
   border: 1px solid #2a2a2a;
   border-radius: 12px;
-  padding: 16px;
+  padding: 20px;
   transition: 0.3s ease;
 }
 
 .material-card:hover {
   border-color: #d4af37;
   transform: translateY(-4px);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
 }
 
 .material-card h3 {
   color: #ffda6a;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin-bottom: 6px;
 }
 
 .material-card p {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #ccc;
 }
 
 .material-card .date {
   color: #999;
-  font-size: 0.8rem;
-  margin-top: 4px;
+  font-size: 0.85rem;
+  margin-top: 6px;
 }
 
 .download-btn {
   display: inline-block;
   background: #d4af37;
   color: #000;
-  padding: 8px 14px;
+  padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
   text-decoration: none;
-  margin-top: 10px;
+  margin-top: 12px;
   transition: 0.3s ease;
 }
 
@@ -145,13 +159,15 @@
   background: #ffcc33;
   transform: translateY(-2px);
 }
+
+/* ---------- PDF Modal ---------- */
 .pdf-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -159,9 +175,10 @@
 }
 
 .pdf-modal-content {
-  width: 80%;
+  width: 90%;
+  /* Increased modal width */
   background: #fff;
-  padding: 20px;
+  padding: 25px;
   border-radius: 10px;
   position: relative;
 }
@@ -174,10 +191,10 @@
   cursor: pointer;
 }
 
-/* From Uiverse.io by vinodjangid07 */ 
+/* ---------- Delete Button Animation ---------- */
 .button {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background-color: rgb(20, 20, 20);
   border: none;
@@ -186,16 +203,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition-duration: 0.3s;
   overflow: hidden;
   position: relative;
-  gap: 1px;
+  gap: 2px;
 }
 
 .svgIcon {
-  width: 12px;
+  width: 14px;
   transition-duration: 0.3s;
 }
 
@@ -204,7 +221,7 @@
 }
 
 .button:hover {
-  width: 140px;
+  width: 160px;
   border-radius: 50px;
   transition-duration: 0.3s;
   background-color: rgb(255, 69, 69);
@@ -213,30 +230,279 @@
 }
 
 .button:hover .bin-bottom {
-  width: 50px;
-  transition-duration: 0.3s;
+  width: 60px;
   transform: translateY(60%);
-}
-.bin-top {
-  transform-origin: bottom right;
-}
-.button:hover .bin-top {
-  width: 50px;
   transition-duration: 0.3s;
-  transform: translateY(60%) rotate(160deg);
 }
+
+.button:hover .bin-top {
+  width: 60px;
+  transform: translateY(60%) rotate(160deg);
+  transition-duration: 0.3s;
+}
+
 .button::before {
   position: absolute;
   top: -20px;
   content: "Delete";
   color: white;
   transition-duration: 0.3s;
-  font-size: 2px;
+  font-size: 3px;
 }
 
 .button:hover::before {
-  font-size: 13px;
+  font-size: 15px;
   opacity: 1;
-  transform: translateY(35px);
+  transform: translateY(40px);
   transition-duration: 0.3s;
+}
+
+/* ---------- AI Section ---------- */
+.ai-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 700px;
+  /* Wider but centered */
+  margin: 20px auto;
+  flex-wrap: wrap;
+  /* Makes it responsive */
+  gap: 10px;
+}
+
+.ai-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 18px 12px;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  border: none;
+  color: #49b9c8;
+  font-size: 1.05em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  z-index: 10;
+  border-bottom: 2px solid #000;
+  word-wrap: break-word;
+}
+
+.ai-input::placeholder {
+  color: #666;
+  transition: 0.3s;
+}
+
+.ai-input:focus::placeholder {
+  transform: translateY(-15px);
+  font-size: 0.8em;
+  color: #ffea00;
+}
+
+.ai-input:focus {
+  border-bottom: 2px solid #ffea00;
+}
+
+.ai-btn {
+  background: #000;
+  color: #ffea00;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(255, 234, 0, 0.4);
+  min-width: 120px;
+}
+
+.ai-btn:hover {
+  background: #ffea00;
+  color: #000;
+  box-shadow: 0 0 18px rgba(255, 234, 0, 0.6);
+  transform: scale(1.05);
+}
+
+.ai-btn:disabled {
+  background: #555;
+  color: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ---------- AI Response ---------- */
+.ai-response-box {
+  background: #a8ccb0;
+  border-left: 4px solid #ffea00;
+  padding: 18px 22px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  font-family: "Segoe UI", sans-serif;
+  color: #111;
+  margin: 15px auto;
+  width: 100%;
+  max-width: 700px;
+  overflow-x: hidden;
+  /* Prevent horizontal scrolling */
+  overflow-wrap: break-word;
+  /* Wrap long text properly */
+  word-break: break-word;
+  white-space: pre-wrap;
+  /* Preserve line breaks */
+  box-sizing: border-box;
+}
+
+.ai-response-box h4 {
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.ai-response-content h3 {
+  color: #000;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+/* ---------- AI Response Text Formatting ---------- */
+.ai-response-content {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #0c0c0c;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Ensure spacing between questions or bullet points */
+.ai-response-content p,
+.ai-response-content li {
+  margin: 8px 0;
+}
+
+/* Keep each question block nicely separated */
+.ai-response-content p+p {
+  margin-top: 12px;
+}
+
+/* Style MCQ options (A) B) C) D)) */
+.ai-response-content p:has(> strong),
+.ai-response-content p:has(> b) {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+/* Bold 'Correct Answer' with better spacing */
+.ai-response-content b,
+.ai-response-content strong {
+  display: block;
+  margin-top: 6px;
+  color: #000;
+  font-weight: 700;
+}
+
+/* Lists inside the AI response */
+.ai-response-content ul,
+.ai-response-content ol {
+  margin: 10px 0 10px 30px;
+  padding: 0;
+}
+
+/* Make options and bullets align properly */
+.ai-response-content li {
+  margin: 6px 0;
+  list-style-type: circle;
+}
+
+/* Optional highlight for Correct Answer */
+.ai-response-content b::before {
+  content: "⭐ ";
+  color: #ffea00;
+}
+
+/* Mobile readability */
+@media (max-width: 720px) {
+  .ai-response-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
+
+.file-input1::after {
+  margin-left: 8px;
+}
+
+.file-input1:hover {
+  background-color: #1a1a1a;
+  transform: translateY(-2px);
+}
+
+.file-input1:active {
+  transform: translateY(0);
+}
+
+.file-input1::-webkit-file-upload-button {
+  background-color: #facc15;
+  color: #000;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.uploads {
+  margin-top: 10px;
+  height: 45px;
+}
+
+/* 🔍 Search Section (Black–Golden Animated) */
+.search-section {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.search-icon {
+  color: #d4af37;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-icon:hover {
+  transform: scale(1.2);
+  color: #fff;
+  text-shadow: 0 0 10px #d4af37;
+}
+
+/* Hidden by default, slides in on click */
+.search-input {
+  width: 0;
+  opacity: 0;
+  border: 2px solid #d4af37;
+  background: #111;
+  color: #d4af37;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-left: 12px;
+  outline: none;
+  transition: all 0.5s ease;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.search-input.show {
+  width: 300px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.search-input:focus {
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
 }
