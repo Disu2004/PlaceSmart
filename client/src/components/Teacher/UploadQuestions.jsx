@@ -26,7 +26,7 @@ const UploadQuestions = () => {
     const timeoutRef = useRef(null);
     const parseTimeoutRef = useRef(null);
     const userID = localStorage.getItem("userId");
-    const BACKEND_URL = process.env.BACKEND_URL;
+    const BACKEND_URL = import.meta.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
     useEffect(() => {
         AOS.init({ duration: 800 });
 

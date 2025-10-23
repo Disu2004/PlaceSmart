@@ -10,11 +10,13 @@ const Login = () => {
   const [transcript, setTranscript] = useState("");
   const [started, setStarted] = useState(false);
   const [modelsLoaded, setModelsLoaded] = useState(false);
+  const [manualUserId, setManualUserId] = useState(""); // ✅ new state
   const webcamRef = useRef(null);
   const processedRef = useRef(false);
   const recognitionRef = useRef(null);
   const navigate = useNavigate();
-  const BACKEND_URL = process.env.BACKEND_URL;
+  const BACKEND_URL = import.meta.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
   // -------------------------
   // Convert spoken words → alphanumeric ID
   // -------------------------
@@ -255,7 +257,7 @@ const Login = () => {
             <ol>
               <li>Allow camera & microphone permissions.</li>
               <li>If you are a new user, say <b>"new user"</b>.</li>
-              <li>If you already have an account, speak your login ID.</li>
+              <li>If you already have an account, speak your login ID or type it below.</li>
               <li>Face verification will start automatically.</li>
             </ol>
             <button
@@ -277,6 +279,27 @@ const Login = () => {
           <h2>🔐 Login with UserID</h2>
           <p className="status-text">{status}</p>
           <p className="transcript-text"><b>🗣 You said:</b> {transcript}</p>
+
+          {/* ✅ Manual Input Field */}
+          <div className="manual-login">
+            <input
+              type="text"
+              placeholder="Enter UserID (e.g., S1001)"
+              value={manualUserId}
+              onChange={(e) => setManualUserId(e.target.value.toUpperCase())}
+              className="userid-input"
+            />
+            <button
+              className="manual-login-btn"
+              onClick={() => {
+                if (!manualUserId) return alert("Please enter UserID");
+                handleFaceLogin(manualUserId);
+              }}
+            >
+              Login
+            </button>
+          </div>
+
           <video
             ref={webcamRef}
             autoPlay

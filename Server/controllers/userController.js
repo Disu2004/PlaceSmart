@@ -31,7 +31,13 @@ export const saveUserImage = async (req, res) => {
             .lean();
 
         // Determine next ID
-        const newNum = lastUser ? parseInt(lastUser.id) + 1 : baseNum + 1;
+        let newNum;
+
+        if (lastUser && !isNaN(parseInt(lastUser.id))) {
+            newNum = parseInt(lastUser.id) + 1;
+        } else {
+            newNum = baseNum + 1;
+        }
 
         // Save user to DB
         const newUser = new UserData({
@@ -41,7 +47,7 @@ export const saveUserImage = async (req, res) => {
         });
 
         await newUser.save();
-
+        console.log(newUser)
         return res.json({ success: true, user: newUser });
     } catch (err) {
         console.error("Error saving user image:", err);

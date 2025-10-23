@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    if(localStorage.getItem("userId") >=2200){
+    if(localStorage.getItem("userId") >=2000){
       navigate("/teacher-home");
     }
     AOS.init({ duration: 1400 });

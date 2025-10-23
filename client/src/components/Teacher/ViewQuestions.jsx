@@ -6,7 +6,7 @@ import '../../CSS/ViewQuestions.css'; // external CSS file
 const ViewQuestions = () => {
     const [questions, setQuestions] = useState([]);
     const [search, setSearch] = useState('');
-    const BACKEND_URL = process.env.BACKEND_URL;
+    const BACKEND_URL = import.meta.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
     useEffect(() => {
         AOS.init({ duration: 1000, once: true });
     }, []);

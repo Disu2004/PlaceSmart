@@ -12,10 +12,11 @@ const Register = () => {
   const [status, setStatus] = useState("🎤 Please say your role (student, teacher, or admin)...");
   const [role, setRole] = useState("");
   const [captured, setCaptured] = useState(false);
+  const [voiceActive, setVoiceActive] = useState(true);
   const navigate = useNavigate();
 
-  // ✅ Single constant for backend URL
-  const BACKEND_URL = process.env.BACKEND_URL;
+  // ✅ Use proper environment variable
+  const BACKEND_URL = import.meta.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   const SECRET_PASSWORD = "abcd";
 
   // -------------------------
@@ -45,6 +46,7 @@ const Register = () => {
   const initVoiceRecognition = () => {
     if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
       setStatus("❌ Speech Recognition not supported in this browser");
+      setVoiceActive(false);
       return;
     }
 
@@ -121,6 +123,19 @@ const Register = () => {
   };
 
   // -------------------------
+  // Manual role selection (fallback)
+  // -------------------------
+  const handleManualRoleSelect = (selectedRole) => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+    setVoiceActive(false);
+    setRole(selectedRole);
+    setStatus(`✅ Role selected: ${selectedRole}. Starting camera...`);
+    setTimeout(() => startFaceDetection(selectedRole), 300);
+  };
+
+  // -------------------------
   // Face detection (single capture)
   // -------------------------
   const startFaceDetection = (detectedRole) => {
@@ -176,13 +191,15 @@ const Register = () => {
       });
       const data = await res.json();
 
-      if (res.ok && data.success) {
+      if (res.ok && data.success && data.user.id != NaN) {
         setImageUrl(data.user.imageurl);
         setUserId(data.user.id);
         setStatus("✅ Registration successful!");
         alert(`Registration complete ✅\nYour User ID: ${data.user.id}`);
         localStorage.setItem("userId", data.user.id);
-        navigate("/home");
+        if(data.user.id >= 2000) navigate("/teacher-home");
+        else if (data.user.id >= 3000) navigate("/admin-home");
+        else navigate("/home");
       } else {
         setStatus(`❌ Upload failed: ${data.error}`);
       }
@@ -192,11 +209,15 @@ const Register = () => {
     }
   };
 
+  // -------------------------
+  // JSX Return
+  // -------------------------
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px" }}>
       <h2>🎤 Voice-Based Auto Registration</h2>
       <p style={{ fontWeight: "bold", color: "#444" }}>{status}</p>
 
+      {/* Webcam Feed */}
       <Webcam
         audio={false}
         ref={webcamRef}
@@ -206,6 +227,55 @@ const Register = () => {
         style={{ borderRadius: "10px", boxShadow: "0 5px 15px rgba(0,0,0,0.3)" }}
       />
 
+      {/* Fallback Buttons for Role Selection */}
+      {!captured && !imageUrl && (
+        <div style={{ marginTop: "20px", textAlign: "center" }}>
+          <p style={{ fontWeight: "bold", color: "#555" }}>Don’t want to speak? Select manually:</p>
+          <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+            <button
+              onClick={() => handleManualRoleSelect("student")}
+              style={{
+                backgroundColor: "#2196f3",
+                color: "white",
+                padding: "8px 15px",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+            >
+              👨‍🎓 Student
+            </button>
+            <button
+              onClick={() => handleManualRoleSelect("teacher")}
+              style={{
+                backgroundColor: "#4caf50",
+                color: "white",
+                padding: "8px 15px",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+            >
+              👩‍🏫 Teacher
+            </button>
+            <button
+              onClick={() => handleManualRoleSelect("admin")}
+              style={{
+                backgroundColor: "#f44336",
+                color: "white",
+                padding: "8px 15px",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+            >
+              🛡️ Admin
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Preview Images */}
       {preview && (
         <div style={{ textAlign: "center", marginTop: "10px" }}>
           <p>Captured Preview:</p>

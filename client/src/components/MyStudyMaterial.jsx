@@ -6,7 +6,7 @@ const MyStudyMaterial = () => {
     const userId = localStorage.getItem("userId");
     const [materials, setMaterials] = useState([]);
     const [loading, setLoading] = useState(false);
-    const BACKEND_URL = process.env.BACKEND_URL;
+    const BACKEND_URL = import.meta.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
     const API_URL = `${BACKEND_URL}/api/study-materials`;
 
     // Fetch user's materials
