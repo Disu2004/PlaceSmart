@@ -191,7 +191,7 @@ const Register = () => {
       });
       const data = await res.json();
 
-      if (res.ok && data.success && data.user.id != NaN) {
+      if (res.ok && data.success) {
         setImageUrl(data.user.imageurl);
         setUserId(data.user.id);
         setStatus("✅ Registration successful!");

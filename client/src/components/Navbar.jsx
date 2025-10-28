@@ -28,12 +28,12 @@ const Navbar = () => {
             &times;
           </button>
           <a href="/home">Home</a>
-          <a href="/interview-coach">Interview Coach</a>
           <a href="/resume-builder">Resume Builder</a>
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
           <a href="/study-material">Study Material</a>
           <a href="/my-study-material">My Study Material</a>
+          <a href="/coding-dashboard">Coding DashBoard</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
           <a
             href="/"
             onClick={() => {

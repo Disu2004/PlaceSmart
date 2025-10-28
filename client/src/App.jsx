@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./components/Home";
 import ResumeBuilder from "./components/ResumeBuilder";
 import About from "./components/About";
-import Services from "./components/Services";
+import Services from "./components/CodingDashboard";
 import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -13,6 +13,8 @@ import TeacherHome from "./components/Teacher/TeacherHome";
 import UploadQuestions from "./components/Teacher/UploadQuestions";
 import ViewQuestions from "./components/Teacher/ViewQuestions";
 import Lectures from "./components/Lectures";
+import CodingDashboard from "./components/CodingDashboard";
+import SolveProblem from "./components/SolveProblem";
 function App() {
 
   const navigate = useNavigate();
@@ -82,6 +84,8 @@ function App() {
       <Route path="/study-material" element={<Study_Material />} />
       <Route path="/my-study-material" element={<MyStudyMaterial />} />
       <Route path="/upload-questions" element={<UploadQuestions />} />
+      <Route path="/coding-dashboard" element={<CodingDashboard/>} />
+      <Route path="/solve-problem/:id" element={<SolveProblem />} />
     </Routes>
 
   );
