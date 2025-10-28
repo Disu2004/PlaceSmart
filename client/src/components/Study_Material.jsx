@@ -17,7 +17,7 @@ const Study_Material = () => {
   // 🔍 Search state
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const BACKEND_URL = import.meta.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL || "http://localhost:8000";
   const API_URL = `${BACKEND_URL}/api/study-materials`;
 
   const fetchMaterials = async () => {

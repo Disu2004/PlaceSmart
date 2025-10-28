@@ -16,7 +16,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   // ✅ Use proper environment variable
-  const BACKEND_URL = import.meta.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL;
   const SECRET_PASSWORD = "abcd";
 
   // -------------------------

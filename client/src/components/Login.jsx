@@ -15,7 +15,7 @@ const Login = () => {
   const processedRef = useRef(false);
   const recognitionRef = useRef(null);
   const navigate = useNavigate();
-  const BACKEND_URL = import.meta.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL;
 
   // -------------------------
   // Convert spoken words → alphanumeric ID
