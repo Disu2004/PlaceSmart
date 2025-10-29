@@ -9,6 +9,17 @@ const CodingDashboard = () => {
   const proxyUrl = "https://api.allorigins.win/raw?url=";
   const targetUrl = "https://leetcode.com/api/problems/all/";
 
+  // Set a default userId once (in an effect to avoid running during render or in non-browser envs)
+  useEffect(() => {
+    try {
+      if (typeof window !== "undefined" && window.localStorage) {
+        localStorage.setItem("userId", "1101");
+      }
+    } catch (e) {
+      console.warn("Could not access localStorage to set userId", e);
+    }
+  }, []);
+
   // Retry function with exponential backoff
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
