@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 import "../CSS/SolveProblem.css";
 
+// This component allows users to solve coding problems with a built-in editor and runner.
+// It fetches problem details, handles code submissions, and displays results.
+
 // ⚙️ Judge0 API Configuration
 const JUDGE0_API_URL = "https://judge0-ce.p.rapidapi.com";
 const RAPIDAPI_KEY = import.meta.env.VITE_JUDGE0_RAPIDAPI_KEY;
 const RAPIDAPI_HOST = import.meta.env.VITE_JUDGE0_RAPIDAPI_HOST;
 
 // 🧠 Language Map with Judge0 IDs
+// Maps language names to their corresponding Judge0 language IDs.
 const languageMap = {
   python3: 71,
   cpp: 54,
@@ -25,6 +29,7 @@ const languageMap = {
 };
 
 // 🧩 Language Templates (Simple Hello World)
+// Provides default "Hello, World!" code templates for each language.
 const codeTemplates = {
   python3: `print("Hello, World!")`,
   cpp: `#include <iostream>
@@ -70,6 +75,7 @@ echo "Hello, World!";
 };
 
 // 🧠 Difficulty Map
+// Maps difficulty levels from numerical values to string representations.
 const difficultyMap = {
   1: "Easy",
   2: "Medium",
@@ -77,8 +83,10 @@ const difficultyMap = {
 };
 
 const SolveProblem = () => {
+  // Extract problem ID from URL parameters.
   const { id } = useParams();
   const location = useLocation();
+  // Initialize state variables for problem details, code, and output.
   const [problem, setProblem] = useState(location.state?.problem || null);
   const [details, setDetails] = useState(null);
   const [parsedExamples, setParsedExamples] = useState([]);
@@ -93,19 +101,22 @@ const SolveProblem = () => {
 
   // Load problem from localStorage if not found in route
   useEffect(() => {
-    if (problem) return;
+    if (problem) return; // If problem already loaded, skip.
     try {
+      // Attempt to retrieve problem data from local storage.
       const stored = JSON.parse(localStorage.getItem("leetcodeProblems") || "[]");
       const found = stored.find((p) => Number(p.id) === Number(id));
-      if (found) setProblem(found);
+      if (found) setProblem(found); // Set problem if found in local storage.
       else
         setProblem({
+          // Create a default problem object if not found.
           id,
           title: `Problem #${id}`,
           difficulty: "Easy",
           slug: `problem-${id}`.toLowerCase().replace(/\s+/g, "-"),
         });
     } catch {
+      // Handle potential errors during local storage retrieval.
       setProblem({
         id,
         title: `Problem #${id}`,
@@ -118,17 +129,20 @@ const SolveProblem = () => {
   // Retry function with exponential backoff
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const fetchWithRetry = async (url, maxRetries = 3) => {
+    // Implement retry logic for fetching data, handling rate limits.
     for (let i = 0; i < maxRetries; i++) {
       try {
         const res = await fetch(url);
-        if (res.ok) return res;
+        if (res.ok) return res; // Return response if successful.
         if (res.status === 429) {
+          // Handle rate limiting by waiting before retrying.
           const retryAfter = res.headers.get("Retry-After") || Math.pow(2, i) * 2000;
           await delay(retryAfter);
           continue;
         }
         throw new Error(`HTTP ${res.status}`);
       } catch (err) {
+        // Throw error if max retries reached.
         if (i === maxRetries - 1) throw err;
         await delay(Math.pow(2, i) * 1000);
       }
@@ -137,6 +151,7 @@ const SolveProblem = () => {
 
   // Fetch problem details from API
   useEffect(() => {
+    // Fetches problem details from the API based on the problem slug.
     const fetchProblemDetails = async () => {
       if (!problem?.slug || problem.slug.includes("problem-")) {
         setFetchError("Invalid problem slug.");
@@ -158,6 +173,7 @@ const SolveProblem = () => {
 
       setFetchError("");
       try {
+        // Construct the API URL using the problem slug.
         const apiUrl = `https://alfa-leetcode-api.onrender.com/select?titleSlug=${encodeURIComponent(
           problem.slug
         )}`;
@@ -189,31 +205,35 @@ const SolveProblem = () => {
 
   // Parse Example Testcases
   const parseExamples = (str) => {
+    // Parses the example test cases from a string format.
     if (!str) return;
     const examples = [];
     const sections = str.split("\n\n");
     let current = {};
     sections.forEach((sec) => {
+      // Iterate through sections to extract input, output, and explanation.
       if (sec.includes("Input:")) {
-        if (current.input) examples.push(current);
-        current = { input: sec.replace("Input:\n", "").trim() };
+        if (current.input) examples.push(current); // Push previous example.
+        current = { input: sec.replace("Input:\n", "").trim() }; // Start new example.
       } else if (sec.includes("Output:")) {
-        current.output = sec.replace("Output:\n", "").trim();
+        current.output = sec.replace("Output:\n", "").trim(); // Extract output.
       } else if (sec.includes("Explanation:")) {
-        current.explanation = sec.replace("Explanation:\n", "").trim();
+        current.explanation = sec.replace("Explanation:\n", "").trim(); // Extract explanation.
       }
     });
-    if (current.input) examples.push(current);
+    if (current.input) examples.push(current); // Push the last example.
     setParsedExamples(examples);
   };
 
   // Set default code template
   useEffect(() => {
+    // Sets the code editor's content to the default template for the selected language.
     setCode(codeTemplates[langSlug] || "// Write your solution here");
   }, [langSlug]);
 
   // Save code
   useEffect(() => {
+    // Saves the current code in local storage for persistence.
     if (problem?.id && code) {
       localStorage.setItem(`code_${problem.id}_${langSlug}`, code);
     }
@@ -221,20 +241,24 @@ const SolveProblem = () => {
 
   // Change Language
   const handleLanguageChange = (newLangId, newLangSlug) => {
+    // Handles language changes in the editor.
     setLanguageId(newLangId);
     setLangSlug(newLangSlug);
     const saved = localStorage.getItem(`code_${problem?.id}_${newLangSlug}`);
+    // Load saved code or default template when language changes.
     setCode(saved || codeTemplates[newLangSlug] || "// Write your solution here");
   };
 
   // Load Example
   const loadExample = (example) => {
+    // Loads an example test case into the input and expected output fields.
     setStdin(example.input);
     setExpectedOutput(example.output);
   };
 
   // Run Code
   const runCode = async () => {
+    // Executes the code using the Judge0 API.
     if (!RAPIDAPI_KEY) {
       setOutput("Error: RAPIDAPI_KEY not configured.");
       return;
@@ -243,6 +267,7 @@ const SolveProblem = () => {
     setOutput("");
 
     try {
+      // Send code to Judge0 API for execution.
       const res = await fetch(`${JUDGE0_API_URL}/submissions?base64_encoded=false&wait=true`, {
         method: "POST",
         headers: {
@@ -260,6 +285,7 @@ const SolveProblem = () => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       let result = json.stdout || json.stderr || json.compile_output || "(no output)";
+      // Check if the output matches the expected output.
       if (expectedOutput && json.stdout?.trim() === expectedOutput.trim()) {
         result += "\n\n✅ Test Passed!";
       } else if (expectedOutput) {
@@ -274,6 +300,7 @@ const SolveProblem = () => {
   };
 
   if (!problem)
+    // Display loading message if problem details are not yet available.
     return (
       <div className="solve-container">
         <h2>Loading problem...</h2>
@@ -305,21 +332,25 @@ const SolveProblem = () => {
           <section className="section">
             <h2>Problem Description</h2>
             {details ? (
+              // Display problem description if available.
               <div
                 className="description-content"
                 dangerouslySetInnerHTML={{ __html: details.content || details.question }}
               />
             ) : fetchError ? (
+              // Display error message if fetching problem details failed.
               <div className="error-message">
                 <p>Failed to load details: {fetchError}</p>
                 <button onClick={() => window.location.reload()}>Retry</button>
               </div>
             ) : (
+              // Display loading message while fetching problem details.
               <p>Loading description...</p>
             )}
           </section>
 
           {parsedExamples.length > 0 && (
+            // Display example test cases if available.
             <section className="section">
               <h2>Examples</h2>
               {parsedExamples.map((ex, i) => (
@@ -343,11 +374,13 @@ const SolveProblem = () => {
               <select
                 value={langSlug}
                 onChange={(e) => {
+                  // Handle language selection changes.
                   const newSlug = e.target.value;
                   handleLanguageChange(languageMap[newSlug], newSlug);
                 }}
               >
                 {Object.keys(languageMap).map((lang) => (
+                  // Populate language options from the language map.
                   <option key={lang} value={lang}>
                     {lang.toUpperCase()}
                   </option>
@@ -387,3 +420,4 @@ const SolveProblem = () => {
 };
 
 export default SolveProblem;
+// End of SolveProblem component.  Renders the problem-solving interface.

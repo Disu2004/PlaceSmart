@@ -9,17 +9,6 @@ const CodingDashboard = () => {
   const proxyUrl = "https://api.allorigins.win/raw?url=";
   const targetUrl = "https://leetcode.com/api/problems/all/";
 
-  // Set a default userId once (in an effect to avoid running during render or in non-browser envs)
-  useEffect(() => {
-    try {
-      if (typeof window !== "undefined" && window.localStorage) {
-        localStorage.setItem("userId", "1101");
-      }
-    } catch (e) {
-      console.warn("Could not access localStorage to set userId", e);
-    }
-  }, []);
-
   // Retry function with exponential backoff
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -47,6 +36,18 @@ const CodingDashboard = () => {
 
     const fetchProblems = async () => {
       try {
+        // Check localStorage first
+        const stored = localStorage.getItem("leetcodeProblems");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.length > 0 && !cancelled) {
+            setProblems(parsed.sort(() => Math.random() - 0.5).slice(0, 50));
+            setLoading(false);
+            return;
+          }
+        }
+
+        // Fetch if not in storage
         const res = await fetchWithRetry(proxyUrl + encodeURIComponent(targetUrl));
         const text = await res.text();
         let data;
@@ -74,7 +75,7 @@ const CodingDashboard = () => {
         const selected = allProblems.sort(() => Math.random() - 0.5).slice(0, 50);
 
         setProblems(selected);
-        // Persist for SolveProblem page to read
+        // Persist for future loads
         try {
           localStorage.setItem("leetcodeProblems", JSON.stringify(selected));
         } catch (e) {
@@ -140,7 +141,8 @@ const CodingDashboard = () => {
             </div>
           ))}
         </div>
-      </div></>
+      </div>
+    </>
   );
 };
 

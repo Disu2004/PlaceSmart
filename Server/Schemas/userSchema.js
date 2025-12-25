@@ -1,20 +1,30 @@
-const mongoose = require('mongoose');
+// Schemas/userSchema.js
+import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     id: {
-        type: String, // make it a string so you can prefix role (e.g. "A1001")
-        required: true,
-        unique: true
+      type: String,
+      unique: true,
+      required: true,
     },
     userDesignation: {
-        type: String,
-        enum: ['student', 'teacher', 'admin'], // only these 3 allowed
-        required: true
+      type: String,
+      enum: ["student", "teacher", "admin"],
+      required: true,
     },
     imageurl: {
-        type: String,
-        required: true
-    }
-});
+      type: String,
+      required: true,
+    },
+    descriptor: {
+      type: [Number],
+      required: true,
+      minlength: 128,
+      maxlength: 128,
+    },
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('UserData', userSchema);
+export default mongoose.model("UserData", userSchema);

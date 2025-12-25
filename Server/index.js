@@ -5,15 +5,11 @@ import mongoose from "mongoose";
 import userRouter from "./routes/userRoutes.js";
 import studyMaterialRoute from "./routes/studyMaterialRoutes.js"
 import questionRoutes from "./routes/questionRoutes.js";
+import interviewRoutes from './routes/interviewRoute.js';
 dotenv.config();
-
 const app = express();
-
-// Middleware
 app.use(cors());
-app.use(express.json({ limit: "10mb" })); // to parse base64 images
-console.log(process.env.MONGODB_URI);
-  // MongoDB connection
+app.use(express.json({ limit: "10mb" }));
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -26,6 +22,6 @@ mongoose
 app.use("/user", userRouter);
 app.use("/api/study-materials", studyMaterialRoute);
 app.use("/api/questions", questionRoutes);
-// Start server
+app.use("/",interviewRoutes);
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

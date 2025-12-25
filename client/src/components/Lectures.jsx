@@ -175,7 +175,7 @@ const Lectures = () => {
       <footer className="lectures-footer">
         <p>Happy Learning! 🚀 | Total Playlists: {playlists.length}</p>
       </footer>
-    </div>
+    </div>  
   );
 };
 

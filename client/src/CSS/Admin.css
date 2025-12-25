@@ -1,0 +1,361 @@
+/* ============================================= */
+/* ADMIN.CSS – Golden Black Luxury Dashboard     */
+/* Professional, Modern, Responsive, Big Images  */
+/* ============================================= */
+
+:root {
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --gold: #d4af37;
+  --gold-light: #f5d08a;
+  --gold-glow: #e6c049;
+  --text-primary: #f0f0f0;
+  --text-secondary: #bbbbbb;
+  --border: #333333;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.6);
+  --radius: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+
+/* ============================================= */
+/* Layout */
+.container {
+  max-width: 1300px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Golden Shimmer Top Bar */
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  animation: shimmer 3s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ============================================= */
+/* Typography */
+.title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 15px rgba(212, 175, 55, 0.3);
+}
+
+/* ============================================= */
+/* Buttons */
+.btn-add,
+.btn-submit,
+.btn-edit,
+.btn-delete {
+  padding: 0.8rem 1.8rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-add {
+  background: linear-gradient(135deg, var(--gold), #b8941f);
+  color: #000;
+  box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+  margin: 0 auto 2rem;
+  display: block;
+  width: fit-content;
+}
+
+.btn-add:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.6);
+}
+
+.btn-submit {
+  background: #1a2530;
+  color: var(--gold);
+  border: 1.5px solid var(--gold);
+  font-weight: 700;
+}
+
+.btn-submit:hover {
+  background: var(--gold);
+  color: #000;
+  transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+}
+
+.btn-edit {
+  background: #2c3e50;
+  color: var(--gold-light);
+  border: 1px solid #444;
+  margin-right: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+}
+
+.btn-edit:hover {
+  background: var(--gold);
+  color: #000;
+  border-color: var(--gold);
+}
+
+.btn-delete {
+  background: #8b1a1a;
+  color: #ffcccc;
+  border: 1px solid #600;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+}
+
+.btn-delete:hover {
+  background: #c82333;
+  color: white;
+  box-shadow: 0 0 15px rgba(200, 35, 51, 0.5);
+}
+
+/* ============================================= */
+/* Form */
+.form {
+  display: grid;
+  gap: 1.3rem;
+  max-width: 520px;
+  margin: 0 auto 2.5rem;
+  padding: 2rem;
+  background: rgba(30, 30, 30, 0.75);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
+}
+
+.form input,
+.form select {
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(45, 45, 45, 0.9);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.form input:focus,
+.form select:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: rgba(55, 55, 55, 0.95);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+}
+
+.form input::file-selector-button {
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  margin-right: 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.form input::file-selector-button:hover {
+  background: var(--gold-light);
+}
+
+/* ============================================= */
+/* Table */
+.table-container {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  margin-top: 1.5rem;
+}
+
+.table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+.table th {
+  background: linear-gradient(135deg, #1a1a1a, #111);
+  color: var(--gold);
+  padding: 1.3rem 1rem;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  border-bottom: 2.5px solid var(--gold);
+}
+
+.table td {
+  color: white;
+  padding: 1.2rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.table tr:hover td {
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--gold-light);
+}
+
+/* ============================================= */
+/* USER IMAGE – BIGGER & BETTER */
+.user-image {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+  transition: var(--transition);
+  background: #222;
+}
+
+.user-image:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.7);
+  border-color: var(--gold-light);
+}
+
+/* Fallback for broken images */
+.user-image:error {
+  background: #333;
+  border-color: #666;
+}
+
+/* ============================================= */
+/* Loading & Error */
+.loading,
+.error {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  border-radius: var(--radius);
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.loading {
+  color: var(--gold);
+  background: rgba(212, 175, 55, 0.1);
+  animation: pulse 1.8s infinite;
+}
+
+.error {
+  color: #ff6b6b;
+  background: rgba(139, 26, 26, 0.2);
+  border: 1px solid #600;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ============================================= */
+/* Responsive */
+@media (max-width: 992px) {
+  .container {
+    margin: 1rem;
+    padding: 1.8rem;
+  }
+
+  .title {
+    font-size: 2.3rem;
+  }
+
+  .user-image {
+    width: 75px;
+    height: 75px;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .form {
+    padding: 1.5rem;
+  }
+
+  .btn-add,
+  .btn-submit {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.8rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .user-image {
+    width: 65px;
+    height: 65px;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .table {
+    font-size: 0.85rem;
+  }
+}

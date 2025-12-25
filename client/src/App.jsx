@@ -15,6 +15,8 @@ import ViewQuestions from "./components/Teacher/ViewQuestions";
 import Lectures from "./components/Lectures";
 import CodingDashboard from "./components/CodingDashboard";
 import SolveProblem from "./components/SolveProblem";
+import AdminHome from "./components/Admin/AdminHome";
+import Interview from "./components/Inerview";
 function App() {
 
   const navigate = useNavigate();
@@ -50,7 +52,7 @@ function App() {
 
       if (command.includes("resume builder") || command.includes("resume") || command.includes("builder")) navigate("/resume-builder");
       else if (command.includes("about")) navigate("/about");
-      else if (command.includes("services")) navigate("/services");
+      else if (command.includes("coding") || command.includes("dashboard")) navigate("/coding-dashobard");
       else if (command.includes("contact")) navigate("/contact");
       else if (command.includes("home")) navigate("/home");
       else if (command.includes("my study material")) navigate("/my-study-material");
@@ -86,6 +88,8 @@ function App() {
       <Route path="/upload-questions" element={<UploadQuestions />} />
       <Route path="/coding-dashboard" element={<CodingDashboard/>} />
       <Route path="/solve-problem/:id" element={<SolveProblem />} />
+      <Route path="/admin-home" element={<AdminHome/>} />
+      <Route path="/ai-interview" element={<Interview/>} />
     </Routes>
 
   );

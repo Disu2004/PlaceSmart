@@ -1,3 +1,4 @@
+// src/pages/Register.jsx
 import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
@@ -9,19 +10,17 @@ const Register = () => {
   const [preview, setPreview] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [userId, setUserId] = useState("");
-  const [status, setStatus] = useState("🎤 Please say your role (student, teacher, or admin)...");
+  const [status, setStatus] = useState("Please say your role (student, teacher, or admin)...");
   const [role, setRole] = useState("");
   const [captured, setCaptured] = useState(false);
   const [voiceActive, setVoiceActive] = useState(true);
+  const [faceDescriptor, setFaceDescriptor] = useState(null);
   const navigate = useNavigate();
 
-  // ✅ Use proper environment variable
   const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL;
-  const SECRET_PASSWORD = "abcd";
+  const SECRET_PASSWORD = "This is me";
 
-  // -------------------------
-  // Load Face API models
-  // -------------------------
+  // Load face-api models
   useEffect(() => {
     const loadModels = async () => {
       try {
@@ -30,22 +29,20 @@ const Register = () => {
           faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
           faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
         ]);
-        console.log("✅ Face API Models Loaded");
+        console.log("Face API Models Loaded");
         initVoiceRecognition();
       } catch (err) {
         console.error("Error loading models:", err);
-        setStatus("❌ Failed to load face detection models");
+        setStatus("Failed to load face detection models");
       }
     };
     loadModels();
   }, []);
 
-  // -------------------------
-  // Initialize voice recognition
-  // -------------------------
+  // Voice Recognition
   const initVoiceRecognition = () => {
     if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
-      setStatus("❌ Speech Recognition not supported in this browser");
+      setStatus("Speech Recognition not supported");
       setVoiceActive(false);
       return;
     }
@@ -57,9 +54,8 @@ const Register = () => {
       recognitionRef.current.interimResults = false;
       recognitionRef.current.maxAlternatives = 1;
 
-      recognitionRef.current.onstart = () => setStatus("🎤 Listening...");
-      recognitionRef.current.onerror = (event) => {
-        console.warn("⚠️ Voice error:", event.error);
+      recognitionRef.current.onstart = () => setStatus("Listening...");
+      recognitionRef.current.onerror = () => {
         if (!captured) setTimeout(() => recognitionRef.current.start(), 1000);
       };
 
@@ -72,15 +68,15 @@ const Register = () => {
         if (spoken.includes("student") || spoken.includes("teacher")) {
           const detectedRole = spoken.includes("student") ? "student" : "teacher";
           setRole(detectedRole);
-          setStatus(`✅ Role detected: ${detectedRole}. Starting camera...`);
+          setStatus(`Role: ${detectedRole}. Starting camera...`);
           recognitionRef.current.stop();
           setTimeout(() => startFaceDetection(detectedRole), 200);
         } else if (spoken.includes("admin")) {
           recognitionRef.current.stop();
-          setStatus("🔐 Admin detected. Say the secret password...");
+          setStatus("Admin detected. Say the secret password...");
           askAdminPassword();
         } else {
-          setStatus("❌ Role not recognized, try again...");
+          setStatus("Role not recognized, try again...");
           setTimeout(() => recognitionRef.current.start(), 1000);
         }
       };
@@ -89,55 +85,46 @@ const Register = () => {
     recognitionRef.current.start();
   };
 
-  // -------------------------
-  // Admin password check
-  // -------------------------
+  // Admin password
   const askAdminPassword = () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const adminRec = new SpeechRecognition();
     adminRec.lang = "en-US";
     adminRec.interimResults = false;
-    adminRec.maxAlternatives = 1;
 
-    adminRec.onstart = () => setStatus("🎤 Listening for admin password...");
+    adminRec.onstart = () => setStatus("Listening for password...");
     adminRec.onresult = (event) => {
       let spokenPassword = event.results[0][0].transcript.toLowerCase().trim();
       spokenPassword = spokenPassword.replace(/\bu\b/g, "you").replace(/\s+/g, " ").trim();
 
       if (spokenPassword.includes(SECRET_PASSWORD.toLowerCase())) {
         setRole("admin");
-        setStatus("✅ Admin verified! Starting camera...");
+        setStatus("Admin verified! Starting camera...");
         setTimeout(() => startFaceDetection("admin"), 200);
       } else {
-        setStatus("❌ Incorrect password, try again...");
+        setStatus("Incorrect password, try again...");
         setTimeout(() => recognitionRef.current.start(), 1000);
       }
     };
 
     adminRec.onerror = () => {
-      setStatus("⚠️ Could not hear password, retrying...");
+      setStatus("Could not hear password, retrying...");
       setTimeout(() => recognitionRef.current.start(), 1000);
     };
 
     adminRec.start();
   };
 
-  // -------------------------
-  // Manual role selection (fallback)
-  // -------------------------
+  // Manual role fallback
   const handleManualRoleSelect = (selectedRole) => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
+    recognitionRef.current?.stop();
     setVoiceActive(false);
     setRole(selectedRole);
-    setStatus(`✅ Role selected: ${selectedRole}. Starting camera...`);
+    setStatus(`Role selected: ${selectedRole}. Starting camera...`);
     setTimeout(() => startFaceDetection(selectedRole), 300);
   };
 
-  // -------------------------
-  // Face detection (single capture)
-  // -------------------------
+  // Face Detection + Descriptor
   const startFaceDetection = (detectedRole) => {
     const detect = async () => {
       if (!webcamRef.current || captured) return;
@@ -154,9 +141,11 @@ const Register = () => {
         .withFaceDescriptor();
 
       if (detection && !captured) {
+        const desc = Array.from(detection.descriptor); // 128 numbers
+        setFaceDescriptor(desc);
         setCaptured(true);
-        setStatus("😀 Face detected! Capturing...");
-        capture(detectedRole);
+        setStatus("Face detected! Checking identity...");
+        await checkExistingUser(desc, detectedRole);
       } else if (!captured) {
         requestAnimationFrame(detect);
       }
@@ -165,28 +154,49 @@ const Register = () => {
     detect();
   };
 
-  // -------------------------
-  // Capture image
-  // -------------------------
-  const capture = (detectedRole) => {
-    if (!detectedRole) return setStatus("❌ Role missing, cannot capture");
+  // Check if face already exists
+  const checkExistingUser = async (descriptor, role) => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/user/checkface`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ descriptor }),
+      });
+      const data = await res.json();
 
-    const imageSrc = webcamRef.current.getScreenshot();
-    setPreview(imageSrc);
-    uploadImage(imageSrc, detectedRole);
+      if (!data.success) throw new Error(data.error || "Check failed");
+
+      if (data.exists) {
+        const user = data.user;
+        setImageUrl(user.imageurl);
+        setUserId(user.id);
+        setStatus(`Welcome back, ${role}!`);
+        alert(`Already registered!\nUser ID: ${user.id}`);
+        localStorage.setItem("userId", user.id);
+        redirectUser(user.id);
+        return;
+      }
+
+      // New face → capture & upload
+      const imageSrc = webcamRef.current.getScreenshot();
+      setPreview(imageSrc);
+      await uploadNewUser(imageSrc, role, descriptor);
+    } catch (err) {
+      console.error("Check error:", err);
+      setStatus(`Error: ${err.message}`);
+    }
   };
 
-  // -------------------------
-  // Upload image + role
-  // -------------------------
-  const uploadImage = async (base64Image, detectedRole) => {
+  // Upload new user
+  const uploadNewUser = async (base64Image, role, descriptor) => {
     try {
       const res = await fetch(`${BACKEND_URL}/user/userdata`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           image: base64Image,
-          userDesignation: detectedRole,
+          userDesignation: role,
+          descriptor,
         }),
       });
       const data = await res.json();
@@ -194,106 +204,106 @@ const Register = () => {
       if (res.ok && data.success) {
         setImageUrl(data.user.imageurl);
         setUserId(data.user.id);
-        setStatus("✅ Registration successful!");
-        alert(`Registration complete ✅\nYour User ID: ${data.user.id}`);
+        setStatus("Registration successful!");
+        alert(`New user created!\nUser ID: ${data.user.id}`);
         localStorage.setItem("userId", data.user.id);
-        if(data.user.id >= 2000) navigate("/teacher-home");
-        else if (data.user.id >= 3000) navigate("/admin-home");
-        else navigate("/home");
+        redirectUser(data.user.id);
       } else {
-        setStatus(`❌ Upload failed: ${data.error}`);
+        setStatus(`Upload failed: ${data.error}`);
       }
     } catch (err) {
       console.error("Upload error:", err);
-      setStatus("⚠️ Network error while uploading");
+      setStatus("Network error");
     }
   };
 
-  // -------------------------
-  // JSX Return
-  // -------------------------
-  return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px" }}>
-      <h2>🎤 Voice-Based Auto Registration</h2>
-      <p style={{ fontWeight: "bold", color: "#444" }}>{status}</p>
+  // Redirect based on ID
+  const redirectUser = (id) => {
+    const numId = parseInt(id);
+    if (numId >= 3000) navigate("/admin-home");
+    else if (numId >= 2100) navigate("/teacher-home");
+    else navigate("/home");
+  };
 
-      {/* Webcam Feed */}
+  return (
+    <div style={{ textAlign: "center", padding: "20px", fontFamily: "Arial, sans-serif" }}>
+      <h2>Voice + Face Auto Registration</h2>
+      <p style={{ fontWeight: "bold", color: "#444", minHeight: "2em" }}>{status}</p>
+
       <Webcam
         audio={false}
         ref={webcamRef}
         screenshotFormat="image/jpeg"
-        width={350}
+        width={380}
         videoConstraints={{ facingMode: "user" }}
-        style={{ borderRadius: "10px", boxShadow: "0 5px 15px rgba(0,0,0,0.3)" }}
+        style={{
+          borderRadius: "16px",
+          boxShadow: "0 8px 25px rgba(0,0,0,0.3)",
+          marginBottom: "1rem",
+        }}
       />
 
-      {/* Fallback Buttons for Role Selection */}
+      {/* Manual Role Buttons */}
       {!captured && !imageUrl && (
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <p style={{ fontWeight: "bold", color: "#555" }}>Don’t want to speak? Select manually:</p>
-          <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-            <button
-              onClick={() => handleManualRoleSelect("student")}
-              style={{
-                backgroundColor: "#2196f3",
-                color: "white",
-                padding: "8px 15px",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
-            >
-              👨‍🎓 Student
-            </button>
-            <button
-              onClick={() => handleManualRoleSelect("teacher")}
-              style={{
-                backgroundColor: "#4caf50",
-                color: "white",
-                padding: "8px 15px",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
-            >
-              👩‍🏫 Teacher
-            </button>
-            <button
-              onClick={() => handleManualRoleSelect("admin")}
-              style={{
-                backgroundColor: "#f44336",
-                color: "white",
-                padding: "8px 15px",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
-            >
-              🛡️ Admin
-            </button>
+        <div style={{ margin: "1.5rem 0" }}>
+          <p style={{ color: "#666" }}>Or select manually:</p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+            {["student", "teacher", "admin"].map((r) => (
+              <button
+                key={r}
+                onClick={() => handleManualRoleSelect(r)}
+                style={{
+                  backgroundColor:
+                    r === "student" ? "#2196f3" : r === "teacher" ? "#4caf50" : "#f44336",
+                  color: "white",
+                  padding: "10px 18px",
+                  border: "none",
+                  borderRadius: "10px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                }}
+              >
+                {r.charAt(0).toUpperCase() + r.slice(1)}
+              </button>
+            ))}
           </div>
         </div>
       )}
 
-      {/* Preview Images */}
+      {/* Preview */}
       {preview && (
-        <div style={{ textAlign: "center", marginTop: "10px" }}>
-          <p>Captured Preview:</p>
-          <img src={preview} alt="preview" width="250" style={{ borderRadius: "10px" }} />
+        <div style={{ marginTop: "1rem" }}>
+          <p>Captured:</p>
+          <img
+            src={preview}
+            alt="preview"
+            width={280}
+            style={{ borderRadius: "12px", border: "3px solid #d4af37" }}
+          />
         </div>
       )}
 
+      {/* Uploaded */}
       {imageUrl && (
-        <div style={{ marginTop: "15px", textAlign: "center" }}>
-          <p>Uploaded Image:</p>
-          <img src={imageUrl} alt="uploaded" width="250" style={{ borderRadius: "10px" }} />
+        <div style={{ marginTop: "1rem" }}>
+          <p>Stored:</p>
+          <img
+            src={imageUrl}
+            alt="uploaded"
+            width={280}
+            style={{ borderRadius: "12px", border: "3px solid #d4af37" }}
+          />
         </div>
       )}
 
+      {/* User ID */}
       {userId && (
-        <div style={{ marginTop: "20px", color: "green", textAlign: "center" }}>
-          <h3>Your User ID: {userId}</h3>
-          <p style={{ fontWeight: "bold" }}>⚠️ Please remember this User ID for login!</p>
+        <div style={{ marginTop: "1.5rem", color: "#2e7d32" }}>
+          <h3>User ID: <strong>{userId}</strong></h3>
+          <p style={{ fontWeight: "bold", color: "#d4af37" }}>
+            Remember this ID for login!
+          </p>
         </div>
       )}
     </div>

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../CSS/StudyMaterial.css";
 import Navbar from "./Navbar";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaCommentDots, FaTimes } from "react-icons/fa";
 
 const Study_Material = () => {
   const [name, setName] = useState("");
@@ -13,12 +13,15 @@ const Study_Material = () => {
   const [aiLoadingIds, setAiLoadingIds] = useState([]);
   const [prompts, setPrompts] = useState({});
   const [aiResponses, setAiResponses] = useState({});
-
-  // 🔍 Search state
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL || "http://localhost:8000";
-  const API_URL = `${BACKEND_URL}/api/study-materials`;
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatDimensions, setChatDimensions] = useState({ width: 350, height: 450 });
+  const chatBoxRef = useRef(null);
+  const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL;
+  const API_URL = `http://localhost:8000/api/study-materials`;
+  console.log(API_URL);
 
   const fetchMaterials = async () => {
     try {
@@ -45,7 +48,6 @@ const Study_Material = () => {
     formData.append("name", name);
     formData.append("subject", subject);
     formData.append("file", file);
-
     try {
       setLoading(true);
       const response = await fetch(`${API_URL}/upload`, {
@@ -89,19 +91,14 @@ const Study_Material = () => {
       alert("Please enter a question before asking AI!");
       return;
     }
-
     try {
       setAiLoadingIds((prev) => [...prev, materialId]);
       setAiResponses((prev) => ({ ...prev, [materialId]: "" }));
-
-      const response = await fetch(
-        "http://localhost:8000/api/study-materials/detailed-suggestion",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, materialUrl: fileUrl, name }),
-        }
-      );
+      const response = await fetch(`${API_URL}/detailed-suggestion`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt, materialUrl: fileUrl, name }),
+      });
       const data = await response.json();
       if (response.ok) {
         setAiResponses((prev) => ({
@@ -125,48 +122,78 @@ const Study_Material = () => {
     }
   };
 
-  // 🔍 Filter materials by search term
+  const openChat = (mat) => {
+    setSelectedMaterial(mat);
+    setPrompts((prev) => ({ ...prev, [mat._id]: prompts[mat._id] || "" }));
+    setIsChatOpen(true);
+  };
+
+  const closeChat = () => {
+    setIsChatOpen(false);
+    setSelectedMaterial(null);
+  };
+
+  const handleResizeStart = (e) => {
+    e.preventDefault();
+    document.addEventListener("mousemove", handleResize);
+    document.addEventListener("mouseup", handleResizeEnd);
+  };
+
+  const handleResize = (e) => {
+    if (!chatBoxRef.current) return;
+    const rect = chatBoxRef.current.getBoundingClientRect();
+    const newWidth = Math.max(300, e.clientX - rect.left);
+    const newHeight = Math.max(300, e.clientY - rect.top);
+    setChatDimensions({ width: newWidth, height: newHeight });
+  };
+
+  const handleResizeEnd = () => {
+    document.removeEventListener("mousemove", handleResize);
+    document.removeEventListener("mouseup", handleResizeEnd);
+  };
+
   const filteredMaterials = materials.filter(
     (mat) =>
       mat.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
       mat.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const currentPrompt = selectedMaterial ? prompts[selectedMaterial._id] || "" : "";
+  const currentResponse = selectedMaterial ? aiResponses[selectedMaterial._id] : "";
+  const isLoading = selectedMaterial ? aiLoadingIds.includes(selectedMaterial._id) : false;
+
   return (
-    <div>
+    <div className="study-wrapper">
       <Navbar />
       <div className="study-container">
         <div className="study-card">
           <h1 className="study-title">📚 Study Material Upload</h1>
-
-          {/* Upload Form */}
           <form onSubmit={handleUpload} className="study-form">
             <input
               type="text"
               placeholder="Your Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="form-input"
             />
             <input
               type="text"
               placeholder="Subject"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
+              className="form-input"
             />
             <input
               type="file"
               accept=".pdf"
               onChange={(e) => setFile(e.target.files[0])}
-              className="file-input1 files"
+              className="file-input"
             />
-            <button type="submit" className="uploads" disabled={loading}>
+            <button type="submit" className="upload-btn" disabled={loading}>
               {loading ? "Uploading..." : "Upload"}
             </button>
           </form>
-
           <hr className="divider" />
-
-          {/* 🔍 Search Section */}
           <div className="search-section">
             <FaSearch
               className="search-icon"
@@ -180,89 +207,48 @@ const Study_Material = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-
           <h2 className="materials-heading">📂 Uploaded Study Materials</h2>
-
           {filteredMaterials.length === 0 ? (
             <p className="no-materials">No materials found.</p>
           ) : (
             <div className="materials-grid">
-              {filteredMaterials.map((mat) => {
-                const isLoading = aiLoadingIds.includes(mat._id);
-                return (
-                  <div key={mat._id} className="material-card">
-                    <h3>{mat.subject}</h3>
-                    <p>Uploaded by: {mat.name}</p>
-                    <p className="date">
+              {filteredMaterials.map((mat) => (
+                <div key={mat._id} className="material-card">
+                  <div className="card-header">
+                    <h3 className="card-subject">{mat.subject}</h3>
+                    <p className="card-uploader">Uploaded by: {mat.name}</p>
+                    <p className="card-date">
                       {new Date(mat.createdAt).toLocaleString()}
                     </p>
-
+                  </div>
+                  <div className="card-actions">
                     <a
-                      href={`http://localhost:8000/api/study-materials/materials/${mat._id}/download`}
+                      href={`${API_URL}/api/study-materials/materials/${mat._id}/download`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="download-btn"
+                      className="action-btn download-btn"
                     >
                       Download
                     </a>
-
                     <button
-                      className="download-btn"
+                      className="action-btn open-btn"
                       onClick={() => setOpenPdfUrl(mat.fileUrl)}
                       type="button"
-                      style={{ marginLeft: "20px" }}
                     >
                       Open PDF
                     </button>
-
-                    {/* 🧠 Ask AI Section */}
-                    <div className="ai-section" style={{ marginTop: "10px" }}>
-                      <input
-                        type="text"
-                        placeholder="Ask AI about this material..."
-                        value={prompts[mat._id] || ""}
-                        onChange={(e) =>
-                          setPrompts((prev) => ({
-                            ...prev,
-                            [mat._id]: e.target.value,
-                          }))
-                        }
-                        className="ai-input"
-                      />
-                      <button
-                        type="button"
-                        className="ai-btn download-btn"
-                        style={{ marginLeft: "10px" }}
-                        onClick={() =>
-                          handleAskAI(mat._id, mat.fileUrl, mat.name)
-                        }
-                        disabled={isLoading}
-                      >
-                        {isLoading ? "Thinking..." : "Ask AI"}
-                      </button>
-                    </div>
-
-                    {aiResponses[mat._id] && (
-                      <div
-                        className="ai-response-box"
-                        style={{ whiteSpace: "pre-wrap", marginTop: "10px" }}
-                      >
-                        <h4>🤖 AI Response:</h4>
-                        <div
-                          className="ai-response-content"
-                          dangerouslySetInnerHTML={{
-                            __html: formatAIResponse(aiResponses[mat._id]),
-                          }}
-                        ></div>
-                      </div>
-                    )}
+                    <button
+                      className="action-btn chat-btn"
+                      onClick={() => openChat(mat)}
+                      type="button"
+                    >
+                      <FaCommentDots /> Chat AI
+                    </button>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           )}
-
-          {/* PDF Modal */}
           {openPdfUrl && (
             <div className="pdf-modal">
               <div className="pdf-modal-content">
@@ -270,7 +256,7 @@ const Study_Material = () => {
                   className="close-btn"
                   onClick={() => setOpenPdfUrl(null)}
                 >
-                  Close
+                  ×
                 </button>
                 <iframe
                   src={`https://docs.google.com/gview?url=${encodeURIComponent(
@@ -280,12 +266,69 @@ const Study_Material = () => {
                   width="100%"
                   height="600px"
                   frameBorder="0"
-                ></iframe>
+                />
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Fixed Bottom-Right Chat Box */}
+      {isChatOpen && selectedMaterial && (
+        <div ref={chatBoxRef} className="chat-box" style={{ width: `${chatDimensions.width}px`, height: `${chatDimensions.height}px` }}>
+          <div className="resize-handle" onMouseDown={handleResizeStart}></div>
+          <div className="chat-header">
+            <span className="chat-title">AI Chat - {selectedMaterial.subject}</span>
+            <button className="close-chat-btn" onClick={closeChat}>
+              <FaTimes />
+            </button>
+          </div>
+          <div className="chat-messages">
+            {currentResponse && (
+              <>
+                <div className="message user-message">
+                  <div className="message-bubble">
+                    <p>{currentPrompt}</p>
+                  </div>
+                </div>
+                <div className="message ai-message">
+                  <div className="message-bubble ai-bubble">
+                    <span className="ai-icon">🤖</span>
+                    <div
+                      className="ai-response-content"
+                      dangerouslySetInnerHTML={{
+                        __html: formatAIResponse(currentResponse),
+                      }}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <div className="chat-input-section">
+            <input
+              type="text"
+              placeholder="Ask about this material..."
+              value={currentPrompt}
+              onChange={(e) =>
+                setPrompts((prev) => ({
+                  ...prev,
+                  [selectedMaterial._id]: e.target.value,
+                }))
+              }
+              className="chat-input"
+              onKeyPress={(e) => e.key === 'Enter' && handleAskAI(selectedMaterial._id, selectedMaterial.fileUrl, selectedMaterial.name)}
+            />
+            <button
+              className="chat-send-btn"
+              onClick={() => handleAskAI(selectedMaterial._id, selectedMaterial.fileUrl, selectedMaterial.name)}
+              disabled={isLoading || !currentPrompt.trim()}
+            >
+              {isLoading ? "..." : "Send"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

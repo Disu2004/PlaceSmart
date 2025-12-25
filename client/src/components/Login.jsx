@@ -12,7 +12,7 @@ const Login = () => {
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [manualUserId, setManualUserId] = useState(""); // ✅ new state
   const webcamRef = useRef(null);
-  const processedRef = useRef(false);
+  const processedRef = useRef(false); 
   const recognitionRef = useRef(null);
   const navigate = useNavigate();
   const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL;
@@ -20,22 +20,24 @@ const Login = () => {
   // -------------------------
   // Convert spoken words → alphanumeric ID
   // -------------------------
-  const parseSpokenId = (text) => {
-    const map = {
-      zero: "0", one: "1", two: "2", three: "3", four: "4",
-      five: "5", six: "6", seven: "7", eight: "8", nine: "9",
-      s: "S", t: "T", a: "A",
-    };
-    let words = text.toLowerCase().split(/\s+/);
-    let result = "";
-    for (let w of words) {
-      if (map[w]) result += map[w];
-      else if (/^\d+$/.test(w)) result += w;
-    }
-    const match = result.match(/[STA]\d+/i);
-    return match ? match[0].toUpperCase() : null;
+const parseSpokenId = (text) => {
+  const map = {
+    zero: "0", one: "1", two: "2", three: "3", four: "4",
+    five: "5", six: "6", seven: "7", eight: "8", nine: "9",
   };
 
+  let result = "";
+  const words = text.toLowerCase().trim().split(/\s+/);
+
+  for (let w of words) {
+    if (map[w]) result += map[w];
+    else if (/^\d+$/.test(w)) result += w;
+  }
+
+  // Accept exactly 4 digits → e.g., "1009"
+  const match = result.match(/^\d{4}$/);
+  return match ? match[0] : null;
+};
   // -------------------------
   // Load face-api models
   // -------------------------
@@ -69,16 +71,6 @@ const Login = () => {
   // -------------------------
   // Speech synthesis welcome
   // -------------------------
-  const speakWelcome = () => {
-    const synth = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(
-      "Hi, welcome to PlaceSmart. If you are a new user, please say 'new user'. Otherwise, speak your login ID."
-    );
-    const voices = synth.getVoices();
-    const indianVoice = voices.find((v) => v.lang === "hi-IN");
-    if (indianVoice) utterance.voice = indianVoice;
-    synth.speak(utterance);
-  };
 
   // -------------------------
   // Init camera & speech recognition
@@ -261,10 +253,10 @@ const Login = () => {
               <li>Face verification will start automatically.</li>
             </ol>
             <button
-              className="close-btn"
+              className="close-btn-1"
               onClick={() => {
                 setStarted(true);
-                speakWelcome();
+                
                 initPermissions();
               }}
             >
