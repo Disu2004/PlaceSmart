@@ -91,9 +91,8 @@ Generate exactly ${questionCount} questions for ${domain}. Return ONLY the JSON 
 
         // Parse questions
         const questions = JSON.parse(questionsText);
-
+        
         console.log(`Successfully generated ${questions.length} questions`);
-
         return res.status(200).json({
             success: true,
             interviewType,

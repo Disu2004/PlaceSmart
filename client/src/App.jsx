@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./components/Home";
-import ResumeBuilder from "./components/ResumeBuilder";
+import ResumeEditor from "./components/ResumeEditor";
 import About from "./components/About";
 import Services from "./components/CodingDashboard";
 import Contact from "./components/Contact";
@@ -76,7 +76,7 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/home" element={<Home />} />
       <Route path="/teacher-home" element={<TeacherHome />} />
-      <Route path="/resume-builder" element={<ResumeBuilder />} />
+      
       <Route path="/about" element={<About />} />
       <Route path="/services" element={<Services />} />
       <Route path="/contact" element={<Contact />} />
@@ -90,6 +90,7 @@ function App() {
       <Route path="/solve-problem/:id" element={<SolveProblem />} />
       <Route path="/admin-home" element={<AdminHome/>} />
       <Route path="/ai-interview" element={<Interview/>} />
+      <Route path="resume-builder" element={<ResumeEditor />} />
     </Routes>
 
   );

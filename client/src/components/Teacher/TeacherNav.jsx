@@ -39,11 +39,7 @@ const TeacherNav = () => {
 
           {/* Teacher Navigation Links */}
           <a href="/teacher-home">  Home</a>
-          <a href="/upload-video">Upload Video Lecture</a>
-          <a href="/see-doubts">See Doubts</a>
           <a href="/upload-questions">Upload Questions</a>
-          <a href="/assignments">Manage Assignments</a>
-          <a href="/discussion-forum">Discussion Forum</a>
           <a href="/view-questions">View Questions</a>
           <a
             href="/"
