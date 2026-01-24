@@ -1,3 +1,5 @@
+/* ResumeEditor.css - Modern Blue Theme */
+
 /* ==================== GLOBAL RESET ==================== */
 * {
   margin: 0;
@@ -10,7 +12,7 @@ body {
   height: 100%;
   width: 100%;
   overflow-x: hidden;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Montserrat', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 /* ==================== ANIMATIONS ==================== */
@@ -20,26 +22,11 @@ body {
   }
 }
 
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 0.08;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.12;
-    transform: scale(1.05);
-  }
-}
-
 @keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(30px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -51,7 +38,6 @@ body {
     transform: translateX(100%);
     opacity: 0;
   }
-
   to {
     transform: translateX(0);
     opacity: 1;
@@ -62,20 +48,7 @@ body {
   from {
     opacity: 0;
   }
-
   to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
     opacity: 1;
   }
 }
@@ -83,368 +56,9 @@ body {
 /* ==================== APP CONTAINER ==================== */
 .app-container {
   min-height: 100vh;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #eff6ff 100%);
+  color: #2d2d2d;
   transition: all 0.5s ease;
-}
-
-/* ==================== DARK THEME (Golden Black) ==================== */
-.app-container.dark {
-  background: linear-gradient(135deg, #000 0%, #1a1a1a 50%, #000 100%);
-  color: #FFD700;
-}
-
-.app-container.dark .animated-background {
-  background: radial-gradient(circle at 30% 50%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 70% 80%, rgba(255, 165, 0, 0.15) 0%, transparent 50%);
-}
-
-.app-container.dark .main-title {
-  background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  background-size: 200% auto;
-}
-
-.app-container.dark .navbar-title {
-  background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  background-size: 200% auto;
-}
-
-.app-container.dark .subtitle {
-  color: #FFA500;
-}
-
-.app-container.dark .card-title {
-  color: #FFD700;
-}
-
-.app-container.dark .card-description {
-  color: #FFA500;
-}
-
-.app-container.dark .resume-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 215, 0, 0.3);
-}
-
-.app-container.dark .resume-card.hovered {
-  box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);
-  border-color: rgba(255, 215, 0, 0.6);
-}
-
-.app-container.dark .hover-overlay {
-  background: rgba(255, 215, 0, 0.95);
-  color: #000;
-}
-
-.app-container.dark .card-info {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.app-container.dark .editor-navbar {
-  background: rgba(0, 0, 0, 0.95);
-  border-bottom: 2px solid #FFD700;
-}
-
-.app-container.dark .download-button {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  color: #000;
-  border: none;
-}
-
-.app-container.dark .download-button:hover:not(:disabled) {
-  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
-  transform: translateY(-2px);
-}
-
-.app-container.dark .download-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.app-container.dark .upload-button .button-content {
-  background: linear-gradient(135deg, #FFA500, #FF8C00);
-  color: #000;
-}
-
-.app-container.dark .upload-button .button-content:hover {
-  box-shadow: 0 8px 30px rgba(255, 165, 0, 0.5);
-  transform: translateY(-2px);
-}
-
-.app-container.dark .back-button {
-  background: rgba(255, 255, 255, 0.1);
-  color: #FFD700;
-  border: 2px solid rgba(255, 215, 0, 0.5);
-}
-
-.app-container.dark .back-button:hover {
-  background: rgba(255, 215, 0, 0.2);
-  border-color: #FFD700;
-}
-
-.app-container.dark .instructions-box {
-  background: rgba(255, 215, 0, 0.1);
-  border: 2px solid rgba(255, 215, 0, 0.3);
-}
-
-.app-container.dark .instructions-text {
-  color: #FFD700;
-}
-
-.app-container.dark .instructions-separator {
-  color: #FFA500;
-}
-
-.app-container.dark .success-toast {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  color: #000;
-}
-
-.app-container.dark .loading-spinner {
-  border: 6px solid rgba(255, 215, 0, 0.2);
-  border-top: 6px solid #FFD700;
-}
-
-.app-container.dark .loading-text {
-  color: #FFD700;
-}
-
-.app-container.dark .logo-icon {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  color: #000;
-}
-
-.app-container.dark .theme-toggle {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  color: #000;
-}
-
-.app-container.dark .error-container {
-  color: #FFD700;
-}
-
-/* ==================== LIGHT THEME (Soft Pink) ==================== */
-.app-container.light {
-  background: linear-gradient(135deg, #ffffff 0%, #fef5f9 50%, #ffffff 100%);
-  color: #333;
-}
-
-.app-container.light .animated-background {
-  background: radial-gradient(circle at 30% 50%, rgba(255, 182, 193, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 70% 80%, rgba(255, 240, 245, 0.15) 0%, transparent 50%);
-}
-
-.app-container.light .main-title {
-  background: linear-gradient(90deg, #D946A6, #FF69B4, #D946A6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  background-size: 200% auto;
-}
-
-.app-container.light .navbar-title {
-  background: linear-gradient(90deg, #D946A6, #FF69B4, #D946A6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  background-size: 200% auto;
-}
-
-.app-container.light .subtitle {
-  color: #666;
-}
-
-.app-container.light .card-title {
-  color: #D946A6;
-}
-
-.app-container.light .card-description {
-  color: #666;
-}
-
-.app-container.light .resume-card {
-  background: rgba(255, 255, 255, 0.9);
-  border: 2px solid rgba(217, 70, 166, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-}
-
-.app-container.light .resume-card.hovered {
-  box-shadow: 0 20px 60px rgba(217, 70, 166, 0.2);
-  border-color: rgba(217, 70, 166, 0.4);
-}
-
-.app-container.light .hover-overlay {
-  background: rgba(217, 70, 166, 0.95);
-  color: #fff;
-}
-
-.app-container.light .card-info {
-  background: rgba(255, 255, 255, 0.7);
-}
-
-.app-container.light .editor-navbar {
-  background: rgba(255, 255, 255, 0.95);
-  border-bottom: 2px solid #D946A6;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.app-container.light .download-button {
-  background: linear-gradient(135deg, #D946A6, #FF69B4);
-  color: #fff;
-  border: none;
-}
-
-.app-container.light .download-button:hover:not(:disabled) {
-  box-shadow: 0 8px 30px rgba(217, 70, 166, 0.4);
-  transform: translateY(-2px);
-}
-
-.app-container.light .download-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.app-container.light .upload-button .button-content {
-  background: linear-gradient(135deg, #FF69B4, #FFB6C1);
-  color: #fff;
-}
-
-.app-container.light .upload-button .button-content:hover {
-  box-shadow: 0 8px 30px rgba(255, 105, 180, 0.4);
-  transform: translateY(-2px);
-}
-
-.app-container.light .back-button {
-  background: rgba(217, 70, 166, 0.1);
-  color: #D946A6;
-  border: 2px solid rgba(217, 70, 166, 0.3);
-}
-
-.app-container.light .back-button:hover {
-  background: rgba(217, 70, 166, 0.2);
-  border-color: #D946A6;
-}
-
-.app-container.light .instructions-box {
-  background: rgba(255, 255, 255, 0.9);
-  border: 2px solid rgba(217, 70, 166, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-}
-
-.app-container.light .instructions-text {
-  color: #666;
-}
-
-.app-container.light .instructions-separator {
-  color: #D946A6;
-}
-
-.app-container.light .success-toast {
-  background: linear-gradient(135deg, #D946A6, #FF69B4);
-  color: #fff;
-}
-
-.app-container.light .loading-spinner {
-  border: 6px solid rgba(217, 70, 166, 0.2);
-  border-top: 6px solid #D946A6;
-}
-
-.app-container.light .loading-text {
-  color: #D946A6;
-}
-
-.app-container.light .logo-icon {
-  background: linear-gradient(135deg, #D946A6, #FF69B4);
-  color: #fff;
-}
-
-.app-container.light .theme-toggle {
-  background: linear-gradient(135deg, #D946A6, #FF69B4);
-  color: #fff;
-}
-
-.app-container.light .error-container {
-  color: #D946A6;
-}
-
-/* ==================== WELCOME MESSAGE ==================== */
-.welcome-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  animation: fadeIn 0.5s ease-out;
-}
-
-.welcome-card {
-  background: rgba(255, 255, 255, 0.98);
-  padding: 50px 60px;
-  border-radius: 24px;
-  text-align: center;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
-  animation: slideDown 0.6s ease-out;
-  max-width: 600px;
-}
-
-.welcome-icon {
-  font-size: 60px;
-  margin-bottom: 20px;
-  animation: spin 3s linear infinite;
-}
-
-.welcome-title {
-  font-size: 32px;
-  font-weight: 900;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.welcome-text {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.welcome-subtext {
-  font-size: 16px;
-  color: #666;
-  font-weight: 500;
-}
-
-/* ==================== THEME TOGGLE ==================== */
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-  padding: 14px 24px;
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-.theme-toggle:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-}
-
-.theme-icon {
-  font-size: 20px;
 }
 
 /* ==================== LOADING STATE ==================== */
@@ -459,6 +73,8 @@ body {
   width: 80px;
   height: 80px;
   border-radius: 50%;
+  border: 6px solid rgba(59, 130, 246, 0.2);
+  border-top: 6px solid #3b82f6;
   animation: spin 1s linear infinite;
 }
 
@@ -478,6 +94,7 @@ body {
 .loading-text {
   font-size: 22px;
   font-weight: 700;
+  color: #3b82f6;
 }
 
 /* ==================== ERROR STATE ==================== */
@@ -488,22 +105,15 @@ body {
   justify-content: center;
   font-size: 20px;
   font-weight: 600;
+  color: #3b82f6;
 }
 
 /* ==================== GALLERY VIEW ==================== */
 .gallery-container {
   min-height: 100vh;
-  padding: 100px 20px 60px;
+  padding: 80px 20px 60px;
   position: relative;
   overflow: hidden;
-}
-
-.animated-background {
-  position: fixed;
-  inset: 0;
-  opacity: 0.08;
-  pointer-events: none;
-  animation: pulse 4s ease-in-out infinite;
 }
 
 .gallery-header {
@@ -528,18 +138,26 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 30px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: #ffffff;
   animation: spin 4s linear infinite;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
 }
 
 .main-title {
   font-size: 48px;
   font-weight: 900;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
 }
 
 .subtitle {
   font-size: 20px;
   font-weight: 500;
+  color: #475569;
 }
 
 /* ==================== RESUME GRID ==================== */
@@ -555,16 +173,20 @@ body {
 
 /* ==================== RESUME CARD ==================== */
 .resume-card {
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #dbeafe 100%);
+  border: 2px solid #bfdbfe;
+  border-radius: 24px;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   animation: fadeInUp 0.6s ease-out both;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
 }
 
 .resume-card.hovered {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.3);
+  border-color: #3b82f6;
 }
 
 .card-preview {
@@ -585,7 +207,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 64px;
-  color: #e0e0e0;
+  color: #bfdbfe;
   font-weight: 900;
 }
 
@@ -598,21 +220,26 @@ body {
   font-size: 24px;
   font-weight: 900;
   animation: fadeIn 0.3s ease-out;
+  background: rgba(59, 130, 246, 0.95);
+  color: #ffffff;
 }
 
 .card-info {
   padding: 25px 30px;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .card-title {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 8px;
+  color: #3b82f6;
 }
 
 .card-description {
   font-size: 16px;
   font-weight: 500;
+  color: #475569;
 }
 
 /* ==================== EDITOR CONTAINER ==================== */
@@ -627,7 +254,10 @@ body {
   top: 0;
   z-index: 100;
   backdrop-filter: blur(20px);
+  background: linear-gradient(135deg, #ffffff 0%, #dbeafe 100%);
+  border-bottom: 2px solid #3b82f6;
   padding: 20px 30px;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
 }
 
 .navbar-content {
@@ -659,6 +289,11 @@ body {
 .navbar-title {
   font-size: 28px;
   font-weight: 900;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
 }
 
 .navbar-actions {
@@ -682,8 +317,15 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
   cursor: pointer;
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  color: #ffffff;
+}
+
+.upload-button .button-content:hover {
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
 }
 
 .download-button {
@@ -693,8 +335,20 @@ body {
   font-weight: 900;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
   border: none;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: #ffffff;
+}
+
+.download-button:hover:not(:disabled) {
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+.download-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .back-button {
@@ -705,7 +359,14 @@ body {
   cursor: pointer;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
-  border: none;
+  border: 2px solid #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.back-button:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #2563eb;
 }
 
 /* ==================== SUCCESS TOAST ==================== */
@@ -715,7 +376,7 @@ body {
   right: 30px;
   padding: 18px 32px;
   border-radius: 14px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -723,6 +384,8 @@ body {
   font-size: 17px;
   z-index: 1000;
   animation: slideInRight 0.5s ease-out;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: #ffffff;
 }
 
 .success-icon {
@@ -743,12 +406,10 @@ body {
 
 .resume-paper {
   width: 210mm;
-  /* A4 width */
   min-height: 297mm;
-  /* A4 height */
   background: white;
-  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
+  box-shadow: 0 20px 80px rgba(59, 130, 246, 0.25);
+  border-radius: 12px;
   overflow: hidden;
   margin: 0 auto;
   position: relative;
@@ -761,211 +422,6 @@ body {
   padding: 0;
   margin: 0;
   color: #000;
-}
-
-/* ==================== INSTRUCTIONS ==================== */
-.instructions {
-  text-align: center;
-  padding: 30px 20px 50px;
-  position: relative;
-  z-index: 10;
-}
-
-.instructions-box {
-  display: inline-block;
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  padding: 20px 40px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.instructions-text {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.6;
-}
-
-.instructions-icon {
-  display: inline-block;
-  animation: spin 3s linear infinite;
-  margin-right: 4px;
-}
-
-.instructions-separator {
-  margin: 0 12px;
-  font-weight: 700;
-}
-
-/* ==================== RESPONSIVE DESIGN ==================== */
-@media (max-width: 1024px) {
-  .resume-paper {
-    width: 100%;
-    max-width: 210mm;
-  }
-}
-
-@media (max-width: 768px) {
-  .main-title {
-    font-size: 36px;
-  }
-
-  .navbar-title {
-    font-size: 22px;
-  }
-
-  .resume-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    padding: 0 10px;
-  }
-
-  .navbar-content {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .navbar-actions {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .navbar-actions button,
-  .navbar-actions .upload-button {
-    width: 100%;
-  }
-
-  .navbar-actions .button-content {
-    justify-content: center;
-    width: 100%;
-  }
-
-  .instructions-text {
-    font-size: 16px;
-  }
-
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 12px 20px;
-    font-size: 14px;
-  }
-
-  .welcome-card {
-    padding: 40px 30px;
-    margin: 20px;
-  }
-
-  .welcome-title {
-    font-size: 26px;
-  }
-
-  .welcome-text {
-    font-size: 20px;
-  }
-
-  .resume-paper {
-    width: 100%;
-    border-radius: 0;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  }
-
-  .resume-container {
-    padding: 30px 10px 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .gallery-container {
-    padding: 80px 15px 40px;
-  }
-
-  .main-title {
-    font-size: 28px;
-  }
-
-  .subtitle {
-    font-size: 16px;
-  }
-
-  .card-preview {
-    padding: 30px;
-    min-height: 300px;
-  }
-
-  .preview-placeholder {
-    font-size: 48px;
-  }
-
-  .instructions-text {
-    font-size: 14px;
-  }
-
-  .instructions-separator {
-    margin: 0 8px;
-  }
-
-  .resume-paper {
-    min-height: auto;
-  }
-}
-
-/* ==================== PRINT STYLES ==================== */
-@media print {
-  body {
-    margin: 0;
-    padding: 0;
-  }
-
-  .app-container * {
-    visibility: hidden;
-  }
-
-  .resume-container,
-  .resume-container *,
-  .resume-paper,
-  .resume-content,
-  .resume-content * {
-    visibility: visible !important;
-  }
-
-  .resume-paper {
-    width: 210mm !important;
-    height: 297mm !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    page-break-after: always !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-  }
-
-  .resume-content {
-    width: 210mm !important;
-    height: 297mm !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    page-break-inside: avoid !important;
-  }
-
-  /* Hide all UI elements in print */
-  .editor-navbar,
-  .instructions,
-  .theme-toggle,
-  .loading-overlay,
-  .success-toast,
-  .welcome-overlay {
-    display: none !important;
-  }
-
-  /* Remove all editing styles */
-  [contenteditable] {
-    outline: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-  }
 }
 
 /* ==================== RESUME CONTENT SPECIFIC ==================== */
@@ -1013,41 +469,171 @@ body {
 .resume-content .job-description {
   margin-top: 0.5rem;
 }
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+@media (max-width: 1024px) {
+  .resume-paper {
+    width: 100%;
+    max-width: 210mm;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 36px;
+  }
+
+  .navbar-title {
+    font-size: 22px;
+  }
+
+  .resume-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 0 10px;
+  }
+
+  .navbar-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .navbar-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-actions button,
+  .navbar-actions .upload-button {
+    width: 100%;
+  }
+
+  .navbar-actions .button-content {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .resume-paper {
+    width: 100%;
+    border-radius: 0;
+    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.2);
+  }
+
+  .resume-container {
+    padding: 30px 10px 20px;
+  }
+
+  .gallery-container {
+    padding: 60px 15px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .card-preview {
+    padding: 30px;
+    min-height: 300px;
+  }
+
+  .preview-placeholder {
+    font-size: 48px;
+  }
+
+  .resume-paper {
+    min-height: auto;
+  }
+}
+
+/* ==================== PRINT STYLES ==================== */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .app-container * {
+    visibility: hidden;
+  }
+
+  .resume-container,
+  .resume-container *,
+  .resume-paper,
+  .resume-content,
+  .resume-content * {
+    visibility: visible !important;
+  }
+
+  .resume-paper {
+    width: 210mm !important;
+    height: 297mm !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    page-break-after: always !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+
+  .resume-content {
+    width: 210mm !important;
+    height: 297mm !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    page-break-inside: avoid !important;
+  }
+
+  .editor-navbar,
+  .loading-overlay,
+  .success-toast {
+    display: none !important;
+  }
+
+  [contenteditable] {
+    outline: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
+
 /* ==================== PDF GENERATION FIX ==================== */
-/* Ensure proper box sizing for PDF */
 .resume-content * {
   box-sizing: border-box;
 }
 
-/* Prevent page breaks inside important sections */
 .resume-content .section,
 .resume-content .job-item,
 .resume-content .contact-info {
   page-break-inside: avoid;
 }
 
-/* Force page break when content overflows */
 @media print {
   .resume-paper {
     overflow: visible !important;
     position: relative !important;
   }
   
-  /* Ensure content doesn't get cut */
   .resume-content {
     position: relative !important;
     overflow: visible !important;
     max-height: none !important;
   }
   
-  /* Fix for page breaks */
   .page-break {
     page-break-before: always;
     margin-top: 2rem;
   }
 }
 
-/* Add this to ensure content is visible during PDF generation */
 .html2canvas-container {
   width: 210mm !important;
   height: auto !important;

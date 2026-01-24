@@ -1,21 +1,41 @@
 import React, { useEffect } from "react";
 import Navbar from "./Navbar";
 import "../CSS/Home.css";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import heroImage from "../images/hero.jpeg";
 import smartWork from "../images/smartwork.webp"
 import ahead from "../images/stayahead.webp";
 import skillImage from "../images/skill.jpeg";
 import { useNavigate } from "react-router-dom";
+
 const Home = () => {
   const navigate = useNavigate();
+  
   useEffect(() => {
-    if(localStorage.getItem("userId") >=2000){
+    if(localStorage.getItem("userId") >= 2000){
       navigate("/teacher-home");
     }
-    AOS.init({ duration: 1400 });
-  }, []);
+
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -100px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('aos-animate');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all elements with data-aos attribute
+    document.querySelectorAll('[data-aos]').forEach(el => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [navigate]);
 
   return (
     <div className="pb-home-container">

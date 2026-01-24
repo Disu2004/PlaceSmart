@@ -1,21 +1,23 @@
+/* About.css - Modern Blue Theme */
+
 /* ====== Global Theme ====== */
 .about-container {
-            overflow-y: hidden;
   font-family: 'Montserrat', sans-serif;
-  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
-  color: #f5f5f5;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  color: #2d2d2d;
   overflow-x: hidden;
 }
 
-/* ====== hero-about Section ====== */
+/* ====== Hero About Section ====== */
 .hero-about-section {
-
   position: relative;
   width: 100%;
   height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 0 0 40px 40px;
+  overflow: hidden;
 }
 
 .hero-about-image {
@@ -23,18 +25,17 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(55%) contrast(110%);
+  filter: brightness(65%) contrast(105%);
 }
 
 .hero-about-overlay {
-
   position: absolute;
   width: 100%;
   height: 100%;
   background: radial-gradient(
     circle at center,
-    rgba(212, 175, 55, 0.25),
-    rgba(0, 0, 0, 0.9)
+    rgba(59, 130, 246, 0.3),
+    rgba(0, 0, 0, 0.7)
   );
 }
 
@@ -43,144 +44,348 @@
   text-align: center;
   z-index: 2;
   color: #fff;
-  max-width: 800px;
+  max-width: 900px;
   padding: 0 20px;
 }
 
 .hero-about-text h1 {
   font-size: 3.5rem;
   font-weight: 700;
-  background: linear-gradient(90deg, #d4af37, #fff);
+  background: linear-gradient(90deg, #3b82f6, #60a5fa, #fff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: fadeInDown 1s ease forwards;
+  text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
 }
 
 .hero-about-text p {
-  font-size: 1.2rem;
-  margin-top: 12px;
+  font-size: 1.3rem;
+  margin-top: 16px;
   color: #e0e0e0;
   animation: fadeInUp 1s ease forwards;
+  font-weight: 500;
 }
 
 /* ====== Team Section ====== */
 .team-section {
   text-align: center;
   padding: 80px 20px;
-  background: linear-gradient(135deg, #111 70%, #d4af37 120%);
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
 }
 
 .team-section h2 {
-  font-size: 2.5rem;
-  color: #d4af37;
-  margin-bottom: 50px;
-  letter-spacing: 2px;
+  font-size: 2.8rem;
+  color: #3b82f6;
+  margin-bottom: 60px;
+  letter-spacing: 1px;
   text-transform: uppercase;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
 }
 
 .team-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 50px;
+  gap: 40px;
 }
 
 .team-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(212, 175, 55, 0.3);
-  padding: 25px;
-  border-radius: 20px;
-  width: 220px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+  border: 2px solid #bfdbfe;
+  padding: 30px;
+  border-radius: 24px;
+  width: 240px;
   transition: all 0.4s ease;
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
 }
 
 .team-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-12px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.3);
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #ffffff 0%, #dbeafe 100%);
 }
 
 .team-card img {
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
-  border: 3px solid #d4af37;
-  margin-bottom: 15px;
+  border: 4px solid #3b82f6;
+  margin-bottom: 20px;
   object-fit: cover;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 .team-card h3 {
-  color: #fff;
-  font-size: 1.3rem;
-  margin-bottom: 5px;
+  color: #3b82f6;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .team-card p {
-  color: #d4af37;
-  font-weight: 500;
-  font-size: 0.95rem;
+  color: #475569;
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 /* ====== Mission Section ====== */
 .mission-section {
   padding: 90px 20px;
-  background: #0f0f0f;
+  background: #ffffff;
   text-align: center;
 }
 
 .mission-section h2 {
-  color: #d4af37;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+  color: #3b82f6;
+  font-size: 2.8rem;
+  margin-bottom: 30px;
   letter-spacing: 1px;
+  font-weight: 700;
 }
 
 .mission-text {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto 60px;
-  color: #ccc;
-  line-height: 1.7;
-  font-size: 1.1rem;
+  color: #475569;
+  line-height: 1.8;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
 .mission-cards {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 40px;
+  gap: 30px;
 }
 
 .mission-card {
-  background: linear-gradient(180deg, #1a1a1a 0%, #111 100%);
-  border: 2px solid rgba(212, 175, 55, 0.25);
-  border-radius: 18px;
-  padding: 30px 25px;
-  width: 260px;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+  background: linear-gradient(135deg, #ffffff 0%, #dbeafe 100%);
+  border: 2px solid #bfdbfe;
+  border-radius: 20px;
+  padding: 35px 30px;
+  width: 280px;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
   transition: all 0.4s ease;
 }
 
 .mission-card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.35);
-  border-color: #d4af37;
-  background: linear-gradient(180deg, #1f1f1f 0%, #d4af3722 100%);
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.3);
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #f0f9ff 0%, #bfdbfe 100%);
 }
 
 .mission-card h3 {
-  color: #d4af37;
-  font-size: 1.3rem;
-  margin-bottom: 10px;
+  color: #3b82f6;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  font-weight: 700;
 }
 
 .mission-card p {
-  color: #ddd;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  color: #475569;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 500;
 }
 
-/* ====== Animations ====== */
+/* ====== Vision Section ====== */
+.vision-section {
+  text-align: center;
+  padding: 90px 20px;
+  background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+}
+
+.vision-section h2 {
+  color: #3b82f6;
+  font-size: 2.8rem;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.vision-section p {
+  color: #475569;
+  max-width: 900px;
+  margin: 0 auto 60px;
+  line-height: 1.8;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.vision-points {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.vision-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+  border: 2px solid #bfdbfe;
+  border-radius: 24px;
+  padding: 35px 30px;
+  width: 280px;
+  transition: all 0.4s ease;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+}
+
+.vision-card:hover {
+  transform: translateY(-12px) scale(1.05);
+  border-color: #3b82f6;
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.3);
+  background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
+}
+
+.vision-card h3 {
+  color: #3b82f6;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.vision-card p {
+  color: #475569;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ====== Achievements Section ====== */
+.achievements-section {
+  background: #ffffff;
+  padding: 90px 20px;
+  text-align: center;
+}
+
+.achievements-section h2 {
+  color: #3b82f6;
+  font-size: 2.8rem;
+  margin-bottom: 50px;
+  font-weight: 700;
+}
+
+.achievements-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 1000px;
+  text-align: left;
+}
+
+.achievements-section li {
+  font-size: 1.15rem;
+  color: #2d2d2d;
+  background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+  border-left: 5px solid #3b82f6;
+  margin-bottom: 20px;
+  padding: 20px 25px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+  font-weight: 500;
+  border: 2px solid #bfdbfe;
+  border-left: 5px solid #3b82f6;
+}
+
+.achievements-section li:hover {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  transform: translateX(12px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+}
+
+/* ====== Technologies Section ====== */
+.tech-section {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  text-align: center;
+  padding: 90px 20px;
+}
+
+.tech-section h2 {
+  color: #3b82f6;
+  font-size: 2.8rem;
+  margin-bottom: 50px;
+  font-weight: 700;
+}
+
+.tech-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.tech-chip {
+  border: 2px solid #3b82f6;
+  color: #3b82f6;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  background: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
+}
+
+.tech-chip:hover {
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  color: #ffffff;
+  transform: scale(1.12);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+}
+
+/* ==================== SCROLL ANIMATIONS ==================== */
+[data-aos] {
+  opacity: 0;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+[data-aos="fade-up"] {
+  transform: translateY(50px);
+}
+
+[data-aos="fade-down"] {
+  transform: translateY(-50px);
+}
+
+[data-aos="fade-left"] {
+  transform: translateX(50px);
+}
+
+[data-aos="fade-right"] {
+  transform: translateX(-50px);
+}
+
+[data-aos="zoom-in"] {
+  transform: scale(0.85);
+}
+
+[data-aos].aos-animate {
+  opacity: 1 !important;
+  transform: translateY(0) translateX(0) scale(1) !important;
+}
+
+[data-aos-delay="50"].aos-animate {
+  transition-delay: 0.05s;
+}
+
+[data-aos-delay="100"].aos-animate {
+  transition-delay: 0.1s;
+}
+
+[data-aos-delay="150"].aos-animate {
+  transition-delay: 0.15s;
+}
+
+[data-aos-delay="200"].aos-animate {
+  transition-delay: 0.2s;
+}
+
+/* ====== Legacy Animations ====== */
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -206,129 +411,42 @@
 /* ====== Responsive ====== */
 @media (max-width: 768px) {
   .hero-about-text h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-about-text p {
+    font-size: 1.1rem;
+  }
+
+  .team-section h2,
+  .mission-section h2,
+  .vision-section h2,
+  .achievements-section h2,
+  .tech-section h2 {
     font-size: 2.2rem;
   }
+
   .team-card {
+    width: 90%;
+  }
+
+  .mission-card,
+  .vision-card {
     width: 85%;
   }
-  .mission-card {
-    width: 80%;
+
+  .achievements-section li {
+    font-size: 1rem;
+    padding: 15px 20px;
   }
-}
-/* ====== Vision Section ====== */
-.vision-section {
-  text-align: center;
-  padding: 90px 20px;
-  background: linear-gradient(135deg, #111 70%, #d4af37 130%);
-}
 
-.vision-section h2 {
-  color: #d4af37;
-  font-size: 2.5rem;
-  margin-bottom: 25px;
-  letter-spacing: 2px;
-}
+  .tech-chip {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+  }
 
-.vision-section p {
-  color: #ddd;
-  max-width: 800px;
-  margin: 0 auto 60px;
-  line-height: 1.6;
-}
-
-.vision-points {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
-}
-
-.vision-card {
-  background: linear-gradient(180deg, #1a1a1a, #0e0e0e);
-  border: 2px solid rgba(212, 175, 55, 0.3);
-  border-radius: 20px;
-  padding: 30px;
-  width: 260px;
-  transition: all 0.4s ease;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
-}
-
-.vision-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  border-color: #d4af37;
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-}
-
-/* ====== Achievements Section ====== */
-.achievements-section {
-  background: #0b0b0b;
-  padding: 90px 20px;
-  text-align: center;
-}
-
-.achievements-section h2 {
-  color: #d4af37;
-  font-size: 2.5rem;
-  margin-bottom: 40px;
-}
-
-.achievements-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 auto;
-  max-width: 900px;
-  text-align: left;
-}
-
-.achievements-section li {
-  font-size: 1.1rem;
-  color: #ddd;
-  background: rgba(255, 255, 255, 0.04);
-  border-left: 4px solid #d4af37;
-  margin-bottom: 15px;
-  padding: 15px 20px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.achievements-section li:hover {
-  background: rgba(212, 175, 55, 0.15);
-  transform: translateX(10px);
-}
-
-/* ====== Technologies Section ====== */
-.tech-section {
-  background: linear-gradient(135deg, #111 70%, #d4af37 130%);
-  text-align: center;
-  padding: 90px 20px;
-}
-
-.tech-section h2 {
-  color: #d4af37;
-  font-size: 2.5rem;
-  margin-bottom: 40px;
-}
-
-.tech-logos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
-}
-
-.tech-chip {
-  border: 1px solid #d4af37;
-  color: #d4af37;
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
-}
-
-.tech-chip:hover {
-  background: #d4af37;
-  color: #111;
-  transform: scale(1.1);
+  .hero-about-section {
+    height: 60vh;
+    border-radius: 0 0 30px 30px;
+  }
 }

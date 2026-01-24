@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const gemini_model = "gemini-3-flash-preview"
+const gemini_model = "gemini-2.5-flash"
 // Controller for generating interview questions (supports both GET and POST)
 export const generateInterviewQuestions = async (req, res) => {
     try {

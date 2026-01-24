@@ -9,6 +9,28 @@ const MyStudyMaterial = () => {
     const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL || "http://localhost:8000";
     const API_URL = `${BACKEND_URL}/api/study-materials`;
 
+    // AOS-like scroll animation
+    useEffect(() => {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -100px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('aos-animate');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('[data-aos]').forEach(el => {
+            observer.observe(el);
+        });
+
+        return () => observer.disconnect();
+    }, [materials]);
+
     // Fetch user's materials
     const fetchMyMaterials = async () => {
         if (!userId) return;
@@ -47,51 +69,74 @@ const MyStudyMaterial = () => {
             }
         } catch (error) {
             console.error("Delete failed:", error);
-
         }
     };
 
-    if (loading) return <p>Loading your study materials...</p>;
+    if (loading) {
+        return (
+            <>
+                <Navbar />
+                <div className="my-materials-container">
+                    <p style={{ 
+                        textAlign: 'center', 
+                        fontSize: '1.3rem', 
+                        color: '#3b82f6',
+                        padding: '60px 20px'
+                    }}>
+                        Loading your study materials...
+                    </p>
+                </div>
+            </>
+        );
+    }
 
     return (
         <>
             <Navbar />
             <div className="my-materials-container">
-                <h1>My Study Materials</h1>
+                <h1 data-aos="fade-down">My Study Materials</h1>
                 {materials.length === 0 ? (
-                    <p>No materials uploaded yet.</p>
+                    <p data-aos="fade-up">
+                        No materials uploaded yet. Start by uploading your first study material! 📚
+                    </p>
                 ) : (
                     <div className="materials-grid">
-                        {materials.map((mat) => (
-                            <div key={mat._id} className="material-card">
-                                <h3>{mat.subject}</h3>
-                                <p>Title: {mat.name}</p>
+                        {materials.map((mat, index) => (
+                            <div 
+                                key={mat._id} 
+                                className="material-card"
+                                data-aos="fade-up"
+                                data-aos-delay={index * 100}
+                            >
+                                <h3>📖 {mat.subject}</h3>
+                                <p><strong>Title:</strong> {mat.name}</p>
+                                
+                                <div className="material-actions">
+                                    {/* Download PDF */}
+                                    <a
+                                        href={mat.fileUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        download={`${mat.name}.pdf`}
+                                        className="download-btn"
+                                    >
+                                        📥 Download PDF
+                                    </a>
 
-                                {/* Download PDF */}
-                                <a
-                                    href={mat.fileUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    download={`${mat.name}.pdf`}
-                                    className="download-btn"
-                                >
-                                    Download PDF
-                                </a>
-
-                                {/* Delete button */}
-                                <button
-                                    onClick={() => handleDelete(mat._id)}
-                                    className="download-btn"
-                                    style={{ marginLeft: "10px" }}
-                                >
-                                    Delete
-                                </button>
+                                    {/* Delete button */}
+                                    <button
+                                        onClick={() => handleDelete(mat._id)}
+                                        className="download-btn"
+                                    >
+                                        🗑️ Delete
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>
                 )}
             </div>
-            </>
+        </>
     );
 };
 

@@ -104,7 +104,16 @@ const CodingDashboard = () => {
     };
   }, []);
 
-  if (loading) return <h2 className="loading">Loading coding problems...</h2>;
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="coding-container">
+          <h2 className="loading">🔄 Loading coding problems...</h2>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -112,35 +121,53 @@ const CodingDashboard = () => {
       <div className="coding-container">
         <header className="cd-header">
           <h1 className="main-title">💻 Coding Problems</h1>
-          <p className="subtitle">Black & Gold practice board — click a problem to solve inline</p>
+          <p className="subtitle">
+            Modern practice board — Click a problem to solve it inline or open on LeetCode
+          </p>
         </header>
 
-        <div className="problem-grid">
-          {problems.map((p, idx) => (
-            <div className="problem-card" key={p.id}>
-              <div className="card-content">
-                <h3 className="problem-title">
-                  <Link to={`/solve-problem/${p.id}`} state={{ problem: p }} className="problem-link">
-                    {p.title}
-                  </Link>
-                </h3>
-                <p className={`difficulty-tag ${p.difficulty.toLowerCase()}`}>
-                  {p.difficulty}
-                </p>
+        {problems.length === 0 ? (
+          <div style={{
+            textAlign: 'center',
+            padding: '60px 20px',
+            background: 'linear-gradient(135deg, #fff 0%, #dbeafe 100%)',
+            borderRadius: '20px',
+            border: '2px dashed #bfdbfe',
+            maxWidth: '600px',
+            margin: '40px auto',
+            color: '#475569',
+            fontSize: '1.2rem'
+          }}>
+            <p>No problems available. Please try refreshing the page. 🔄</p>
+          </div>
+        ) : (
+          <div className="problem-grid">
+            {problems.map((p) => (
+              <div className="problem-card" key={p.id}>
+                <div className="card-content">
+                  <h3 className="problem-title">
+                    <Link to={`/solve-problem/${p.id}`} state={{ problem: p }} className="problem-link">
+                      {p.title}
+                    </Link>
+                  </h3>
+                  <p className={`difficulty-tag ${p.difficulty.toLowerCase()}`}>
+                    {p.difficulty}
+                  </p>
+                </div>
+                <a
+                  className="external-link"
+                  href={`https://leetcode.com/problems/${p.slug}/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Open on LeetCode"
+                  aria-label="Open on LeetCode"
+                >
+                  ↗
+                </a>
               </div>
-              <a
-                className="external-link"
-                href={`https://leetcode.com/problems/${p.slug}/`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Open on LeetCode"
-                aria-label="Open on LeetCode"
-              >
-                ↗
-              </a>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

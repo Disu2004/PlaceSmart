@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import * as faceapi from "face-api.js";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import "../CSS/form.css";
 
 const Login = () => {
@@ -10,37 +8,33 @@ const Login = () => {
   const [transcript, setTranscript] = useState("");
   const [started, setStarted] = useState(false);
   const [modelsLoaded, setModelsLoaded] = useState(false);
-  const [manualUserId, setManualUserId] = useState(""); // ✅ new state
+  const [manualUserId, setManualUserId] = useState("");
   const webcamRef = useRef(null);
   const processedRef = useRef(false); 
   const recognitionRef = useRef(null);
   const navigate = useNavigate();
   const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL;
 
-  // -------------------------
   // Convert spoken words → alphanumeric ID
-  // -------------------------
-const parseSpokenId = (text) => {
-  const map = {
-    zero: "0", one: "1", two: "2", three: "3", four: "4",
-    five: "5", six: "6", seven: "7", eight: "8", nine: "9",
+  const parseSpokenId = (text) => {
+    const map = {
+      zero: "0", one: "1", two: "2", three: "3", four: "4",
+      five: "5", six: "6", seven: "7", eight: "8", nine: "9",
+    };
+
+    let result = "";
+    const words = text.toLowerCase().trim().split(/\s+/);
+
+    for (let w of words) {
+      if (map[w]) result += map[w];
+      else if (/^\d+$/.test(w)) result += w;
+    }
+
+    const match = result.match(/^\d{4}$/);
+    return match ? match[0] : null;
   };
 
-  let result = "";
-  const words = text.toLowerCase().trim().split(/\s+/);
-
-  for (let w of words) {
-    if (map[w]) result += map[w];
-    else if (/^\d+$/.test(w)) result += w;
-  }
-
-  // Accept exactly 4 digits → e.g., "1009"
-  const match = result.match(/^\d{4}$/);
-  return match ? match[0] : null;
-};
-  // -------------------------
   // Load face-api models
-  // -------------------------
   useEffect(() => {
     const loadModels = async () => {
       try {
@@ -51,7 +45,7 @@ const parseSpokenId = (text) => {
           faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
         ]);
         console.log("✅ Models loaded");
-        setStatus("✅ Models loaded. Tap to start.");
+        setStatus("✅ Models loaded. Ready to start.");
         setModelsLoaded(true);
       } catch (err) {
         console.error("❌ Error loading models:", err);
@@ -61,20 +55,7 @@ const parseSpokenId = (text) => {
     loadModels();
   }, []);
 
-  // -------------------------
-  // Init AOS animations
-  // -------------------------
-  useEffect(() => {
-    AOS.init({ duration: 1000, once: true });
-  }, []);
-
-  // -------------------------
-  // Speech synthesis welcome
-  // -------------------------
-
-  // -------------------------
   // Init camera & speech recognition
-  // -------------------------
   const initPermissions = () => {
     if (!modelsLoaded) {
       alert("⚠️ Models are still loading. Please wait...");
@@ -114,9 +95,7 @@ const parseSpokenId = (text) => {
     recognitionRef.current.start();
   };
 
-  // -------------------------
   // Handle speech input
-  // -------------------------
   const handleSpeechResult = async (event) => {
     let liveTranscript = "";
     for (let i = 0; i < event.results.length; i++) {
@@ -150,9 +129,7 @@ const parseSpokenId = (text) => {
     }
   };
 
-  // -------------------------
   // Face verification
-  // -------------------------
   const handleFaceLogin = async (userId) => {
     setStatus("🔍 Fetching user image...");
     try {
@@ -205,7 +182,6 @@ const parseSpokenId = (text) => {
         alert("✅ Login successful!");
         localStorage.setItem("userId", userId);
 
-        // Extract numeric part and redirect
         const numericPart = parseInt(userId.replace(/\D/g, ""), 10);
         if (numericPart >= 2200) {
           navigate("/teacher-home");
@@ -229,50 +205,50 @@ const parseSpokenId = (text) => {
   return (
     <div>
       {!modelsLoaded && (
-        <div className="loader-wrapper">
-          <span className="loader-letter">L</span>
-          <span className="loader-letter">O</span>
-          <span className="loader-letter">A</span>
-          <span className="loader-letter">D</span>
-          <span className="loader-letter">I</span>
-          <span className="loader-letter">N</span>
-          <span className="loader-letter">G</span>
-          <div className="loader"></div>
+        <div className="loader-container">
+          <div className="simple-loader"></div>
+          <p className="loader-text">Loading Models...</p>
         </div>
       )}
 
       {modelsLoaded && !started && (
-        <div className="start-overlay" data-aos="fade-in">
+        <div className="start-overlay">
           <div className="instruction-box">
             <h2>👋 Welcome to PlaceSmart</h2>
             <p>Please follow the steps below to log in:</p>
             <ol>
               <li>Allow camera & microphone permissions.</li>
-              <li>If you are a new user, say <b>"new user"</b>.</li>
+              <li>If you are a new user, click "Register" or say <b>"new user"</b>.</li>
               <li>If you already have an account, speak your login ID or type it below.</li>
               <li>Face verification will start automatically.</li>
             </ol>
-            <button
-              className="close-btn-1"
-              onClick={() => {
-                setStarted(true);
-                
-                initPermissions();
-              }}
-            >
-              Got it
-            </button>
+            <div className="button-group">
+              <button
+                className="primary-btn"
+                onClick={() => {
+                  setStarted(true);
+                  initPermissions();
+                }}
+              >
+                Start Login
+              </button>
+              <button
+                className="secondary-btn"
+                onClick={() => navigate("/register")}
+              >
+                Register New User
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {modelsLoaded && (
-        <div className="login-container" data-aos="zoom-in">
+      {modelsLoaded && started && (
+        <div className="login-container">
           <h2>🔐 Login with UserID</h2>
           <p className="status-text">{status}</p>
-          <p className="transcript-text"><b>🗣 You said:</b> {transcript}</p>
+          <p className="transcript-text"><b>🗣 You said:</b> {transcript || "..."}</p>
 
-          {/* ✅ Manual Input Field */}
           <div className="manual-login">
             <input
               type="text"
@@ -300,6 +276,13 @@ const parseSpokenId = (text) => {
             height={240}
             className="webcam-video"
           />
+
+          <button
+            className="register-link-btn"
+            onClick={() => navigate("/register")}
+          >
+            Don't have an account? Register here
+          </button>
         </div>
       )}
     </div>

@@ -1,25 +1,43 @@
 import React, { useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import "../CSS/About.css";
 import Navbar from "./Navbar";
 import TusharImage from "../images/Tushar.jpg";
 import DishantImage from "../images/Dishant.jpg";
-import PratikImage from "../images/Pratik.jpg"
+import PratikImage from "../images/Pratik.jpg";
+
 const About = () => {
   useEffect(() => {
-    AOS.init({ duration: 1200, once: false, easing: "ease-in-out" });
+    // Custom Intersection Observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -100px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('aos-animate');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all elements with data-aos attribute
+    document.querySelectorAll('[data-aos]').forEach(el => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
     <>
       <Navbar />
       <div className="about-container">
-        {/* 🌄 hero-about Section */}
+        {/* 🌄 Hero Section */}
         <section className="hero-about-section">
           <img
             src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1920&q=80"
-            alt="About hero-about"
+            alt="About hero"
             className="hero-about-image"
           />
           <div className="hero-about-overlay" />
@@ -53,10 +71,51 @@ const About = () => {
                 img: PratikImage,
               },
             ].map((member, i) => (
-              <div className="team-card" key={i} data-aos="zoom-in">
+              <div 
+                className="team-card" 
+                key={i} 
+                data-aos="zoom-in"
+                data-aos-delay={i * 100}
+              >
                 <img src={member.img} alt={member.name} />
                 <h3>{member.name}</h3>
                 <p>{member.role}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 🎯 Mission Section */}
+        <section className="mission-section" data-aos="fade-up">
+          <h2>Our Mission</h2>
+          <p className="mission-text">
+            To create innovative solutions that empower students and professionals
+            to excel in their placement journey through cutting-edge technology,
+            comprehensive resources, and personalized guidance.
+          </p>
+          <div className="mission-cards">
+            {[
+              {
+                title: "🎓 Educate",
+                description: "Providing comprehensive study materials and resources for placement preparation."
+              },
+              {
+                title: "💪 Empower",
+                description: "Building confidence through mock interviews and real-world problem solving."
+              },
+              {
+                title: "🎯 Excel",
+                description: "Helping students achieve their career goals with personalized guidance."
+              }
+            ].map((mission, i) => (
+              <div 
+                className="mission-card" 
+                key={i}
+                data-aos="fade-up"
+                data-aos-delay={i * 100}
+              >
+                <h3>{mission.title}</h3>
+                <p>{mission.description}</p>
               </div>
             ))}
           </div>
@@ -71,27 +130,33 @@ const About = () => {
             across industries.
           </p>
           <div className="vision-points">
-            <div className="vision-card" data-aos="fade-right">
-              <h3>💡 Inspire</h3>
-              <p>
-                Encouraging creative minds to think beyond boundaries and shape
-                the future of technology.
-              </p>
-            </div>
-            <div className="vision-card" data-aos="fade-up">
-              <h3>🚀 Innovate</h3>
-              <p>
-                Pushing the limits of AI, data, and design to build intelligent
-                and scalable systems.
-              </p>
-            </div>
-            <div className="vision-card" data-aos="fade-left">
-              <h3>🌍 Impact</h3>
-              <p>
-                Making meaningful contributions that create lasting positive
-                change in people's lives.
-              </p>
-            </div>
+            {[
+              {
+                icon: "💡",
+                title: "Inspire",
+                description: "Encouraging creative minds to think beyond boundaries and shape the future of technology."
+              },
+              {
+                icon: "🚀",
+                title: "Innovate",
+                description: "Pushing the limits of AI, data, and design to build intelligent and scalable systems."
+              },
+              {
+                icon: "🌍",
+                title: "Impact",
+                description: "Making meaningful contributions that create lasting positive change in people's lives."
+              }
+            ].map((vision, i) => (
+              <div 
+                className="vision-card" 
+                key={i}
+                data-aos="fade-up"
+                data-aos-delay={i * 100}
+              >
+                <h3>{vision.icon} {vision.title}</h3>
+                <p>{vision.description}</p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -99,22 +164,22 @@ const About = () => {
         <section className="achievements-section" data-aos="fade-up">
           <h2>Our Achievements</h2>
           <ul>
-            <li data-aos="fade-right">
-              🏅 Developed an intelligent movie recommendation system integrating
-              AI and NLP.
-            </li>
-            <li data-aos="fade-left">
-              💻 Built multiple web applications with responsive, modern design
-              principles.
-            </li>
-            <li data-aos="fade-right">
-              ⚙️ Implemented advanced ML algorithms — CNN, SVD, and collaborative
-              filtering.
-            </li>
-            <li data-aos="fade-left">
-              🤝 Collaborated across disciplines to bring design and engineering
-              together seamlessly.
-            </li>
+            {[
+              "🏅 Developed an intelligent placement preparation system integrating AI and modern web technologies.",
+              "💻 Built multiple interactive web applications with responsive, modern design principles.",
+              "⚙️ Implemented advanced algorithms for coding problems and interview preparation.",
+              "🤝 Collaborated across disciplines to bring design and engineering together seamlessly.",
+              "📚 Created comprehensive study material repository for computer science subjects.",
+              "🎯 Helped hundreds of students prepare for technical interviews and placements."
+            ].map((achievement, i) => (
+              <li 
+                key={i}
+                data-aos="fade-right"
+                data-aos-delay={i * 50}
+              >
+                {achievement}
+              </li>
+            ))}
           </ul>
         </section>
 
@@ -127,11 +192,19 @@ const About = () => {
               "Node.js",
               "MongoDB",
               "Express",
-              "TensorFlow",
-              "OpenCV",
+              "JavaScript",
               "Python",
+              "CSS3",
+              "HTML5",
+              "Git",
+              "REST APIs"
             ].map((tech, i) => (
-              <span className="tech-chip" data-aos="zoom-in" key={i}>
+              <span 
+                className="tech-chip" 
+                data-aos="zoom-in"
+                data-aos-delay={i * 50}
+                key={i}
+              >
                 {tech}
               </span>
             ))}

@@ -1,0 +1,51 @@
+"d5aaafb","Disu2004","Fri, 2 Jan 2026 23:24:58 +0530","Resume Builder done",	 17 files changed, 4086 insertions(+), 593 deletions(-)
+	"91557bd","Disu2004","Thu, 25 Dec 2025 22:21:41 +0530","AI interviewer done",
+ 26 files changed, 3985 insertions(+), 1156 deletions(-)	
+"fefd9f5","Disu2004","Wed, 29 Oct 2025 17:31:23 +0530","web page testing",	 1 file changed, 11 insertions(+)
+	"3cf684e","Disu2004","Tue, 28 Oct 2025 19:08:35 +0530","backend fixed",
+ 6 files changed, 6 insertions(+), 6 deletions(-)	
+"ffc336e","Disu2004","Tue, 28 Oct 2025 18:59:51 +0530","Coding Dashboard , compiler API , Leetcode Problems",	 12 files changed, 1377 insertions(+), 22 deletions(-)
+	"507c878","Disu2004","Thu, 23 Oct 2025 17:01:42 +0530","fixed mini issues",
+ 10 files changed, 218 insertions(+), 26 deletions(-)	
+"3a512ae","Disu2004","Fri, 17 Oct 2025 15:34:41 +0530","CSS issues Fixed",	 6 files changed, 149 insertions(+), 193 deletions(-)
+	"2977097","Disu2004","Fri, 17 Oct 2025 15:17:58 +0530","Teacher Panel",
+ 37 files changed, 3881 insertions(+), 421 deletions(-)	
+"6c1844c","Disu2004","Sat, 11 Oct 2025 13:11:56 +0530","register navigation",	 1 file changed, 1 insertion(+), 1 deletion(-)
+	"c2a7a30","Disu2004","Sat, 11 Oct 2025 13:07:55 +0530","register navigation",
+ 1 file changed, 3 insertions(+), 3 deletions(-)	
+"64aa3b8","Disu2004","Tue, 7 Oct 2025 18:48:12 +0530","backend url changed",	 3 files changed, 5 insertions(+), 5 deletions(-)
+	"b12a9a5","Disu2004","Tue, 7 Oct 2025 16:03:33 +0530","user designation added",
+ 9 files changed, 342 insertions(+), 189 deletions(-)	
+"f1cbd99","Disu2004","Tue, 7 Oct 2025 13:31:27 +0530","about us page css edited",	 3 files changed, 16 insertions(+), 15 deletions(-)
+	"c321e27","Disu2004","Tue, 7 Oct 2025 09:17:03 +0530","about us page",
+ 10 files changed, 753 insertions(+), 265 deletions(-)	
+"56e0093","Disu2004","Mon, 6 Oct 2025 20:12:48 +0530","Study Materials Page",	 22 files changed, 1888 insertions(+), 144 deletions(-)
+	"313f972","Disu2004","Fri, 3 Oct 2025 09:05:49 +0530","logout",
+ 1 file changed, 1 insertion(+), 1 deletion(-)	
+"945ff5a","Disu2004","Fri, 3 Oct 2025 09:01:44 +0530","voice",	 2 files changed, 7 insertions(+), 2 deletions(-)
+	"91dbb30","Disu2004","Thu, 2 Oct 2025 20:28:19 +0530","loader",
+ 1 file changed, 1 insertion(+), 3 deletions(-)	
+"800e8a7","Disu2004","Thu, 2 Oct 2025 18:51:18 +0530","loader",	 2 files changed, 189 insertions(+), 35 deletions(-)
+	"28048bf","Disu2004","Thu, 2 Oct 2025 18:43:22 +0530","voice interaction",
+ 1 file changed, 26 insertions(+), 1 deletion(-)	
+"fc9d180","Disu2004","Thu, 2 Oct 2025 18:26:02 +0530","Today's final commit",	 1 file changed, 1 insertion(+), 1 deletion(-)
+	"84bf06f","Disu2004","Thu, 2 Oct 2025 17:22:43 +0530","logo",
+ 2 files changed, 2 insertions(+), 2 deletions(-)	
+"0d33bae","Disu2004","Thu, 2 Oct 2025 17:02:43 +0530","login page",	 1 file changed, 1 insertion(+), 1 deletion(-)
+	"5ab0698","Disu2004","Thu, 2 Oct 2025 16:30:14 +0530","model url",
+ 1 file changed, 1 insertion(+), 1 deletion(-)	
+"21b2798","Disu2004","Thu, 2 Oct 2025 16:26:17 +0530","model url",	 1 file changed, 23 insertions(+), 10 deletions(-)
+	"f016197","Disu2004","Thu, 2 Oct 2025 16:20:31 +0530","model url",
+ 2 files changed, 12 insertions(+), 90 deletions(-)	
+"a210303","Disu2004","Thu, 2 Oct 2025 15:48:23 +0530","Home Page Designed",	 11 files changed, 1139 insertions(+), 62 deletions(-)
+	"92a7c83","Disu2004","Thu, 2 Oct 2025 12:01:52 +0530","undo",
+ 5 files changed, 39 insertions(+), 5 deletions(-)	
+"efb6162","Dishant Upadhay","Thu, 2 Oct 2025 11:28:58 +0530","Update Login.jsx",	 1 file changed, 65 insertions(+), 38 deletions(-)
+	"01a5449","Dishant Upadhay","Thu, 2 Oct 2025 11:18:29 +0530","Update Login.jsx",
+ 1 file changed, 35 insertions(+), 30 deletions(-)	
+"88b95f0","Disu2004","Thu, 2 Oct 2025 09:44:44 +0530","face authentication",	 3 files changed, 15 insertions(+), 5 deletions(-)
+	"0a6d92b","Disu2004","Thu, 2 Oct 2025 09:33:31 +0530","Backend Deployed",
+ 2 files changed, 2 insertions(+), 2 deletions(-)	
+"9b1bb83","Disu2004","Thu, 2 Oct 2025 09:14:49 +0530","Client Server Added to Repo",	 37 files changed, 6967 insertions(+)
+	"0ae005e","Dishant Upadhay","Thu, 2 Oct 2025 09:10:06 +0530","Create Readme.md",
+ 1 file changed, 1 insertion(+)	

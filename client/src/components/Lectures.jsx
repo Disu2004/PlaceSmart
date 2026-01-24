@@ -1,18 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import "../CSS/Lectures.css";
+import Navbar from './Navbar';
 
 const Lectures = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: true,
-    });
-  }, []);
-
   const [selectedSubject, setSelectedSubject] = useState('All');
+
+  useEffect(() => {
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -100px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('aos-animate');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all elements with data-aos attribute
+    document.querySelectorAll('[data-aos]').forEach(el => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [selectedSubject]); // Re-observe when filtered playlists change
 
   const playlists = [
     {
@@ -101,8 +115,11 @@ const Lectures = () => {
     : playlists.filter(p => p.subject === selectedSubject);
 
   return (
+   <>
+   <Navbar  />
+    
     <div className="lectures-container">
-      <header className="lectures-header">
+      <header className="lectures-header" data-aos="fade-down">
         <h1 className="lectures-title">Explore Our Lecture Playlists</h1>
         <p className="lectures-subtitle">
           Dive into comprehensive video lectures across various computer science and engineering subjects. 
@@ -110,11 +127,11 @@ const Lectures = () => {
         </p>
       </header>
       
-      <div className="brave-message">
+      <div className="brave-message" data-aos="fade-up">
         <p>Hey cutie! 🦁 Use Brave browser to skip those pesky ads and focus on learning! 💛</p>
       </div>
       
-      <div className="filter-section">
+      <div className="filter-section" data-aos="zoom-in">
         <label htmlFor="subject-filter" className="filter-label">Filter by Subject: </label>
         <select 
           id="subject-filter"
@@ -129,18 +146,18 @@ const Lectures = () => {
           ))}
         </select>
         <p className="filter-count">
-          Showing {filteredPlaylists.length} playlist{filteredPlaylists.length !== 1 ? 's' : ''} for "{selectedSubject}"
+          Showing {filteredPlaylists.length} playlist{filteredPlaylists.length !== 1 ? 's' : ''}
         </p>
       </div>
       
       {filteredPlaylists.length > 0 ? (
         <div className="playlists-grid">
-          {filteredPlaylists.map((playlist) => (
+          {filteredPlaylists.map((playlist, index) => (
             <div 
               key={playlist.id} 
               className="playlist-card"
-              data-aos="zoom-in" 
-              data-aos-delay={playlist.id * 100}
+              data-aos="fade-up" 
+              data-aos-delay={index * 100}
             >
               <h3 className="playlist-title">
                 {playlist.title}
@@ -167,15 +184,16 @@ const Lectures = () => {
           ))}
         </div>
       ) : (
-        <div className="no-results">
+        <div className="no-results" data-aos="fade-up">
           <p>No playlists found for "{selectedSubject}". Try another subject!</p>
         </div>
       )}
       
-      <footer className="lectures-footer">
+      <footer className="lectures-footer" data-aos="fade-up">
         <p>Happy Learning! 🚀 | Total Playlists: {playlists.length}</p>
       </footer>
-    </div>  
+    </div> 
+   </> 
   );
 };
 

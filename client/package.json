@@ -24,6 +24,7 @@
     "idb-keyval": "^6.2.2",
     "jspdf": "^3.0.3",
     "jszip-utils": "^0.1.0",
+    "lucide-react": "^0.563.0",
     "mammoth": "^1.11.0",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^3.11.174",

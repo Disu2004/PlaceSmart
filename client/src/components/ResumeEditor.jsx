@@ -1,18 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import html2pdf from 'html2pdf.js';
 import '../CSS/ResumeEditor.css';
+import { useNavigate } from 'react-router-dom';
 
 // Main App Component
 export default function ResumeBuilderApp() {
   const [currentView, setCurrentView] = useState('gallery');
   const [selectedResumeId, setSelectedResumeId] = useState(null);
-  const [theme, setTheme] = useState('dark');
-  const [showWelcome, setShowWelcome] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowWelcome(false), 4000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const navigateToEditor = (id) => {
     setSelectedResumeId(id);
@@ -24,52 +18,17 @@ export default function ResumeBuilderApp() {
     setSelectedResumeId(null);
   };
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
-
   return (
-    <div className={`app-container ${theme}`}>
-      {showWelcome && <WelcomeMessage theme={theme} />}
-
-      <ThemeToggle theme={theme} onToggle={toggleTheme} />
-
+    <div className="app-container">
       {currentView === 'gallery' ? (
-        <ResumeGallery onSelectResume={navigateToEditor} theme={theme} />
+        <ResumeGallery onSelectResume={navigateToEditor} />
       ) : (
         <ResumeEditor 
           resumeId={selectedResumeId} 
           onBack={navigateToGallery} 
-          theme={theme} 
         />
       )}
     </div>
-  );
-}
-
-// Welcome Message Component
-function WelcomeMessage({ theme }) {
-  return (
-    <div className="welcome-overlay">
-      <div className="welcome-card">
-        <div className="welcome-icon">✨</div>
-        <h2 className="welcome-title">Specialized Theme Available!</h2>
-        <p className="welcome-text">
-          {theme === 'dark' ? '🌙 Golden Black Theme Active' : '🌸 Pink White Theme Active'}
-        </p>
-        <p className="welcome-subtext">Click the theme button to switch anytime</p>
-      </div>
-    </div>
-  );
-}
-
-// Theme Toggle Button
-function ThemeToggle({ theme, onToggle }) {
-  return (
-    <button className="theme-toggle" onClick={onToggle}>
-      <span className="theme-icon">{theme === 'dark' ? '🌸' : '🌙'}</span>
-      <span className="theme-label">{theme === 'dark' ? 'Light' : 'Dark'}</span>
-    </button>
   );
 }
 
@@ -116,11 +75,9 @@ function ResumeGallery({ onSelectResume }) {
 
   return (
     <div className="gallery-container">
-      <div className="animated-background" />
-
       <div className="gallery-header">
         <div className="header-content">
-          <div className="logo-icon">✨</div>
+          <div className="logo-icon">📄</div>
           <h1 className="main-title">Resume Templates</h1>
         </div>
         <p className="subtitle">Choose a template and customize your perfect resume</p>
@@ -170,11 +127,13 @@ function ResumeCard({ resume, index, onSelect }) {
 }
 
 // Resume Editor Component
-function ResumeEditor({ resumeId, onBack, theme }) {
+function ResumeEditor({ resumeId, onBack }) {
+  const navigate = useNavigate();
   const resumeRef = useRef();
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [pdfDownloading, setPdfDownloading] = useState(false);
+  const [resumeData, setResumeData] = useState({ html: '', css: '' });
 
   useEffect(() => {
     const backendUrl = import.meta.env.VITE_APP_BACKEND_URL || 'http://localhost:8000';
@@ -186,26 +145,23 @@ function ResumeEditor({ resumeId, onBack, theme }) {
       })
       .then(data => {
         const { html, css } = data;
+        
+        setResumeData({ html, css });
 
-        // Inject resume content with ISOLATED styles
         resumeRef.current.innerHTML = `
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-          <style>
-            /* Reset only for resume content - NOT for whole page */
+          <style id="resume-base-styles">
             .resume-content * { 
               box-sizing: border-box; 
             }
             
-            /* Base resume styling - only affects resume content */
             .resume-content {
               -webkit-print-color-adjust: exact;
               print-color-adjust: exact;
             }
             
-            /* User's resume styles */
             ${css}
 
-            /* Editable styles - ONLY for screen, ONLY for resume content */
             @media screen {
               .resume-content [contenteditable=true] {
                 min-height: 1.2em;
@@ -215,15 +171,15 @@ function ResumeEditor({ resumeId, onBack, theme }) {
               }
               
               .resume-content [contenteditable=true]:focus {
-                outline: 2px solid ${theme === 'dark' ? '#FFD700' : '#D946A6'} !important;
-                background: ${theme === 'dark' ? 'rgba(255,215,0,0.08)' : 'rgba(217,70,166,0.08)'} !important;
+                outline: 2px solid #3b82f6 !important;
+                background: rgba(59, 130, 246, 0.08) !important;
                 border-radius: 4px;
                 padding: 4px 8px;
-                box-shadow: 0 0 10px ${theme === 'dark' ? 'rgba(255,215,0,0.3)' : 'rgba(217,70,166,0.3)'} !important;
+                box-shadow: 0 0 10px rgba(59, 130, 246, 0.3) !important;
               }
               
               .resume-content [contenteditable=true]:hover:not(:focus) {
-                background: ${theme === 'dark' ? 'rgba(255,215,0,0.04)' : 'rgba(217,70,166,0.04)'} !important;
+                background: rgba(59, 130, 246, 0.04) !important;
                 border-radius: 4px;
               }
               
@@ -234,7 +190,6 @@ function ResumeEditor({ resumeId, onBack, theme }) {
               }
             }
             
-            /* Remove ALL editing styles for PDF/print */
             @media print {
               .resume-content [contenteditable=true],
               .resume-content [contenteditable=true]:focus,
@@ -251,7 +206,6 @@ function ResumeEditor({ resumeId, onBack, theme }) {
               }
             }
             
-            /* Image handling */
             .resume-content img { 
               max-width: 100%; 
               height: auto;
@@ -263,14 +217,12 @@ function ResumeEditor({ resumeId, onBack, theme }) {
         `;
 
         setTimeout(() => {
-          // Make text editable - target only meaningful text elements
           const editable = resumeRef.current.querySelectorAll(
             "h1, h2, h3, h4, h5, h6, p, li, span:not(.icon):not([class*='separator']), td, th, " +
             "div:not(.resume-paper):not(.resume-content):not([class*='container']):not([class*='wrapper']):not([class*='section'])"
           );
           
           editable.forEach(el => {
-            // Only make elements with actual text content editable
             if (el.textContent.trim().length > 0) {
               el.setAttribute("contenteditable", "true");
             }
@@ -283,7 +235,7 @@ function ResumeEditor({ resumeId, onBack, theme }) {
         alert("Template not found!");
         setLoading(false);
       });
-  }, [resumeId, theme]);
+  }, [resumeId]);
 
   const handlePhoto = (e) => {
     const file = e.target.files[0];
@@ -320,100 +272,145 @@ function ResumeEditor({ resumeId, onBack, theme }) {
     reader.readAsDataURL(file);
   };
 
-const downloadPDF = () => {
-  const exportElement = resumeRef.current;
-  if (!exportElement) return;
-
-  setPdfDownloading(true);
-  setLoading(true);
-
-  // Clone the element
-  const clone = exportElement.cloneNode(true);
-  
-  // Remove editable attributes
-  const editableElements = clone.querySelectorAll('[contenteditable="true"]');
-  editableElements.forEach(el => {
-    el.removeAttribute('contenteditable');
-    el.removeAttribute('style');
-  });
-
-  // Ensure proper A4 sizing
-  clone.style.width = '210mm';
-  clone.style.minHeight = '297mm';
-  clone.style.background = '#ffffff';
-  clone.style.padding = '0';
-  clone.style.margin = '0';
-
-  const tempContainer = document.createElement('div');
-  tempContainer.style.position = 'fixed';
-  tempContainer.style.left = '-9999px';
-  tempContainer.style.top = '0';
-  tempContainer.style.width = '210mm';
-  tempContainer.style.background = '#ffffff';
-  tempContainer.style.boxSizing = 'border-box';
-  tempContainer.appendChild(clone);
-  document.body.appendChild(tempContainer);
-
-  const opt = {
-    margin: [10, 10, 10, 10],
-    filename: `Resume_${new Date().getTime()}.pdf`,
-    image: { 
-      type: 'jpeg', 
-      quality: 0.98 
-    },
-    html2canvas: { 
-      scale: 2,
-      useCORS: true,
-      backgroundColor: '#ffffff',
-      logging: false,
-      windowWidth: 794,  // 210mm * 96dpi / 25.4mm/inch
-      windowHeight: 1123, // 297mm * 96dpi / 25.4mm/inch
-      width: 794,
-      height: 1123,
-      x: 0,
-      y: 0,
-      scrollX: 0,
-      scrollY: 0,
-      letterRendering: true
-    },
-    jsPDF: { 
-      unit: 'mm', 
-      format: 'a4', 
-      orientation: 'portrait'
-    },
-    pagebreak: { 
-      mode: ['avoid-all', 'css', 'legacy']
+  const downloadPDF = async () => {
+    if (!resumeRef.current) {
+      alert('Resume content not loaded');
+      return;
     }
-  };
 
-  html2pdf()
-    .set(opt)
-    .from(tempContainer)
-    .save()
-    .then(() => {
-      document.body.removeChild(tempContainer);
+    setPdfDownloading(true);
+    setLoading(true);
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      const resumeContentEl = resumeRef.current.querySelector('.resume-content') || resumeRef.current;
+      
+      if (!resumeContentEl || !resumeContentEl.innerHTML || resumeContentEl.innerHTML.trim().length < 100) {
+        alert('Resume content not loaded properly. Please refresh and try again.');
+        setPdfDownloading(false);
+        setLoading(false);
+        return;
+      }
+
+      const clonedContent = resumeContentEl.cloneNode(true);
+      
+      const editableEls = clonedContent.querySelectorAll('[contenteditable]');
+      editableEls.forEach(el => {
+        el.removeAttribute('contenteditable');
+        el.style.outline = 'none';
+        el.style.background = 'transparent';
+        el.style.boxShadow = 'none';
+      });
+
+      const pdfContainer = document.createElement('div');
+      pdfContainer.style.cssText = `
+        position: fixed;
+        left: -99999px;
+        top: 0;
+        width: 210mm;
+        background: white;
+        padding: 0;
+        margin: 0;
+      `;
+
+      const wrapper = document.createElement('div');
+      wrapper.style.cssText = `
+        width: 210mm;
+        min-height: 297mm;
+        background: white;
+        font-family: 'Inter', Arial, sans-serif;
+        padding: 20mm;
+      `;
+
+      const styleTag = document.createElement('style');
+      styleTag.textContent = `
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+        
+        * {
+          box-sizing: border-box;
+        }
+        
+        [contenteditable] {
+          outline: none !important;
+          background: transparent !important;
+          box-shadow: none !important;
+          border: none !important;
+        }
+        
+        img {
+          max-width: 100%;
+          height: auto;
+          display: block;
+        }
+        
+        ${resumeData.css}
+      `;
+
+      wrapper.appendChild(styleTag);
+      wrapper.appendChild(clonedContent);
+      pdfContainer.appendChild(wrapper);
+      document.body.appendChild(pdfContainer);
+
+      const options = {
+        margin: 0,
+        filename: `Resume_${Date.now()}.pdf`,
+        image: { 
+          type: 'jpeg', 
+          quality: 0.98 
+        },
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          windowWidth: 794,
+          windowHeight: 1123,
+          scrollY: 0,
+          scrollX: 0
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait',
+          compress: true
+        },
+        pagebreak: { 
+          mode: ['avoid-all', 'css', 'legacy'] 
+        }
+      };
+
+      await html2pdf()
+        .set(options)
+        .from(wrapper)
+        .save();
+
+      document.body.removeChild(pdfContainer);
+      
       setPdfDownloading(false);
       setLoading(false);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
-    })
-    .catch((err) => {
-      console.error('PDF error:', err);
-      document.body.removeChild(tempContainer);
+
+    } catch (error) {
+      console.error('PDF Generation Error:', error);
       setPdfDownloading(false);
       setLoading(false);
-      alert('Failed to generate PDF. Please try again.');
-    });
-};
+      alert(`Failed to generate PDF: ${error.message}`);
+    }
+  };
+
+  const handleBackToHome = () => {
+    navigate('/');
+  };
 
   return (
     <div className="editor-container">
-      <div className="animated-background" />
-
       <div className="editor-navbar">
         <div className="navbar-content">
           <div className="navbar-logo">
-            <div className="logo-icon">✨</div>
+            <div className="logo-icon">📄</div>
             <h1 className="navbar-title">Resume Editor</h1>
           </div>
 
@@ -436,8 +433,11 @@ const downloadPDF = () => {
               {pdfDownloading ? '⏳ Generating...' : '⬇️ Download PDF'}
             </button>
 
-            <button onClick={onBack} className="back-button">
-              🏠 Gallery
+            <button 
+              onClick={handleBackToHome} 
+              className="back-button"
+            >
+              ⬅ Back to Home
             </button>
           </div>
         </div>
@@ -462,19 +462,6 @@ const downloadPDF = () => {
       <div className="resume-container">
         <div className="resume-paper">
           <div ref={resumeRef} className="resume-content" />
-        </div>
-      </div>
-
-      <div className="instructions">
-        <div className="instructions-box">
-          <p className="instructions-text">
-            <span className="instructions-icon">✨</span>
-            {' '}Click કરીને નામ, નંબર, સ્કિલ્સ બધું બદલો
-            <span className="instructions-separator">•</span>
-            Photo પણ આવશે
-            <span className="instructions-separator">•</span>
-            PDF પરફેક્ટ આવશે
-          </p>
         </div>
       </div>
     </div>

@@ -1,305 +1,226 @@
-/* Lectures.css */
+/* Lectures.css - Modern Blue Theme */
 
-/* Global Styles */
+/* ==================== SCROLL ANIMATIONS ==================== */
+[data-aos] {
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+[data-aos="fade-up"] {
+    transform: translateY(50px);
+}
+
+[data-aos="fade-down"] {
+    transform: translateY(-50px);
+}
+
+[data-aos="fade-left"] {
+    transform: translateX(50px);
+}
+
+[data-aos="fade-right"] {
+    transform: translateX(-50px);
+}
+
+[data-aos="zoom-in"] {
+    transform: scale(0.85);
+}
+
+[data-aos="flip-left"] {
+    transform: perspective(1000px) rotateY(-15deg);
+    opacity: 0;
+}
+
+[data-aos].aos-animate {
+    opacity: 1 !important;
+    transform: translateY(0) translateX(0) scale(1) rotateY(0) !important;
+}
+
+[data-aos-delay="100"].aos-animate {
+    transition-delay: 0.1s;
+}
+
+[data-aos-delay="200"].aos-animate {
+    transition-delay: 0.2s;
+}
+
+[data-aos-delay="300"].aos-animate {
+    transition-delay: 0.3s;
+}
+
+/* ==================== GLOBAL STYLES ==================== */
 .lectures-container {
-    background-color: #000;
-    color: #fff;
+    font-family: 'Montserrat', Arial, sans-serif;
+    background: #ffffff;
+    color: #2d2d2d;
     min-height: 100vh;
     padding: 20px;
-    font-family: 'Arial', sans-serif;
+    transition: background 0.3s, color 0.3s;
 }
 
-/* Title */
-.lectures-title {
-    color: #FFD700;
+/* ==================== HEADER ==================== */
+.lectures-header {
     text-align: center;
+    margin-bottom: 50px;
+    padding: 60px 20px 40px;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border-radius: 20px;
+}
+
+.lectures-title {
+    color: #3b82f6;
     margin-bottom: 20px;
     font-size: 3rem;
-    text-shadow: 2px 2px 4px rgba(255, 215, 0, 0.3);
-}
-
-/* Brave Message */
-.brave-message {
-    text-align: center;
-    margin-bottom: 40px;
-    padding: 15px;
-    background-color: #111;
-    border-radius: 10px;
-    border: 1px solid #FFD700;
-}
-
-.brave-message p {
-    color: #FFD700;
-    font-size: 1.2rem;
-    margin: 0;
-    font-style: italic;
-}
-
-/* Playlists Grid */
-.playlists-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-/* Lectures.css */
-
-/* Global Styles */
-.lectures-container {
-  background-color: #000;
-  color: #fff;
-  min-height: 100vh;
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
-}
-
-/* Header */
-.lectures-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.lectures-title {
-  color: #FFD700;
-  margin-bottom: 10px;
-  font-size: 3rem;
-  text-shadow: 2px 2px 4px rgba(255, 215, 0, 0.3);
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(59, 130, 246, 0.2);
 }
 
 .lectures-subtitle {
-  color: #ccc;
-  font-size: 1.2rem;
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.6;
+    color: #475569;
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
 }
 
-/* Brave Message */
+/* ==================== BRAVE MESSAGE ==================== */
 .brave-message {
-  text-align: center;
-  margin-bottom: 40px;
-  padding: 15px;
-  background-color: #111;
-  border-radius: 10px;
-  border: 1px solid #FFD700;
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px;
+    background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+    border-radius: 15px;
+    border: 2px solid #3b82f6;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
 }
 
 .brave-message p {
-  color: #FFD700;
-  font-size: 1.2rem;
-  margin: 0;
-  font-style: italic;
+    color: #3b82f6;
+    font-size: 1.2rem;
+    margin: 0;
+    font-weight: 600;
 }
 
-/* Filter Section */
+/* ==================== FILTER SECTION ==================== */
 .filter-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 15px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .filter-label {
-  color: #FFD700;
-  font-size: 1.1rem;
-  font-weight: bold;
+    color: #3b82f6;
+    font-size: 1.1rem;
+    font-weight: 700;
 }
 
 .subject-filter {
-  padding: 8px 12px;
-  border: 1px solid #FFD700;
-  border-radius: 5px;
-  background-color: #111;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
+    padding: 12px 20px;
+    border: 2px solid #3b82f6;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #2d2d2d;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
 }
 
 .subject-filter:focus {
-  outline: none;
-  box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    border-color: #60a5fa;
+}
+
+.subject-filter:hover {
+    background: #eff6ff;
 }
 
 .filter-count {
-  color: #ccc;
-  font-size: 0.9rem;
-  margin: 0;
+    color: #475569;
+    font-size: 0.95rem;
+    margin: 0;
+    font-weight: 500;
 }
 
-/* No Results */
+/* ==================== NO RESULTS ==================== */
 .no-results {
-  text-align: center;
-  padding: 40px;
-  color: #ccc;
-  font-size: 1.2rem;
-}
-
-/* Playlists Grid */
-.playlists-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Playlist Card */
-.playlist-card {
-  background-color: #111;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(255, 215, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-  border: 2px solid transparent;
-  position: relative;
-  overflow: hidden;
-}
-
-.playlist-card::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: conic-gradient(from 0deg, #FFD700, #FFA500, #FF6347, #FFD700, #FFA500);
-  border-radius: 12px;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  animation: none;
-}
-
-
-@keyframes rotateBorder {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.playlist-card:hover{
-    transform:scale(1.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
-/* Playlist Title */
-.playlist-title {
-  color: #FFD700;
-  margin-bottom: 15px;
-  font-size: 1.5rem;
-  text-align: center;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-/* Playlist Embed */
-.playlist-embed {
-  position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
-  overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease;
-}
-
-.playlist-embed:hover {
-  transform: scale(1.02);
-}
-
-.playlist-embed iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-}
-
-/* Playlist Subject */
-.playlist-subject {
-  color: #ccc;
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
-}
-
-/* Playlist Description */
-.playlist-description {
-  color: #ddd;
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.4;
-  transition: color 0.3s ease;
-}
-
-/* Footer */
-.lectures-footer {
-  text-align: center;
-  margin-top: 40px;
-  padding: 20px;
-  color: #ccc;
-  border-top: 1px solid #333;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .playlists-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-  
-  .lectures-title {
-    font-size: 2.5rem;
-  }
-  
-  .lectures-subtitle {
-    font-size: 1rem;
-  }
-  
-  .brave-message p {
-    font-size: 1rem;
-  }
-  
-  .filter-section {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-  
-  .filter-count {
     text-align: center;
-  }
+    padding: 60px 20px;
+    color: #475569;
+    font-size: 1.3rem;
+    background: #f8fafc;
+    border-radius: 15px;
+    margin: 20px;
 }
-/* Remove hover animations */
 
-/* Playlist Title */
+/* ==================== PLAYLISTS GRID ==================== */
+.playlists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ==================== PLAYLIST CARD ==================== */
+.playlist-card {
+    background: linear-gradient(135deg, #fff 0%, #dbeafe 100%);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid #bfdbfe;
+    position: relative;
+    overflow: hidden;
+}
+
+.playlist-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 35px rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
+}
+
+/* ==================== PLAYLIST TITLE ==================== */
 .playlist-title {
-    color: #FFD700;
-    margin-bottom: 15px;
+    color: #3b82f6;
+    margin-bottom: 20px;
     font-size: 1.5rem;
     text-align: center;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+    font-weight: 700;
+    transition: color 0.3s ease;
 }
 
-/* Playlist Embed */
+/* ==================== PLAYLIST EMBED ==================== */
 .playlist-embed {
     position: relative;
     padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
     transition: transform 0.3s ease;
+    border: 2px solid #bfdbfe;
 }
 
+.playlist-embed:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+}
 
 .playlist-embed iframe {
     position: absolute;
@@ -307,39 +228,76 @@
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 8px;
+    border-radius: 15px;
 }
 
-/* Playlist Subject */
+/* ==================== PLAYLIST SUBJECT ==================== */
 .playlist-subject {
-    color: #ccc;
+    color: #3b82f6;
     text-align: center;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    font-weight: 600;
     transition: color 0.3s ease;
 }
 
-/* Playlist Description */
+/* ==================== PLAYLIST DESCRIPTION ==================== */
 .playlist-description {
-    color: #ddd;
+    color: #475569;
     margin: 0;
     font-size: 1rem;
-    line-height: 1.4;
+    line-height: 1.6;
+    text-align: center;
     transition: color 0.3s ease;
 }
 
-/* Responsive */
+/* ==================== FOOTER ==================== */
+.lectures-footer {
+    text-align: center;
+    margin-top: 60px;
+    padding: 30px 20px;
+    color: #475569;
+    border-top: 2px solid #bfdbfe;
+    background: #f8fafc;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
     .playlists-grid {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 20px;
     }
     
     .lectures-title {
         font-size: 2.5rem;
     }
     
+    .lectures-subtitle {
+        font-size: 1rem;
+    }
+    
     .brave-message p {
         font-size: 1rem;
+    }
+    
+    .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .subject-filter {
+        width: 100%;
+    }
+    
+    .filter-count {
+        text-align: center;
+    }
+
+    .lectures-header {
+        padding: 40px 20px 30px;
     }
 }
