@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import * as pdfjsLib from "pdfjs-dist";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import "../../CSS/UploadQuestions.css";
 import TeacherNav from "./TeacherNav";
 
@@ -17,8 +15,8 @@ const UploadQuestions = () => {
     const [questions, setQuestions] = useState([]);
     const [isExtracting, setIsExtracting] = useState(false);
     const [extractionError, setExtractionError] = useState(null);
-    const [uploadError, setUploadError] = useState(null); // New: For backend errors
-    const [isUploading, setIsUploading] = useState(false); // New: Upload progress
+    const [uploadError, setUploadError] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [previewText, setPreviewText] = useState("");
     const [selectedQuestions, setSelectedQuestions] = useState([]);
@@ -27,14 +25,33 @@ const UploadQuestions = () => {
     const parseTimeoutRef = useRef(null);
     const userID = localStorage.getItem("userId");
     const BACKEND_URL = import.meta.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
-    useEffect(() => {
-        AOS.init({ duration: 800 });
 
-        console.log(userID)
+    useEffect(() => {
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -100px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('aos-animate');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with data-aos attribute
+        document.querySelectorAll('[data-aos]').forEach(el => {
+            observer.observe(el);
+        });
+
+        console.log(userID);
         console.log("PDF.js version:", pdfjsLib.version);
         console.log("Worker configured:", pdfjsLib.GlobalWorkerOptions.workerSrc);
 
         return () => {
+            observer.disconnect();
             if (abortControllerRef.current) {
                 abortControllerRef.current.abort();
             }
@@ -45,7 +62,7 @@ const UploadQuestions = () => {
                 clearTimeout(parseTimeoutRef.current);
             }
         };
-    }, []);
+    }, [userID]);
 
     const extractQuestionsGeneral = useCallback((rawText) => {
         if (!rawText || rawText.length < 30) return [];
@@ -54,10 +71,10 @@ const UploadQuestions = () => {
 
         // Step 1️⃣ Clean up and normalize
         let text = rawText
-            .replace(/\r?\n+/g, " ") // join broken lines
+            .replace(/\r?\n+/g, " ")
             .replace(/\s{2,}/g, " ")
             .replace(/�/g, "")
-            .replace(/\bCO\d+\b/gi, "") // only remove CO codes, not Bloom verbs
+            .replace(/\bCO\d+\b/gi, "")
             .replace(/-{2,}/g, "")
             .replace(/[_•●▪◦]/g, "")
             .trim();
@@ -71,7 +88,7 @@ const UploadQuestions = () => {
             .replace(/\bDue Date\b/gi, "")
             .replace(/\bNote:\b/gi, "")
             .replace(/\bSubject\b/gi, "")
-            .replace(/\d{2}\/\d{2}\/\d{4}/g, "") // remove dates like 18/07/2025
+            .replace(/\d{2}\/\d{2}\/\d{4}/g, "")
             .replace(/\bAssignment - 1\b/gi, "")
             .replace(/\bWrite Assignment in the file pages\b/gi, "")
             .replace(/\bSubmit assignment in the file\b/gi, "")
@@ -91,14 +108,13 @@ const UploadQuestions = () => {
         if (tableStart > -1) {
             text = text.substring(tableStart);
         } else {
-            // Fallback to previous assignment start if no table found
             const assignmentStart = text.search(/\bAssignment for Average Students\b/i);
             if (assignmentStart > 0) {
                 text = text.substring(assignmentStart);
             }
         }
 
-        // Step 3️⃣ Universal question pattern, handling optional dot after number
+        // Step 3️⃣ Universal question pattern
         const regex = /\b(\d+)\s*(?:\.\s*)?([A-Z].+?)(?=\b\d+\s*(?:\.\s*)?[A-Z]|\s*$)/g;
 
         const matches = [...text.matchAll(regex)];
@@ -120,10 +136,10 @@ const UploadQuestions = () => {
             const words = questionText.split(' ');
             questionText = words
                 .map((word, index) => {
-                    const cleanWord = word.replace(/[.,;:!?]/, '').trim(); // remove punctuation for matching
+                    const cleanWord = word.replace(/[.,;:!?]/, '').trim();
                     const upperClean = cleanWord.toUpperCase();
                     if (index > 0 && bloomWords.some(b => b.toUpperCase() === upperClean)) {
-                        return ''; // skip this word
+                        return '';
                     }
                     return word;
                 })
@@ -345,7 +361,6 @@ const UploadQuestions = () => {
         if (fileInput) fileInput.value = '';
     }, []);
 
-    // Updated: Backend integration for upload
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
 
@@ -368,7 +383,6 @@ const UploadQuestions = () => {
         setIsUploading(true);
         setUploadError(null);
 
-        // Prepare questions for backend (append level to question text)
         const questionsToUpload = validQuestions.map(q => ({
             userID,
             question: `${level ? `[${level}] ` : ''}${q.text}`,
@@ -385,7 +399,6 @@ const UploadQuestions = () => {
             });
 
             if (!response.ok) {
-                // Handle non-2xx responses without trying to parse JSON
                 const errorText = await response.text();
                 throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText || 'Unknown error'}`);
             }
@@ -394,7 +407,7 @@ const UploadQuestions = () => {
 
             if (data.success) {
                 alert(data.message);
-                clearQuestions(); // Clear after successful upload
+                clearQuestions();
             } else {
                 setUploadError(`❌ Upload failed: ${data.error}`);
             }
@@ -404,14 +417,13 @@ const UploadQuestions = () => {
         } finally {
             setIsUploading(false);
         }
-    }, [questions, subject, level, userID, clearQuestions]);
+    }, [questions, subject, level, userID, clearQuestions, BACKEND_URL]);
 
     const deleteQuestion = useCallback((questionId) => {
         setQuestions(prev => prev.filter(q => q.id !== questionId));
         setSelectedQuestions(prev => prev.filter(id => id !== questionId));
     }, []);
 
-    // ✅ Merge questions feature
     const toggleSelectQuestion = useCallback((questionId) => {
         setSelectedQuestions(prev => {
             if (prev.includes(questionId)) {
@@ -531,7 +543,6 @@ const UploadQuestions = () => {
                         </div>
                     )}
 
-
                     <div className="form-group">
                         <label>📚 Subject:</label>
                         <input
@@ -550,7 +561,7 @@ const UploadQuestions = () => {
                                 <button
                                     key={diff}
                                     type="button"
-                                    className={`level-btn ${level === diff ? "selected" : ""}`}
+                                    className={`level-btn ${diff.toLowerCase()} ${level === diff ? "selected" : ""}`}
                                     onClick={() => setLevel(diff)}
                                 >
                                     {diff}
@@ -611,7 +622,8 @@ const UploadQuestions = () => {
                                             type="checkbox"
                                             checked={selectedQuestions.includes(question.id)}
                                             onChange={() => toggleSelectQuestion(question.id)}
-                                        /> Q{question.number}
+                                        />
+                                        Q{question.number}
                                     </div>
                                     <div className="question-text">
                                         <p>{question.text}</p>

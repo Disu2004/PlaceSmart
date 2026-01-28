@@ -2,8 +2,8 @@
 .view-questions-container {
   width: 100%;
   min-height: 100vh;
-  background-color: #000;
-  color: #ffd60a;
+  background-color: #ffffff;
+  color: #2d2d2d;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -11,13 +11,57 @@
   overflow-y: auto;
 }
 
+/* ==================== SCROLL ANIMATIONS ==================== */
+[data-aos] {
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+[data-aos="fade-up"] {
+    transform: translateY(50px);
+}
+
+[data-aos="fade-down"] {
+    transform: translateY(-50px);
+}
+
+[data-aos="fade-left"] {
+    transform: translateX(50px);
+}
+
+[data-aos="fade-right"] {
+    transform: translateX(-50px);
+}
+
+[data-aos="zoom-in"] {
+    transform: scale(0.85);
+}
+
+[data-aos].aos-animate {
+    opacity: 1 !important;
+    transform: translateY(0) translateX(0) scale(1) !important;
+}
+
+[data-aos-delay="100"].aos-animate {
+    transition-delay: 0.1s;
+}
+
+[data-aos-delay="200"].aos-animate {
+    transition-delay: 0.2s;
+}
+
+[data-aos-delay="300"].aos-animate {
+    transition-delay: 0.3s;
+}
+
 /* ===== Title ===== */
 .title {
   text-align: center;
   font-size: 2.2rem;
   margin: 20px 0;
-  color: #ffea00;
+  color: #3b82f6;
   letter-spacing: 1px;
+  font-weight: 700;
 }
 
 /* ===== Search Bar with Rotating Border ===== */
@@ -42,11 +86,11 @@
   border-radius: 50px;
   border: 2px solid transparent;
   background: conic-gradient(
-    #ffd60a,
-    #ffea00,
-    #ffd60a,
-    #ffea00,
-    #ffd60a
+    #3b82f6,
+    #60a5fa,
+    #3b82f6,
+    #60a5fa,
+    #3b82f6
   );
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
@@ -61,11 +105,22 @@
   font-size: 1rem;
   border: none;
   border-radius: 50px;
-  background: #111;
-  color: #fff;
+  background: #f8fafc;
+  color: #2d2d2d;
   outline: none;
   position: relative;
   z-index: 2;
+  border: 2px solid #bfdbfe;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-bar input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-bar input::placeholder {
+  color: #94a3b8;
 }
 
 @keyframes rotateBorder {
@@ -85,45 +140,110 @@
   align-items: center;
   gap: 15px;
   margin-bottom: 30px;
+  padding: 0 20px;
 }
 
 /* ===== Question Card ===== */
 .question-card {
   width: 100%;
-  background: #111;
-  border-bottom: 1px solid #ffd60a;
-  padding: 15px 20px;
-  transition: background 0.3s ease;
+  max-width: 900px;
+  background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+  border-left: 4px solid #3b82f6;
+  border: 2px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 20px 25px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
 }
 
 .question-card:hover {
-  background: #1a1a1a;
+  background: #eff6ff;
+  border-color: #3b82f6;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+  transform: translateX(5px);
 }
 
 /* ===== Text Styling ===== */
 .subject {
   font-size: 1.4rem;
-  color: #ffea00;
-  margin-bottom: 8px;
+  color: #3b82f6;
+  margin-bottom: 12px;
+  font-weight: 700;
 }
 
 .question-text {
-  font-size: 1rem;
-  color: #eaeaea;
-  margin: 6px 0;
-  line-height: 1.5;
+  font-size: 1.05rem;
+  color: #475569;
+  margin: 10px 0;
+  line-height: 1.6;
+  font-weight: 500;
 }
 
 .userid,
 .timestamp {
   font-size: 0.9rem;
-  color: #aaa;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+.userid {
+  font-weight: 600;
 }
 
 /* ===== No Results ===== */
 .no-results {
   text-align: center;
   font-size: 1.2rem;
-  color: #888;
+  color: #64748b;
   margin-top: 50px;
+  padding: 30px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 2px dashed #bfdbfe;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .search-container {
+    width: 85vw;
+  }
+
+  .question-card {
+    padding: 15px 20px;
+  }
+
+  .subject {
+    font-size: 1.2rem;
+  }
+
+  .question-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .search-container {
+    width: 90vw;
+  }
+
+  .question-card {
+    padding: 12px 15px;
+  }
+
+  .subject {
+    font-size: 1.1rem;
+  }
+
+  .userid,
+  .timestamp {
+    font-size: 0.85rem;
+  }
 }

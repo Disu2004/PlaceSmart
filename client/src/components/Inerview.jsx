@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../CSS/Interview.css';
+ import '../CSS/Interview.css';
 import Navbar from './Navbar';
 
 const Interview = () => {

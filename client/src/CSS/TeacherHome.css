@@ -1,13 +1,70 @@
 /* ================================
    TEACHER HOME PAGE (Scoped)
-   Theme: Black & Yellow
+   Theme: Blue & White (matching student theme)
    ================================ */
 
 .teacher-home {
-  font-family: "Poppins", sans-serif;
-  color: #f5f5f5;
-  background: #000;
+  font-family: 'Montserrat', Arial, sans-serif;
+  color: #2d2d2d;
+  background: #ffffff;
   overflow-x: hidden;
+}
+
+/* ==================== SCROLL ANIMATIONS ==================== */
+/* Initial state for elements with data-aos */
+[data-aos] {
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Fade Up */
+[data-aos="fade-up"] {
+    transform: translateY(50px);
+}
+
+/* Fade Down */
+[data-aos="fade-down"] {
+    transform: translateY(-50px);
+}
+
+/* Fade Left */
+[data-aos="fade-left"] {
+    transform: translateX(50px);
+}
+
+/* Fade Right */
+[data-aos="fade-right"] {
+    transform: translateX(-50px);
+}
+
+/* Zoom In */
+[data-aos="zoom-in"] {
+    transform: scale(0.85);
+}
+
+/* Flip Left */
+[data-aos="flip-left"] {
+    transform: perspective(1000px) rotateY(-15deg);
+    opacity: 0;
+}
+
+/* Animated state - Applied when element is in view */
+[data-aos].aos-animate {
+    opacity: 1 !important;
+    transform: translateY(0) translateX(0) scale(1) rotateY(0) !important;
+}
+
+/* Delay classes */
+[data-aos-delay="100"].aos-animate {
+    transition-delay: 0.1s;
+}
+
+[data-aos-delay="200"].aos-animate {
+    transition-delay: 0.2s;
+}
+
+[data-aos-delay="300"].aos-animate {
+    transition-delay: 0.3s;
 }
 
 /* ================= HERO SECTION ================= */
@@ -16,31 +73,34 @@
   align-items: center;
   justify-content: space-between;
   padding: 80px 10%;
-  background: linear-gradient(135deg, #000, #222);
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
   flex-wrap: wrap;
+  gap: 40px;
 }
 
 .teacher-home .hero-content {
-  max-width: 45%;
+  flex: 1;
+  min-width: 300px;
 }
 
 .teacher-home .hero-content h1 {
   font-size: 3rem;
-  color: #ffcc00;
+  color: #3b82f6;
   margin-bottom: 15px;
   letter-spacing: 1px;
+  font-weight: 700;
 }
 
 .teacher-home .hero-content p {
   font-size: 1.1rem;
-  line-height: 1.6;
-  color: #ddd;
+  line-height: 1.8;
+  color: #475569;
   margin-bottom: 25px;
 }
 
 .teacher-home .hero-btn {
-  background: #ffcc00;
-  color: #000;
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  color: #ffffff;
   padding: 12px 28px;
   font-size: 1rem;
   border: none;
@@ -48,29 +108,29 @@
   font-weight: bold;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
 }
 
 .teacher-home .hero-btn:hover {
-  background: #fff;
   transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
 }
 
-/* Proper hero image styling */
 .teacher-home .hero-image {
   flex: 1;
+  min-width: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 50%;
 }
 
 .teacher-home .hero-image img {
-  width: 90%;
+  width: 100%;
+  max-width: 500px;
   height: auto;
-  max-height: 350px;
-  object-fit: cover;
   border-radius: 20px;
-  box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25);
+  object-fit: cover;
   transition: transform 0.5s ease;
 }
 
@@ -82,13 +142,14 @@
 .teacher-home .teacher-features {
   text-align: center;
   padding: 80px 10%;
-  background: #111;
+  background: #ffffff;
 }
 
 .teacher-home .teacher-features h2 {
-  color: #ffcc00;
+  color: #3b82f6;
   font-size: 2.2rem;
   margin-bottom: 50px;
+  font-weight: 700;
 }
 
 .teacher-home .feature-cards {
@@ -99,20 +160,34 @@
 }
 
 .teacher-home .feature-card {
-  background: #1a1a1a;
-  padding: 30px;
+  background: linear-gradient(135deg, #fff 0%, #dbeafe 100%);
+  padding: 30px 20px;
   border-radius: 20px;
   width: 280px;
-  color: #fff;
+  color: #2d2d2d;
   text-align: center;
-  transition: all 0.4s ease;
-  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  border: 2px solid #bfdbfe;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
 }
 
 .teacher-home .feature-card:hover {
-  border-color: #ffcc00;
+  border-color: #3b82f6;
   transform: translateY(-10px);
-  box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.3);
+}
+
+.teacher-home .feature-card h3 {
+  color: #3b82f6;
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.teacher-home .feature-card p {
+  color: #475569;
+  line-height: 1.6;
+  font-size: 1rem;
 }
 
 /* ================= ZIGZAG SECTIONS ================= */
@@ -121,75 +196,85 @@
   align-items: center;
   justify-content: space-between;
   padding: 80px 10%;
-  background: linear-gradient(135deg, #000, #111);
+  background: #f8fafc;
   flex-wrap: wrap;
   gap: 40px;
 }
 
 .teacher-home .zigzag-section.reverse {
   flex-direction: row-reverse;
+  background: #ffffff;
 }
 
 .teacher-home .zigzag-content {
   flex: 1;
-  color: #fff;
+  min-width: 320px;
+  color: #2d2d2d;
 }
 
 .teacher-home .zigzag-content h2 {
-  color: #ffcc00;
+  color: #3b82f6;
   font-size: 2rem;
   margin-bottom: 20px;
+  font-weight: 700;
 }
 
 .teacher-home .zigzag-content p {
-  color: #ccc;
+  color: #475569;
   line-height: 1.7;
   font-size: 1.05rem;
+  max-width: 550px;
 }
 
 .teacher-home .zigzag-image {
   flex: 1;
+  min-width: 320px;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .teacher-home .zigzag-image img {
-  width: 85%;
+  width: 100%;
+  max-width: 480px;
   height: auto;
-  max-height: 320px;
-  border-radius: 18px;
+  border-radius: 20px;
   object-fit: cover;
-  box-shadow: 0 0 20px rgba(255, 204, 0, 0.25);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25);
   transition: transform 0.5s ease;
+  border: 3px solid #bfdbfe;
 }
 
 .teacher-home .zigzag-image img:hover {
   transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.35);
 }
 
 /* ================= CALL TO ACTION ================= */
 .teacher-home .teacher-cta {
   text-align: center;
   padding: 100px 10%;
-  background: linear-gradient(135deg, #111, #000);
-  color: #fff;
+  background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+  color: #2d2d2d;
 }
 
 .teacher-home .teacher-cta h2 {
   font-size: 2.3rem;
-  color: #ffcc00;
+  color: #3b82f6;
   margin-bottom: 20px;
+  font-weight: 700;
 }
 
 .teacher-home .teacher-cta p {
-  color: #ccc;
+  color: #475569;
   font-size: 1.1rem;
   margin-bottom: 40px;
+  line-height: 1.7;
 }
 
 .teacher-home .cta-btn {
-  background: #ffcc00;
-  color: #000;
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  color: #ffffff;
   font-size: 1rem;
   padding: 14px 32px;
   border: none;
@@ -197,11 +282,12 @@
   font-weight: 600;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
 }
 
 .teacher-home .cta-btn:hover {
-  background: #fff;
   transform: scale(1.08);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
 }
 
 /* ================= RESPONSIVE ================= */
@@ -209,34 +295,61 @@
   .teacher-home .teacher-hero {
     flex-direction: column;
     text-align: center;
+    padding: 60px 20px;
   }
 
   .teacher-home .hero-content {
     max-width: 100%;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+  }
+
+  .teacher-home .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .teacher-home .hero-image {
+    max-width: 100%;
   }
 
   .teacher-home .hero-image img {
     width: 95%;
-    max-height: 280px;
+    max-width: 100%;
   }
 
-  .teacher-home .zigzag-section {
-    flex-direction: column;
-    text-align: center;
-  }
-
+  .teacher-home .zigzag-section,
   .teacher-home .zigzag-section.reverse {
     flex-direction: column;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .teacher-home .zigzag-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .teacher-home .zigzag-image {
+    max-width: 100%;
   }
 
   .teacher-home .zigzag-image img {
     width: 90%;
-    max-height: 260px;
+    max-width: 100%;
   }
 
   .teacher-home .feature-cards {
     flex-direction: column;
     align-items: center;
+  }
+
+  .teacher-home .teacher-features {
+    padding: 60px 20px;
+  }
+
+  .teacher-home .teacher-cta {
+    padding: 60px 20px;
+  }
+
+  .teacher-home .teacher-cta h2 {
+    font-size: 1.9rem;
   }
 }

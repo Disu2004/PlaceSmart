@@ -1,15 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import '../../CSS/ViewQuestions.css'; // external CSS file
+import '../../CSS/ViewQuestions.css';
+import Navbar from '../Navbar';
+import TeacherNav from './TeacherNav';
 
 const ViewQuestions = () => {
     const [questions, setQuestions] = useState([]);
     const [search, setSearch] = useState('');
     const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL || "http://localhost:8000";
+
     useEffect(() => {
-        AOS.init({ duration: 1000, once: true });
-    }, []);
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -100px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('aos-animate');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with data-aos attribute
+        document.querySelectorAll('[data-aos]').forEach(el => {
+            observer.observe(el);
+        });
+
+        return () => observer.disconnect();
+    }, [questions]); // Re-observe when questions change
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -18,7 +38,6 @@ const ViewQuestions = () => {
                 const data = await response.json();
                 if (data.success) {
                     setQuestions(data.questions);
-                    AOS.refresh(); // ✅ ensure all animate properly
                 } else {
                     console.error('Error:', data.message);
                 }
@@ -27,7 +46,7 @@ const ViewQuestions = () => {
             }
         };
         fetchQuestions();
-    }, []);
+    }, [BACKEND_URL]);
 
     const filteredQuestions =
         search.trim() === ''
@@ -40,6 +59,8 @@ const ViewQuestions = () => {
             );
 
     return (
+      <>
+      <TeacherNav />
         <div className="view-questions-container">
             <h1 data-aos="fade-down" className="title">
                 📘 All Questions
@@ -56,6 +77,7 @@ const ViewQuestions = () => {
                     />
                 </div>
             </div>
+            
             <div className="questions-list">
                 {filteredQuestions.length > 0 ? (
                     filteredQuestions.map((q, index) => (
@@ -73,6 +95,7 @@ const ViewQuestions = () => {
                 )}
             </div>
         </div>
+      </>
     );
 };
 

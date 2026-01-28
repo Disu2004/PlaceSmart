@@ -1,0 +1,334 @@
+/* ============================================= */
+/* USERS MANAGEMENT - Purple & Violet Theme */
+/* ============================================= */
+
+.users-container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.15);
+  border: 2px solid #ddd6fe;
+}
+
+/* ============================================= */
+/* Header */
+/* ============================================= */
+.users-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.users-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #8b5cf6;
+  letter-spacing: 1px;
+}
+
+.users-subtitle {
+  font-size: 1.2rem;
+  color: #64748b;
+}
+
+.users-btn-back {
+  padding: 0.8rem 1.8rem;
+  border: 2px solid #8b5cf6;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: #8b5cf6;
+}
+
+.users-btn-back:hover {
+  background: #f5f3ff;
+  transform: translateY(-2px);
+}
+
+/* ============================================= */
+/* Search */
+/* ============================================= */
+.users-search {
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem 1.5rem;
+  background: #f8fafc;
+  border: 2px solid #ddd6fe;
+  border-radius: 12px;
+  color: #2d2d2d;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.users-search:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+/* ============================================= */
+/* Users Grid */
+/* ============================================= */
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.users-card {
+  background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+  border-radius: 16px;
+  border: 2px solid #ddd6fe;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
+}
+
+.users-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(139, 92, 246, 0.25);
+  border-color: #8b5cf6;
+}
+
+/* ============================================= */
+/* Card Header */
+/* ============================================= */
+.users-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #ddd6fe;
+}
+
+.users-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #8b5cf6;
+  box-shadow: 0 4px 10px rgba(139, 92, 246, 0.2);
+}
+
+.users-info {
+  flex: 1;
+}
+
+.users-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #8b5cf6;
+  margin-bottom: 0.3rem;
+}
+
+.users-email {
+  color: #64748b;
+  font-size: 0.95rem;
+  word-break: break-all;
+}
+
+/* ============================================= */
+/* Card Details */
+/* ============================================= */
+.users-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.users-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.users-label {
+  font-weight: 600;
+  color: #8b5cf6;
+  font-size: 0.95rem;
+}
+
+.users-value {
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.users-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.users-badge-admin {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+  color: #ffffff;
+}
+
+.users-badge-user {
+  background: #f5f3ff;
+  color: #8b5cf6;
+  border: 1px solid #ddd6fe;
+}
+
+/* ============================================= */
+/* Card Actions */
+/* ============================================= */
+.users-actions {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.users-btn-edit,
+.users-btn-delete {
+  flex: 1;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.users-btn-edit {
+  background: #10b981;
+  color: white;
+}
+
+.users-btn-edit:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.users-btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+.users-btn-delete:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+/* ============================================= */
+/* Loading & Error States */
+/* ============================================= */
+.users-loading,
+.users-error,
+.users-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  border-radius: 16px;
+  margin: 2rem 0;
+}
+
+.users-loading {
+  color: #8b5cf6;
+  background: #f5f3ff;
+  border: 2px dashed #ddd6fe;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.users-error {
+  color: #ef4444;
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  font-weight: 600;
+}
+
+.users-empty {
+  color: #64748b;
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+}
+
+.users-empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.users-empty-title {
+  font-size: 1.5rem;
+  color: #8b5cf6;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.users-empty-text {
+  color: #64748b;
+}
+
+/* ============================================= */
+/* Responsive */
+/* ============================================= */
+@media (max-width: 992px) {
+  .users-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .users-title {
+    font-size: 2.2rem;
+  }
+
+  .users-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .users-title {
+    font-size: 2rem;
+  }
+
+  .users-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .users-btn-back {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .users-card {
+    padding: 1.2rem;
+  }
+
+  .users-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .users-name {
+    font-size: 1.1rem;
+  }
+
+  .users-actions {
+    flex-direction: column;
+  }
+
+  .users-btn-edit,
+  .users-btn-delete {
+    width: 100%;
+  }
+}

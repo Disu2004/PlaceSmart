@@ -101,6 +101,7 @@ export const saveUserImage = async (req, res) => {
 export const fetchUsers = async (req, res) => {
   try {
     const users = await UserData.find({}).sort({ id: 1 }).lean();
+    // console.log(users)
     res.json({ success: true, users });
   } catch (err) {
     console.error("Fetch users error:", err);
@@ -119,6 +120,7 @@ export const deleteUser = async (req, res) => {
     }
 
     const user = await UserData.findOneAndDelete({ id });
+    // console.log(user)
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found" });
     }

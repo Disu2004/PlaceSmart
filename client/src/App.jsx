@@ -17,6 +17,8 @@ import CodingDashboard from "./components/CodingDashboard";
 import SolveProblem from "./components/SolveProblem";
 import AdminHome from "./components/Admin/AdminHome";
 import Interview from "./components/Inerview";
+import UsersManagement from "./components/Admin/UsersManagement";
+import ResumeManagement from "./components/Admin/ResumeManagement";
 function App() {
 
   const navigate = useNavigate();
@@ -91,6 +93,8 @@ function App() {
       <Route path="/admin-home" element={<AdminHome/>} />
       <Route path="/ai-interview" element={<Interview/>} />
       <Route path="resume-builder" element={<ResumeEditor />} />
+      <Route path="/user-management" element={<UsersManagement />} />
+      <Route path="/resume-manager" element={<ResumeManagement />} />
     </Routes>
 
   );

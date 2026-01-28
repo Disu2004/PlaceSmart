@@ -7,10 +7,20 @@ import studyMaterialRoute from "./routes/studyMaterialRoutes.js"
 import questionRoutes from "./routes/questionRoutes.js";
 import interviewRoutes from './routes/interviewRoute.js';
 import ResumeRoutes from './routes/resumeroutes.js';
+
 dotenv.config();
 const app = express();
-app.use(cors());
+
+// CORS Configuration - FIXED
+app.use(cors({
+  origin: "http://localhost:5173", // Your frontend URL
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json({ limit: "10mb" }));
+
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -23,7 +33,8 @@ mongoose
 app.use("/user", userRouter);
 app.use("/api/study-materials", studyMaterialRoute);
 app.use("/api/questions", questionRoutes);
-app.use("/",interviewRoutes);
-app.use("/resume",ResumeRoutes);
+app.use("/", interviewRoutes);
+app.use("/resume", ResumeRoutes);
+
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

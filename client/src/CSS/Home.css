@@ -1,7 +1,7 @@
 .pb-home-container {
     font-family: 'Montserrat', Arial, sans-serif;
     overflow-x: hidden;
-    /* overflow-y: auto; - IMPORTANT: Do NOT use overflow-y: hidden */
+    overflow-y: hidden; /*- IMPORTANT: Do NOT use overflow-y: hidden */
     transition: background 0.3s, color 0.3s;
     background: #ffffff;
     color: #2d2d2d;
