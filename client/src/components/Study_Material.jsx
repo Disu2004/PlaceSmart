@@ -20,12 +20,11 @@ const Study_Material = () => {
   const [chatDimensions, setChatDimensions] = useState({ width: 350, height: 450 });
   const chatBoxRef = useRef(null);
   const BACKEND_URL = import.meta.env.VITE_APP_BACKEND_URL;
-  const API_URL = `http://localhost:8000/api/study-materials`;
-  console.log(API_URL);
+
 
   const fetchMaterials = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(BACKEND_URL);
       const data = await response.json();
       setMaterials(data);
     } catch (error) {
@@ -50,7 +49,7 @@ const Study_Material = () => {
     formData.append("file", file);
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/upload`, {
+      const response = await fetch(`${BACKEND_URL}/upload`, {
         method: "POST",
         body: formData,
       });
@@ -94,7 +93,7 @@ const Study_Material = () => {
     try {
       setAiLoadingIds((prev) => [...prev, materialId]);
       setAiResponses((prev) => ({ ...prev, [materialId]: "" }));
-      const response = await fetch(`${API_URL}/detailed-suggestion`, {
+      const response = await fetch(`${BACKEND_URL}/detailed-suggestion`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt, materialUrl: fileUrl, name }),
@@ -223,7 +222,7 @@ const Study_Material = () => {
                   </div>
                   <div className="card-actions">
                     <a
-                      href={`${API_URL}/api/study-materials/materials/${mat._id}/download`}
+                      href={`${BACKEND_URL}/api/study-materials/materials/${mat._id}/download`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="action-btn download-btn"

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "../CSS/About.css";
+import "../CSS/About.css"
 import Navbar from "./Navbar";
 import TusharImage from "../images/Tushar.jpg";
 import DishantImage from "../images/Dishant.jpg";
@@ -10,7 +10,7 @@ const About = () => {
     // Custom Intersection Observer for scroll animations
     const observerOptions = {
       threshold: 0.1,
-      rootMargin: "0px 0px -100px 0px"
+      rootMargin: "0px 0px -50px 0px"
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -22,11 +22,15 @@ const About = () => {
     }, observerOptions);
 
     // Observe all elements with data-aos attribute
-    document.querySelectorAll('[data-aos]').forEach(el => {
+    const elements = document.querySelectorAll('[data-aos]');
+    elements.forEach(el => {
       observer.observe(el);
     });
 
-    return () => observer.disconnect();
+    // Cleanup
+    return () => {
+      elements.forEach(el => observer.unobserve(el));
+    };
   }, []);
 
   return (
@@ -130,7 +134,7 @@ const About = () => {
             across industries.
           </p>
           <div className="vision-points">
-            {[
+            {[  
               {
                 icon: "💡",
                 title: "Inspire",
